@@ -126,19 +126,18 @@ const ServiceTable = ({ servicesData, strapiUrl, strapiToken }) => {
         },
       },
     };
-    
+
     const data = await fetchApi({
       endpoint: "service-orders", // the content type to fetch
       query: urlParamsObject,
       apiUrl: strapiUrl,
-      apiToken: strapiToken
+      apiToken: strapiToken,
     });
-    
-    setServices(data);
-    
-  console.log(data, "datadatadatadata");
-  }
 
+    setServices(data);
+
+    console.log(data, "datadatadatadata");
+  };
 
   const onFinish = async (values) => {
     setLoading(true);
@@ -177,7 +176,6 @@ const ServiceTable = ({ servicesData, strapiUrl, strapiToken }) => {
               data: data,
             }),
           });
-
 
           await getAllServices();
           setStep(2);
@@ -515,6 +513,7 @@ const ServiceTable = ({ servicesData, strapiUrl, strapiToken }) => {
                   ]}
                 >
                   <Radio.Group
+                    value={confirmation}
                     onChange={(e) => setConfirmation(e.target.value)}
                   >
                     <Radio.Button value={true}>يقبل</Radio.Button>
