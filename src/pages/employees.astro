@@ -1,0 +1,10 @@
+---
+import Layout from "../layouts/Layout.astro";
+import EmployeeTable from "../components/partials/Employees";
+
+const strapiUrl = import.meta.env.STRAPI_URL;
+---
+
+<Layout title="Employees Page">
+  <EmployeeTable apiUrl={strapiUrl} client:only="react" />
+</Layout>

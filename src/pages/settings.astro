@@ -1,0 +1,49 @@
+---
+import Layout from "../layouts/Layout.astro";
+import UserSettings from "../components/partials/UserSettings";
+import fetchApi from "../lib/strapi";
+
+const strapiUrl = import.meta.env.STRAPI_URL;
+const strapiToken = import.meta.env.STRAPI_Token;
+
+const profilePageData = await fetchApi({
+  endpoint: "profile-page", // the content type to fetch
+  query: {
+    populate: {
+      firstName: {
+        populate: "*",
+      },
+      lastName: {
+        populate: "*",
+      },
+      title: {
+        populate: "*",
+      },
+      phoneNumber: {
+        populate: "*",
+      },
+      email: {
+        populate: "*",
+      },
+      newPassword: {
+        populate: "*",
+      },
+      currentPassword: {
+        populate: "*",
+      },
+    },
+  },
+  apiUrl: strapiUrl,
+  apiToken: strapiToken,
+  locale: "ar",
+});
+---
+
+<Layout title="Settigns Page">
+  <UserSettings
+    pageData={profilePageData?.attributes}
+    apiUrl={strapiUrl}
+    apiToken={strapiToken}
+    client:only="react"
+  />
+</Layout>

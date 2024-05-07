@@ -271,7 +271,10 @@ const ServiceTable = ({ servicesData, strapiUrl, strapiToken }) => {
           {services
             ?.sort((a, b) => b.id - a.id)
             ?.map((service, index) => (
-              <tr key={index}>
+              <tr
+                className="hover:bg-gray-100 dark:hover:bg-gray-700"
+                key={index}
+              >
                 <td className="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
                   <span className="font-semibold">
                     {service?.attributes?.serviceID}

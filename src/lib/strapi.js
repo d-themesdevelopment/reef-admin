@@ -14,7 +14,7 @@ export default async function fetchApi({
   locale = "ar",
   apiUrl,
   apiToken,
-}) {
+}){
   const mergedOptions = {
     next: { revalidate: 10 },
     headers: {
@@ -26,7 +26,7 @@ export default async function fetchApi({
 
   const queryString = qs.stringify(query);
 
-  const requestUrl = `${apiUrl}/api/${endpoint}?${queryString}&locale=${locale}`;
+  const requestUrl = `${apiUrl}/api/${endpoint}?${queryString}`;
 
   try {
     const res = await fetch(requestUrl, mergedOptions);
