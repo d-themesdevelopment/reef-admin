@@ -1,0 +1,11 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+// Sign Up Page
+const apiUrl = import.meta.env.STRAPI_URL;
+const apiToken = import.meta.env.STRAPI_Token;
+---
+
+<Layout title="Sign Up Page">
+  <Signup apiUrl={apiUrl} apiToken={apiToken} />
+</Layout>
