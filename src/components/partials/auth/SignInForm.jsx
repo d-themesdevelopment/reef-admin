@@ -5,6 +5,7 @@ import Form from "antd/es/form/Form";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Loading from "../../../components/common/Loading";
+import { roleStore } from "../../../store/roleStroe";
 
 const SignInForm = ({ apiUrl, apiToken }) => {
   const [loading, setLoading] = useState(false);
@@ -58,6 +59,7 @@ const SignInForm = ({ apiUrl, apiToken }) => {
         if (data.jwt) {
           if (data?.user?.isAdmin) {
             Cookies.set("reef_token", data.jwt);
+            roleStore.set("admin");
 
             setTimeout(() => {
               toast.success("Login as admin successfully😎", {
@@ -77,6 +79,8 @@ const SignInForm = ({ apiUrl, apiToken }) => {
               }, 1500);
             }, 1000);
           } else {
+            roleStore.set("employee");
+
             toast.success("👌 Login successful!", {
               position: "top-right",
               autoClose: 3000,

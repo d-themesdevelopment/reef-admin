@@ -8,6 +8,7 @@ import { getCurrentUser } from "../utils/user";
 
 // Import Store
 import { userStore } from "../store/UserStore";
+import { roleStore } from "../store/roleStroe";
 
 // Import Library Styles
 import "react-toastify/dist/ReactToastify.css";
@@ -26,6 +27,12 @@ if (Astro.cookies.has("reef_token")) {
   const data: any = await getCurrentUser(
     Astro.cookies.get("reef_token")?.value as string
   );
+
+  if(data?.isAdmin) {
+    roleStore.set("admin");
+  } else {
+    roleStore.set("employee");
+  }
 
   console.log(data, "Loaded");
   userStore.set(data);
