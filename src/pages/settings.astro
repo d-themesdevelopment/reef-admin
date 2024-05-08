@@ -3,6 +3,10 @@ import Layout from "../layouts/Layout.astro";
 import UserSettings from "../components/partials/UserSettings";
 import fetchApi from "../lib/strapi";
 
+if (!Astro.cookies.has("reef_token")) {
+  return Astro.redirect("/signin");
+}
+
 const strapiUrl = import.meta.env.STRAPI_URL;
 const strapiToken = import.meta.env.STRAPI_Token;
 

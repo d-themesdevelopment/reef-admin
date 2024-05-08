@@ -20,6 +20,7 @@ interface Props {
 }
 
 const { title } = Astro.props;
+const pathname = Astro.url.pathname;
 
 if (Astro.cookies.has("reef_token")) {
   const data: any = await getCurrentUser(
@@ -28,10 +29,6 @@ if (Astro.cookies.has("reef_token")) {
 
   console.log(data, "Loaded");
   userStore.set(data);
-} else {
-  Astro.redirect("/signin");
-
-  console.log("servicesData");
 }
 ---
 
@@ -46,20 +43,28 @@ if (Astro.cookies.has("reef_token")) {
     <title>{title}</title>
   </head>
   <body>
-    <NavBarSidebar />
+    {
+      !pathname.includes("signin") ? (
+        <>
+          <NavBarSidebar />
 
-    <Sidebar />
+          <Sidebar />
 
-    <div class="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900">
-      <div
-        id="main-content"
-        class="relative w-full h-full overflow-y-auto bg-gray-50 lg:rtl:ml-0 lg:rtl:mr-64 lg:ml-64 dark:bg-gray-900 min-h-screen"
-      >
+          <div class="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900">
+            <div
+              id="main-content"
+              class="relative w-full h-full overflow-y-auto bg-gray-50 lg:rtl:ml-0 lg:rtl:mr-64 lg:ml-64 dark:bg-gray-900 min-h-screen"
+            >
+              <slot />
+
+              <FooterSidebar />
+            </div>
+          </div>
+        </>
+      ) : (
         <slot />
-
-        <FooterSidebar />
-      </div>
-    </div>
+      )
+    }
 
     <ToastContainer
       client:only="react"

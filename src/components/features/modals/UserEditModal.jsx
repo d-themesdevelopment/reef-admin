@@ -11,7 +11,7 @@ const UserEditModal = ({
   apiToken,
   setOpenUserEdit,
   roles,
-  setLoading
+  setLoading,
 }) => {
   const onfinish = async (values) => {
     setLoading(true);
@@ -24,7 +24,7 @@ const UserEditModal = ({
 
     let data = {};
 
-    data = { ...data, approvedAsEmployee: values.active };
+    // data = { ...data, approvedAsEmployee: values.active };
 
     if (values?.fullName) {
       data = { ...data, username: values?.fullName };
@@ -135,8 +135,6 @@ const UserEditModal = ({
 
   return (
     <>
-
-
       <h3 className="text-2xl font-semibold mb-6">Edit User</h3>
 
       <Form
@@ -153,7 +151,7 @@ const UserEditModal = ({
           grandFatherName: selectedUser?.grandFatherName,
           address: selectedUser?.address,
           mobileNumber: selectedUser?.mobileNumber,
-          active: selectedUser?.approvedAsEmployee,
+          //   active: selectedUser?.approvedAsEmployee,
         }}
         autoComplete="off"
         onFinish={onfinish}
@@ -281,14 +279,14 @@ const UserEditModal = ({
             </Form.Item>
           </div>
         </div>
-
+        {/* 
         <Form.Item
           name="active"
           label="Active Employee"
           valuePropName="checked"
         >
           <Switch />
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item>
           <Button type="primary" htmlType="submit">

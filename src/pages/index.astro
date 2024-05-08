@@ -2,6 +2,8 @@
 import fetchApi from "../lib/strapi";
 import Layout from "../layouts/Layout.astro";
 import ServiceTable from "../components/partials/services/ServiceTable";
+import { getCurrentUser } from "../utils/user";
+import { userStore } from "../store/UserStore";
 
 const urlParamsObject = {
   populate: {
@@ -26,6 +28,10 @@ const servicesData = await fetchApi({
   apiUrl: strapiUrl,
   apiToken: strapiToken,
 });
+
+if (!Astro.cookies.has("reef_token")) {
+  return Astro.redirect("/signin");
+}
 ---
 
 <Layout title="Service Page">

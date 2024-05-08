@@ -2,6 +2,9 @@
 import ColorModeSwitcher from "../features/ColorModeSwitcher.astro";
 import GitHubButton from "../features/GitHubButton.astro";
 import SearchInput from "../features/SearchInput.astro";
+import LoginButton from "./LoginButton";
+
+const $isLoggedIn = Astro.cookies.get("reef_token")?.value;
 ---
 
 <nav
@@ -640,6 +643,8 @@ import SearchInput from "../features/SearchInput.astro";
             </ul>
           </div>
         </div>
+
+        <LoginButton isLoggedIn={$isLoggedIn} client:only="react" />
       </div>
     </div>
   </div>

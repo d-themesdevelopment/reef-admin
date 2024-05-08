@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import SignUpForm from "../components/partials/auth/SignUpForm";
 
 // Sign Up Page
 const apiUrl = import.meta.env.STRAPI_URL;
@@ -7,5 +8,5 @@ const apiToken = import.meta.env.STRAPI_Token;
 ---
 
 <Layout title="Sign Up Page">
-  <Signup apiUrl={apiUrl} apiToken={apiToken} />
+  <SignUpForm apiUrl={apiUrl} apiToken={apiToken} client:only="react" />
 </Layout>

@@ -18,6 +18,9 @@ export const getCurrentUser = async (reef_token) => {
       attachedFile: {
         populate: "*",
       },
+      role: {
+        populate: "*",
+      }
     },
   };
 

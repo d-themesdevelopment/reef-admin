@@ -4,6 +4,10 @@ import EmployeeTable from "../components/partials/Employees";
 
 const apiUrl = import.meta.env.STRAPI_URL;
 const apiToken = import.meta.env.STRAPI_Token;
+
+if (!Astro.cookies.has("reef_token")) {
+  return Astro.redirect("/signin");
+}
 ---
 
 <Layout title="Employees Page">

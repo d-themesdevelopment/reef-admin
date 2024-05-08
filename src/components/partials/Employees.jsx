@@ -37,6 +37,7 @@ const Employees = ({ apiUrl, apiToken }) => {
   const [openAddUserModal, setOpenAddUserModal] = useState(false);
   const [openUserEdit, setOpenUserEdit] = useState(false);
   const [openUserDelete, setOpenUserDelete] = useState(false);
+  const [openApproved, setOpenApproved] = useState(false);
 
   useEffect(() => {
     getUsers();
@@ -70,8 +71,77 @@ const Employees = ({ apiUrl, apiToken }) => {
     setOpenAddUserModal(false);
   };
 
-  const handleApproveEmployee = (user, checked) => {
-    console.log(user, checked, "Hello");
+  const handleApproveEmployee = async () => {
+    setLoading(true);
+    const data = { approvedAsEmployee: !selectedUser?.approvedAsEmployee };
+
+    try {
+      const req = await fetch(`${apiUrl}/api/users/${selectedUser?.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          // set the auth token to the user's jwt
+          Authorization: `Bearer ${apiToken}`,
+        },
+        body: JSON.stringify({
+          ...data,
+        }),
+      });
+
+      if (req.ok) {
+        getUsers();
+        
+        toast.success("👌 Successfully Approve", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+
+        setTimeout(() => {
+          setLoading(false);
+          setOpenApproved(false);
+        }, 1500);
+      } else {
+        toast.error("Approve failed", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+
+        setTimeout(() => {
+          setLoading(false);
+          setOpenApproved(false);
+        }, 1500);
+      }
+    } catch (error) {
+      console.error(error);
+
+      toast.error("Approve failed", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+
+      setTimeout(() => {
+        setLoading(false);
+        setOpenApproved(false);
+      }, 1500);
+    }
   };
 
   const handleDeleteUser = async (user) => {
@@ -86,6 +156,8 @@ const Employees = ({ apiUrl, apiToken }) => {
     });
 
     if (response.ok) {
+      getUsers();
+
       setTimeout(() => {
         setLoading(false);
         setOpenUserDelete(false);
@@ -120,8 +192,6 @@ const Employees = ({ apiUrl, apiToken }) => {
       });
     }
   };
-
-  console.log(users, "usersusers");
 
   return (
     <>
@@ -289,9 +359,10 @@ const Employees = ({ apiUrl, apiToken }) => {
                             <div className="flex items-center">
                               <Switch
                                 checked={user?.approvedAsEmployee}
-                                onChange={(checked) =>
-                                  handleApproveEmployee(user, checked)
-                                }
+                                onChange={() => {
+                                  setOpenApproved(true);
+                                  setSelectedUser(user);
+                                }}
                               />
 
                               <span
@@ -413,15 +484,39 @@ const Employees = ({ apiUrl, apiToken }) => {
         width={300}
         footer={null}
       >
-        <h3 className="text-2xl font-semibold mb-6 text-center">
-          Are u sure?
-        </h3>
+        <h3 className="text-2xl font-semibold mb-6 text-center">Are u sure?</h3>
 
         <div className="flex items-center justify-center">
           <Button type="primary" onClick={() => handleDeleteUser(selectedUser)}>
             OK
           </Button>
           <Button className="mr-2" onClick={() => setOpenUserDelete(false)}>
+            Cancel
+          </Button>
+        </div>
+      </Modal>
+
+      <Modal
+        centered
+        open={openApproved}
+        onCancel={() => {
+          setOpenApproved(false);
+        }}
+        width={300}
+        footer={null}
+      >
+        <h3 className="text-2xl font-semibold mb-6 text-center">
+          Are u going to approve this user?
+        </h3>
+
+        <div className="flex items-center justify-center">
+          <Button
+            type="primary"
+            onClick={() => handleApproveEmployee(selectedUser)}
+          >
+            OK
+          </Button>
+          <Button className="mr-2" onClick={() => setOpenApproved(false)}>
             Cancel
           </Button>
         </div>

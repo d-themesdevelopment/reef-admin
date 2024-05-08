@@ -1,9 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
-
+import SignInForm from "../components/partials/auth/SignInForm";
 // Sigin In
+const apiUrl = import.meta.env.STRAPI_URL;
+const apiToken = import.meta.env.STRAPI_Token;
 ---
 
 <Layout title="Sign In">
-    
+  <SignInForm apiUrl={apiUrl} apiToken={apiToken} client:only="react" />
 </Layout>
