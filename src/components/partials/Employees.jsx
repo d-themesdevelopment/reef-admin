@@ -71,6 +71,24 @@ const Employees = ({ apiUrl, apiToken }) => {
     setOpenAddUserModal(false);
   };
 
+  const handleSendEmail = async () => {
+    const identifier = selectedUser?.email;
+    const username = selectedUser?.username;
+
+    await fetch(`${apiUrl}/api/auth/send-email`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `bearer ${apiToken}`,
+      },
+      body: JSON.stringify({
+        identifier,
+        username,
+      }),
+    });
+  };
+
   const handleApproveEmployee = async () => {
     setLoading(true);
     const data = { approvedAsEmployee: !selectedUser?.approvedAsEmployee };
@@ -90,17 +108,32 @@ const Employees = ({ apiUrl, apiToken }) => {
 
       if (req.ok) {
         getUsers();
-        
-        toast.success("👌 Successfully Approve", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+
+        if (!selectedUser.approvedAsEmployee) {
+          handleSendEmail();
+
+          toast.success("👌 Successfully Approve", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        } else {
+          toast.success("👌 Successfully Disabled", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        }
 
         setTimeout(() => {
           setLoading(false);
@@ -506,7 +539,9 @@ const Employees = ({ apiUrl, apiToken }) => {
         footer={null}
       >
         <h3 className="text-2xl font-semibold mb-6 text-center">
-          Are u going to approve this user?
+          Are u going to{" "}
+          {selectedUser?.approvedAsEmployee ? "be disable" : "approve"} this
+          user?
         </h3>
 
         <div className="flex items-center justify-center">

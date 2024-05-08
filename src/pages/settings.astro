@@ -2,6 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 import UserSettings from "../components/partials/UserSettings";
 import fetchApi from "../lib/strapi";
+import { userStore } from "../store/UserStore";
+import { getCurrentUser } from "../utils/user";
 
 if (!Astro.cookies.has("reef_token")) {
   return Astro.redirect("/signin");
@@ -41,10 +43,16 @@ const profilePageData = await fetchApi({
   apiToken: strapiToken,
   locale: "ar",
 });
+
+const $user: any = await getCurrentUser(
+  Astro.cookies.get("reef_token")?.value as string
+);
+userStore.set($user);
 ---
 
 <Layout title="Settigns Page">
   <UserSettings
+    user={$user ?? {}}
     pageData={profilePageData?.attributes}
     apiUrl={strapiUrl}
     apiToken={strapiToken}

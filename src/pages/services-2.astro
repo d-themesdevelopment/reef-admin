@@ -1,0 +1,44 @@
+---
+import fetchApi from "../lib/strapi";
+import Layout from "../layouts/Layout.astro";
+import ServiceTableTwo from "../components/partials/services/ServiceTableTwo";
+
+if (!Astro.cookies.has("reef_token")) {
+  return Astro.redirect("/signin");
+}
+
+const urlParamsObject = {
+  populate: {
+    user: {
+      populate: "*",
+    },
+    personalInformation: {
+      populate: "*",
+    },
+    requestInformation: {
+      populate: "*",
+    },
+  },
+};
+
+const strapiUrl = import.meta.env.STRAPI_URL;
+const strapiToken = import.meta.env.STRAPI_Token;
+
+const servicesData = await fetchApi({
+  endpoint: "service-orders", // the content type to fetch
+  query: urlParamsObject,
+  apiUrl: strapiUrl,
+  apiToken: strapiToken,
+});
+
+console.log(servicesData, "servicesData");
+---
+
+<Layout title="Service Page">
+  <ServiceTableTwo
+    strapiUrl={strapiUrl}
+    strapiToken={strapiToken}
+    servicesData={servicesData}
+    client:only="react"
+  />
+</Layout>

@@ -1,9 +1,12 @@
-import { Button, Upload } from "antd";
+import { Button, Form, Input, Upload } from "antd";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import Loading from "../common/Loading";
 
-const UserSettings = ({ pageData, apiUrl, apiToken }) => {
+const UserSettings = ({ user, pageData, apiUrl, apiToken }) => {
   const [fileList, setFileList] = useState([]);
   const [avatarUrl, setAvatarUrl] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const props = {
     onRemove: (file) => {
@@ -40,23 +43,104 @@ const UserSettings = ({ pageData, apiUrl, apiToken }) => {
   }, [fileList]);
 
   const handleImageUpload = async (file) => {
+    setLoading(true);
     const formData = new FormData();
     formData.append("files", file);
 
     try {
-      await fetch(`${apiUrl}/api/upload`, {
+      const res = await fetch(`${apiUrl}/api/upload`, {
         method: "POST",
         body: formData,
       });
+
+      if (res.ok) {
+        const data = await res.json();
+
+        console.log(data[0], "datadata")
+
+        handleUpdateFunc({
+          avatar: data[0],
+        });
+      }
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
-  console.log(fileList, "fileListfileList");
+  const handleUpdateFunc = async (data) => {
+    setLoading(true);
+
+    try {
+      const res = await fetch(`${apiUrl}/api/users/${user?.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          // set the auth token to the user's jwt
+          Authorization: `Bearer ${apiToken}`,
+        },
+        body: JSON.stringify({
+          ...data,
+        }),
+      });
+
+      if (res.ok) {
+        toast.success("👌 Successfully Updated!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+
+        setTimeout(() => {
+          setLoading(false);
+        }, 1500);
+      }
+    } catch (error) {
+      console.error(error);
+
+      toast.error("👌 Failed Update", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+
+      setTimeout(() => {
+        setLoading(false);
+      }, 1500);
+    }
+  };
+
+  const handleUpdatePersonalInfo = (values) => {
+    handleUpdateFunc({
+      username: values?.firstName,
+      address: values?.address,
+      email: values?.email,
+      phoneNumber: values?.phoneNumber,
+    });
+  };
+
+  const handleUpdatePassword = (values) => {
+    handleUpdateFunc({
+      password: values?.password,
+    });
+  };
+
+  console.log(user, "fileListfileList");
 
   return (
     <>
+      {loading && <Loading />}
+
       <div className="grid grid-cols-1 px-4 pt-6 xl:grid-cols-3 xl:gap-4 dark:bg-gray-900">
         <div className="mb-4 col-span-full xl:mb-2">
           <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
@@ -72,7 +156,7 @@ const UserSettings = ({ pageData, apiUrl, apiToken }) => {
                 src={`${
                   avatarUrl
                     ? avatarUrl
-                    : "https://flowbite-admin-dashboard.vercel.app/images/users/bonnie-green-2x.png"
+                    : user?.avatar?.url
                 }`}
                 alt="Jese picture"
               />
@@ -147,176 +231,146 @@ const UserSettings = ({ pageData, apiUrl, apiToken }) => {
             <h3 className="mb-4 text-xl font-semibold dark:text-white">
               {pageData?.profileInformation}
             </h3>
-            <form action="#">
-              <div className="grid grid-cols-6 gap-6">
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="first-name"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            <Form
+              initialValues={{
+                firstName: user?.username,
+                address: user?.address,
+                email: user?.email,
+                phoneNumber: user?.mobileNumber,
+              }}
+              onFinish={handleUpdatePersonalInfo}
+              layout="vertical"
+            >
+              <div className="grid grid-flex-row grid-cols-12 gap-4">
+                <div className="col-span-12 md:col-span-6">
+                  <Form.Item
+                    name="firstName"
+                    label={pageData?.firstName?.title}
                   >
-                    {pageData?.firstName?.title}
-                  </label>
-                  <input
-                    type="text"
-                    name="first-name"
-                    id="first-name"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder={pageData?.firstName?.value}
-                    required
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="last-name"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    {pageData?.lastName?.title}
-                  </label>
-                  <input
-                    type="text"
-                    name="last-name"
-                    id="last-name"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder={pageData?.lastName?.value}
-                    required
-                  />
+                    <Input placeholder={pageData?.firstName?.value} />
+                  </Form.Item>
                 </div>
 
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="address"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    عنوان
-                  </label>
-                  <input
-                    type="text"
-                    name="address"
-                    id="address"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="e.g. California"
-                    required
-                  />
+                {/* <div className="col-span-12 md:col-span-6">
+                  <Form.Item name="lastName" label={pageData?.lastName?.title}>
+                    <Input placeholder={pageData?.lastName?.value} />
+                  </Form.Item>
+                </div> */}
+
+                <div className="col-span-12 md:col-span-6">
+                  <Form.Item name="address" label={"عنوان"}>
+                    <Input placeholder={"e.g. California"} />
+                  </Form.Item>
                 </div>
 
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="title"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    {pageData?.title?.title}
-                  </label>
-                  <input
-                    type="text"
-                    name="title"
-                    id="title"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder={pageData?.title?.value}
-                    required
-                  />
-                </div>
+                {/* <div className="col-span-12 md:col-span-6">
+                  <Form.Item name="title" label={pageData?.title?.title}>
+                    <Input placeholder={pageData?.title?.value} />
+                  </Form.Item>
+                </div> */}
 
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="email"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    {pageData?.email?.title}
-                  </label>
-                  <input
-                    type="email"
+                <div className="col-span-12 md:col-span-6">
+                  <Form.Item
                     name="email"
-                    id="email"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder={pageData?.email?.value}
-                    required
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="phone-number"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    label={pageData?.email?.title}
+                    rules={[
+                      {
+                        type: "email",
+                        message: "The input is not valid E-mail!",
+                      },
+                      {
+                        required: true,
+                        message: "Please input your email!",
+                      },
+                    ]}
                   >
-                    {pageData?.phoneNumber?.title}
-                  </label>
-                  <input
-                    type="number"
-                    name="phone-number"
-                    id="phone-number"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder={pageData?.phoneNumber?.value}
-                    required
-                  />
+                    <Input placeholder={pageData?.email?.value} />
+                  </Form.Item>
                 </div>
 
-                <div className="col-span-6 sm:col-full">
-                  <Button type="primary">احفظ الكل</Button>
+                <div className="col-span-12 md:col-span-6">
+                  <Form.Item
+                    name="phoneNumber"
+                    label={pageData?.phoneNumber?.title}
+                  >
+                    <Input placeholder={pageData?.phoneNumber?.value} />
+                  </Form.Item>
+                </div>
+
+                <div className="col-span-12">
+                  <Form.Item className="mb-0">
+                    <Button type="primary" htmlType="submit">
+                      احفظ الكل
+                    </Button>
+                  </Form.Item>
                 </div>
               </div>
-            </form>
+            </Form>
           </div>
 
           <div className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
             <h3 className="mb-4 text-xl font-semibold dark:text-white">
               {pageData?.Password}
             </h3>
-            <form action="#">
-              <div className="grid grid-cols-6 gap-6">
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="current-password"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+
+            <Form onFinish={handleUpdatePassword} layout="vertical">
+              <div className="grid grid-flex-row grid-cols-12 gap-4">
+                <div className="col-span-12 md:col-span-6">
+                  <Form.Item
+                    label={pageData?.newPassword?.title}
+                    name="password"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your password!",
+                      },
+                      {
+                        required: true,
+                        message: "Please input more than 6 characters",
+                        min: 6,
+                      },
+                    ]}
                   >
-                    {pageData?.currentPassword?.title}
-                  </label>
-                  <input
-                    type="password"
-                    name="current-password"
-                    id="current-password"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder={pageData?.currentPassword?.value}
-                    required
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="password"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    {pageData?.newPassword?.title}
-                  </label>
-                  <input
-                    data-popover-target="popover-password"
-                    data-popover-placement="bottom"
-                    type="password"
-                    id="password"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder={pageData?.newPassword?.value}
-                    required
-                  />
+                    <Input.Password />
+                  </Form.Item>
                 </div>
 
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="confirm-password"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                <div className="col-span-12 md:col-span-6">
+                  <Form.Item
+                    label="تأكيد كلمة المرور"
+                    name="confirmPassword"
+                    dependencies={["password"]}
+                    rules={[
+                      {
+                        required: true,
+                      },
+                      ({ getFieldValue }) => ({
+                        validator(_, value) {
+                          if (!value || getFieldValue("password") === value) {
+                            return Promise.resolve();
+                          }
+                          return Promise.reject(
+                            new Error(
+                              "The new password that you entered do not match!"
+                            )
+                          );
+                        },
+                      }),
+                    ]}
                   >
-                    تأكيد كلمة المرور
-                  </label>
-                  <input
-                    type="text"
-                    name="confirm-password"
-                    id="confirm-password"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="••••••••"
-                    required
-                  />
+                    <Input.Password />
+                  </Form.Item>
                 </div>
-                <div className="col-span-6 sm:col-full">
-                  <Button type="primary">احفظ الكل</Button>
+
+                <div className="col-span-12">
+                  <Form.Item className="mb-0">
+                    <Button type="primary" htmlType="submit">
+                      احفظ الكل
+                    </Button>
+                  </Form.Item>
                 </div>
               </div>
-            </form>
+            </Form>
           </div>
         </div>
       </div>

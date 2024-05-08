@@ -131,9 +131,9 @@ const SignInForm = ({ apiUrl, apiToken }) => {
           }
         }
       } else {
-        console.error("Login failed");
+        console.error("Not registered user");
 
-        toast.error("😢 Login failed!", {
+        toast.error("😢 Not registered user", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
