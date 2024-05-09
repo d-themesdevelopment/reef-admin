@@ -94,22 +94,9 @@ const SignInForm = ({ apiUrl, apiToken }) => {
               });
 
               setTimeout(() => {
-                toast.success("Allowed your account by admin", {
-                  position: "top-right",
-                  autoClose: 3000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "colored",
-                });
-
-                setTimeout(() => {
-                  setLoading(false);
-                  location.href = "/";
-                }, 1500);
-              }, 1000);
+                setLoading(false);
+                location.href = "/";
+              }, 1500);
             } else {
               console.log("Login successful");
 
