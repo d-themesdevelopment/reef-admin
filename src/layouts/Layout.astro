@@ -51,7 +51,7 @@ if (Astro.cookies.has("reef_token")) {
   </head>
   <body>
     {
-      !pathname.includes("signin") ? (
+      !pathname.includes("signin") && !pathname.includes("signup") ? (
         <>
           <NavBarSidebar />
 
