@@ -1,7 +1,6 @@
 import qs from "qs";
 import Cookies from "js-cookie";
-import { Button, Input, Radio, Switch } from "antd";
-import Form from "antd/es/form/Form";
+import { Button, Input, Radio, Form } from "antd";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Loading from "../../../components/common/Loading";
@@ -204,12 +203,12 @@ const SignInForm = ({ apiUrl, apiToken }) => {
             <Input.Password />
           </Form.Item>
 
-          {/* <div className="mb-5">
+          <div className="mb-5">
             Don't have an account?{" "}
             <a href="/signup" className="font-semibold text-primary">
               Register today
             </a>
-          </div> */}
+          </div>
 
           <Form.Item className="mb-0">
             <Button type="primary" htmlType="submit">

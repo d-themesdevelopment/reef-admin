@@ -1,5 +1,4 @@
-import { Button, Input, Radio, Switch } from "antd";
-import Form from "antd/es/form/Form";
+import { Button, Input, Radio, Switch, Form } from "antd";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Loading from "../../../components/common/Loading";
