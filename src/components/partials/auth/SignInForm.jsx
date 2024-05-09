@@ -160,7 +160,7 @@ const SignInForm = ({ apiUrl, apiToken }) => {
     <>
       {loading && <Loading />}
       <div className="max-w-[500px] w-full mx-auto min-h-screen flex items-center justify-center">
-        <Form
+        {/* <Form
           className="border p-10 rounded-xl shadow-2xl w-full"
           name="basic"
           layout="vertical"
@@ -212,7 +212,7 @@ const SignInForm = ({ apiUrl, apiToken }) => {
               Login
             </Button>
           </Form.Item>
-        </Form>
+        </Form> */}
       </div>
     </>
   );
