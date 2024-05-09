@@ -160,7 +160,7 @@ const SignInForm = ({ apiUrl, apiToken }) => {
     <>
       {loading && <Loading />}
       <div className="max-w-[500px] w-full mx-auto min-h-screen flex items-center justify-center">
-        {/* <Form
+        <Form
           className="border p-10 rounded-xl shadow-2xl w-full"
           name="basic"
           layout="vertical"
@@ -173,6 +173,10 @@ const SignInForm = ({ apiUrl, apiToken }) => {
             label="Email"
             name="email"
             rules={[
+              {
+                type: "email",
+                message: "Please input your email!",
+              },
               {
                 required: true,
                 message: "Please input your email!",
@@ -200,19 +204,19 @@ const SignInForm = ({ apiUrl, apiToken }) => {
             <Input.Password />
           </Form.Item>
 
-          <div className="mb-5">
+          {/* <div className="mb-5">
             Don't have an account?{" "}
             <a href="/signup" className="font-semibold text-primary">
               Register today
             </a>
-          </div>
+          </div> */}
 
           <Form.Item className="mb-0">
             <Button type="primary" htmlType="submit">
               Login
             </Button>
           </Form.Item>
-        </Form> */}
+        </Form>
       </div>
     </>
   );
