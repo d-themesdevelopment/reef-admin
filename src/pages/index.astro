@@ -27,9 +27,9 @@ const servicesData = await fetchApi({
   apiToken: strapiToken,
 });
 
-if (!Astro.cookies.has("reef_token")) {
-  return Astro.redirect("/signin");
-}
+// if (!Astro.cookies.has("reef_token")) {
+//   return Astro.redirect("/signin");
+// }
 ---
 
 <Layout title="Service Page">
