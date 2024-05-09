@@ -78,21 +78,20 @@ const SignInForm = ({ apiUrl, apiToken }) => {
               }, 1500);
             }, 1000);
           } else {
-            roleStore.set("employee");
-
-            toast.success("👌 Login successful!", {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
-
             if (data?.user.approvedAsEmployee) {
+              roleStore.set("employee");
               Cookies.set("reef_token", data.jwt);
+
+              toast.success("👌 Login successful!", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              });
 
               setTimeout(() => {
                 toast.success("Allowed your account by admin", {
@@ -134,9 +133,7 @@ const SignInForm = ({ apiUrl, apiToken }) => {
           }
         }
       } else {
-        console.error("Not registered user");
-
-        toast.error("😢 Not registered user", {
+        toast.error("Invalid identifier or password", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -150,7 +147,18 @@ const SignInForm = ({ apiUrl, apiToken }) => {
         setLoading(false);
       }
     } catch (error) {
-      // Handle login error
+      toast.error("Not registered user", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+
+      setLoading(false);
       console.error("Error occurred during login:", error);
     }
   };
