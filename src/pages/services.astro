@@ -3,9 +3,9 @@ import fetchApi from "../lib/strapi";
 import Layout from "../layouts/Layout.astro";
 import ServiceTable from "../components/partials/services/ServiceTable";
 
-if (!Astro.cookies.has("reef_token")) {
-  return Astro.redirect("/signin");
-}
+// if (!Astro.cookies.has("reef_token")) {
+//   return Astro.redirect("/signin");
+// }
 
 const urlParamsObject = {
   populate: {
