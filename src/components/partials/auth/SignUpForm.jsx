@@ -133,9 +133,8 @@ const SignUpForm = ({ apiUrl, apiToken }) => {
                 message: "Please input your password!",
               },
               {
-                required: true,
-                message: "Please input more than 6 characters",
-                min: 6,
+                pattern: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[-ـ!@#$%^&*()])[A-Za-z\d-ـ!@#$%^&*()]{12,}$/,
+                message: 'Password must be at least 12 characters long and contain at least one uppercase letter, one lowercase letter, and one number',
               },
             ]}
           >

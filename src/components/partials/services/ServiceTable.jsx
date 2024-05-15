@@ -162,6 +162,7 @@ const ServiceTable = ({ servicesData, strapiUrl, strapiToken }) => {
           const data = {
             attachedFile: image,
             confirmation: confirmation,
+            rejected: !confirmation,
             message: values.message,
           };
 
@@ -192,6 +193,7 @@ const ServiceTable = ({ servicesData, strapiUrl, strapiToken }) => {
       const data = {
         confirmation: confirmation,
         message: values.message,
+        rejected: !confirmation,
       };
 
       try {
@@ -293,47 +295,42 @@ const ServiceTable = ({ servicesData, strapiUrl, strapiToken }) => {
                   {service?.attributes?.requestInformation?.applicantCategory}
                 </td>
                 <td className="p-4 whitespace-nowrap">
-                  {/* {service?.attributes?.complete &&
-                    !service?.attributes?.cancel && (
+                  {service?.attributes?.confirmation &&
+                    !service?.attributes?.rejected && (
                       <span className="bg-green-100 text-green-800 text-xs font-medium mr-2 rtl:mr-0 rtl:ml-2 px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 border border-green-100 dark:border-green-500">
                         Completed
                       </span>
-                    )} */}
+                    )}
 
-                  {service?.attributes?.confirmation ? (
-                    <span className="bg-green-100 text-green-800 text-xs font-medium mr-2 rtl:mr-0 rtl:ml-2 px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 border border-green-100 dark:border-green-500">
-                      Completed
-                    </span>
-                  ) : (
-                    <span className="bg-purple-100 text-purple-800 text-xs font-medium mr-2 rtl:mr-0 rtl:ml-2 px-2.5 py-0.5 rounded-md border border-purple-100 dark:bg-gray-700 dark:border-purple-500 dark:text-purple-400">
-                      In progress
-                    </span>
-                  )}
-
-                  {/* {service?.attributes?.cancel && (
+                  {service?.attributes?.rejected && (
                     <span className="bg-red-100 text-red-800 text-xs font-medium mr-2 rtl:mr-0 rtl:ml-2 px-2.5 py-0.5 rounded-md border border-red-100 dark:border-red-400 dark:bg-gray-700 dark:text-red-400">
-                      Cancelled
+                      Rejected
                     </span>
                   )}
 
-                  {!service?.attributes?.complete &&
-                    !service?.attributes?.cancel && (
+                  {!service?.attributes?.confirmation &&
+                    !service?.attributes?.rejected && (
                       <span className="bg-purple-100 text-purple-800 text-xs font-medium mr-2 rtl:mr-0 rtl:ml-2 px-2.5 py-0.5 rounded-md border border-purple-100 dark:bg-gray-700 dark:border-purple-500 dark:text-purple-400">
                         In progress
                       </span>
-                    )} */}
+                    )}
                 </td>
 
                 <td>
-                  <Button
-                    className="bg-red-500 border-red-500 text-white"
-                    onClick={() => {
-                      setOpen(true);
-                      handleUpdateService(service);
-                    }}
-                  >
-                    Edit
-                  </Button>
+                  {service?.attributes?.confirmation &&
+                  !service?.attributes?.rejected ? (
+                    <Button className="bg-black text-white border-black font-semibold">Update</Button>
+                  ) : (
+                    <Button
+                      className="bg-red-500 border-red-500 text-white font-semibold"
+                      onClick={() => {
+                        setOpen(true);
+                        handleUpdateService(service);
+                      }}
+                    >
+                      Edit
+                    </Button>
+                  )}
                 </td>
               </tr>
             ))}
@@ -607,7 +604,7 @@ const ServiceTable = ({ servicesData, strapiUrl, strapiToken }) => {
               <h2 className="text-xl font-bold mb-2">{service.serviceName}</h2>
               <h3 className="font-semibold mb-3">{service.serviceID}</h3>
 
-              <p className="mb-6">{textArea}</p>
+              <p className="mb-6">You rejected this service request</p>
 
               <div className="max-w-[240px] mx-auto">
                 <div className="flex items-center justify-between mb-3">
