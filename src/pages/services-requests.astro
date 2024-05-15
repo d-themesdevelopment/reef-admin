@@ -1,7 +1,7 @@
 ---
 import fetchApi from "../lib/strapi";
 import Layout from "../layouts/Layout.astro";
-import ServiceRequestTable from "@/components/partials/services/ServiceRequestTable";
+import ServiceRequestTable from "../components/partials/services/ServiceRequestTable";
 
 if (!Astro.cookies.has("reef_token")) {
   return Astro.redirect("/signin");
