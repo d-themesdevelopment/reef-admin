@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import Loading from "../Loading";
 import { toast } from "react-toastify";
-import { useStackEdit } from "use-stackedit";
+// import { useStackEdit } from "use-stackedit";
 
 const AddingServiceModal = ({
   getAllServices,
@@ -22,8 +22,8 @@ const AddingServiceModal = ({
   setLoading,
 }) => {
   const [form] = Form.useForm();
-  const [value, setValue] = useState("");
-  const { openStackedit, onFileChange } = useStackEdit(setValue);
+  // const [value, setValue] = useState("");
+  // const { openStackedit, onFileChange } = useStackEdit(setValue);
   const [fileList, setFileList] = useState([]);
   const [mediaUrl, setMediaUrl] = useState(null);
 
@@ -85,8 +85,8 @@ const AddingServiceModal = ({
       data = { ...data, desc: values?.desc };
     }
 
-    if (value) {
-      data = { ...data, body: value };
+    if (values?.body) {
+      data = { ...data, body: values?.body };
     }
 
     if (values?.category) {
@@ -266,6 +266,9 @@ const AddingServiceModal = ({
           </div>
 
           <div className="col-span-12">
+          <Form.Item label="Body" name="body">
+              <Input.TextArea rows={6} placeholder="Please enter the body" />
+            </Form.Item>
             {/* <Form.Item label="Body(Markdown)" name="body">
               <Input.TextArea
                 rows={6}
@@ -275,7 +278,7 @@ const AddingServiceModal = ({
                 }}
               />
             </Form.Item> */}
-            <label>Body(Markdown)</label>
+            {/* <label>Body(Markdown)</label>
             <textarea
               className="cursor-pointer mt-2 block w-full p-3 border hover:border-primary focus:outline-primary mb-3"
               value={value}
@@ -295,7 +298,7 @@ const AddingServiceModal = ({
               //   // If textarea is edited run the file change event on stackedit
               //   onFileChange();
               // }}
-            ></textarea>
+            ></textarea> */}
 
             {/* <Button
               type="primary"
