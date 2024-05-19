@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import Loading from "../Loading";
 import { toast } from "react-toastify";
-import { useStackEdit } from "use-stackedit";
+// import { useStackEdit } from "use-stackedit";
 
 const ServiceEditModal = ({
   selectedService,
@@ -24,7 +24,7 @@ const ServiceEditModal = ({
 }) => {
   const [form] = Form.useForm();
   const [value, setValue] = useState("");
-  const { openStackedit, onFileChange } = useStackEdit(setValue);
+  // const { openStackedit, onFileChange } = useStackEdit(setValue);
   const [fileList, setFileList] = useState([]);
   const [mediaUrl, setMediaUrl] = useState(null);
 
@@ -67,8 +67,8 @@ const ServiceEditModal = ({
       data = { ...data, desc: values?.desc };
     }
 
-    if (value) {
-      data = { ...data, body: value };
+    if (values?.body) {
+      data = { ...data, body: values?.body };
     }
 
     if (values?.category) {
@@ -215,9 +215,9 @@ const ServiceEditModal = ({
     }
   };
 
-  useEffect(() => {
-    setValue(selectedService?.attributes?.body);
-  }, [selectedService]);
+  // useEffect(() => {
+  //   setValue(selectedService?.attributes?.body);
+  // }, [selectedService]);
 
   useEffect(() => {
     if (fileList.length > 0) {
@@ -250,6 +250,7 @@ const ServiceEditModal = ({
           title: selectedService?.attributes?.title,
           slug: selectedService?.attributes?.slug,
           desc: selectedService?.attributes?.desc,
+          body: selectedService?.attributes?.body,
           type: selectedService?.attributes?.type,
           workingDay: selectedService?.attributes?.workingDay,
           category:
@@ -338,6 +339,9 @@ const ServiceEditModal = ({
           </div>
 
           <div className="col-span-12">
+            <Form.Item label="Body" name="body">
+              <Input.TextArea rows={6} placeholder="Please enter the body" />
+            </Form.Item>
             {/* <Form.Item label="Body(Markdown)" name="body">
                 <Input.TextArea
                   rows={6}
@@ -347,7 +351,7 @@ const ServiceEditModal = ({
                   }}
                 />
               </Form.Item> */}
-            <label>Body(Markdown)</label>
+            {/* <label>Body(Markdown)</label>
             <textarea
               className="cursor-pointer mt-2 block w-full p-3 border hover:border-primary focus:outline-primary mb-3"
               value={value}
@@ -367,8 +371,7 @@ const ServiceEditModal = ({
               //   // If textarea is edited run the file change event on stackedit
               //   onFileChange();
               // }}
-            ></textarea>
-
+            ></textarea> */}
             {/* <Button
                 type="primary"
                 onClick={() => {
