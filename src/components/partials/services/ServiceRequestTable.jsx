@@ -319,7 +319,9 @@ const ServiceRequestTable = ({ servicesData, strapiUrl, strapiToken }) => {
                 <td>
                   {service?.attributes?.confirmation &&
                   !service?.attributes?.rejected ? (
-                    <Button className="bg-black text-white border-black font-semibold">Update</Button>
+                    <span className="text-green-800 text-success border-black font-semibold">
+                      Done
+                    </span>
                   ) : (
                     <Button
                       className="bg-red-500 border-red-500 text-white font-semibold"

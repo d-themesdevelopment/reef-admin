@@ -264,3 +264,9 @@
 html body {
   margin-right: auto;
 }
+
+.create-service-modal {
+  .ant-upload-list-item-actions {
+    display: none !important;
+  }
+}
