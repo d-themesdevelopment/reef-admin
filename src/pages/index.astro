@@ -7,48 +7,43 @@ if (!Astro.cookies.has("reef_token")) {
   return Astro.redirect("/signin");
 }
 
-const urlParamsObject = {
-  populate: {
-    user: {
-      populate: "*",
-    },
-    media: {
-      populate: "*",
-    },
-    category: {
-      populate: "*",
-    },
-    personalInformation: {
-      populate: "*",
-    },
-    requestInformation: {
-      populate: "*",
-    },
-  },
-};
+// const urlParamsObject = {
+//   populate: {
+//     user: {
+//       populate: "*",
+//     },
+//     media: {
+//       populate: "*",
+//     },
+//     category: {
+//       populate: "*",
+//     },
+//     personalInformation: {
+//       populate: "*",
+//     },
+//     requestInformation: {
+//       populate: "*",
+//     },
+//   },
+// };
 
-const strapiUrl = import.meta.env.STRAPI_URL;
-const strapiToken = import.meta.env.STRAPI_Token;
+// const strapiUrl = import.meta.env.STRAPI_URL;
+// const strapiToken = import.meta.env.STRAPI_Token;
 
-const servicesData = await fetchApi({
-  endpoint: "services", // the content type to fetch
-  query: urlParamsObject,
-  apiUrl: strapiUrl,
-  apiToken: strapiToken,
-});
+// const servicesData = await fetchApi({
+//   endpoint: "services", // the content type to fetch
+//   query: urlParamsObject,
+//   apiUrl: strapiUrl,
+//   apiToken: strapiToken,
+// });
 
-console.log(servicesData, "servicesData");
+// console.log(servicesData, "servicesData");
 ---
 
 <Layout title="Services">
   <div
     class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800"
   >
-    <ServiceTable
-      apiUrl={strapiUrl}
-      apiToken={strapiToken}
-      servicesData={servicesData}
-      client:only="react"
-    />
+    <h1 class="text-5xl">Welcome to the dashboard</h1>
   </div>
 </Layout>

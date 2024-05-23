@@ -38,10 +38,6 @@ const UserEditModal = ({
       data = { ...data, email: values?.email };
     }
 
-    if (values?.password) {
-      data = { ...data, password: values?.password };
-    }
-
     if (values?.idNumber) {
       data = { ...data, idNumber: values?.idNumber };
     }
@@ -144,7 +140,6 @@ const UserEditModal = ({
           fullName: selectedUser?.username,
           slug: selectedUser?.slug,
           email: selectedUser?.email,
-          password: selectedUser?.password,
           idNumber: selectedUser?.idNumber,
           role: selectedUser?.role?.type,
           fatherName: selectedUser?.fatherName,
@@ -175,45 +170,6 @@ const UserEditModal = ({
           <div className="col-span-12 sm:col-span-6">
             <Form.Item label="Slug" name="slug">
               <Input />
-            </Form.Item>
-          </div>
-
-          <div className="col-span-12">
-            <Form.Item
-              label="Password"
-              name="password"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your password!",
-                },
-              ]}
-            >
-              <Input.Password />
-            </Form.Item>
-          </div>
-
-          <div className="col-span-12">
-            <Form.Item
-              label="Confirm Password"
-              name="confirmPassword"
-              dependencies={["password"]}
-              rules={[
-                ({ getFieldValue }) => ({
-                  validator(_, value) {
-                    if (!value || getFieldValue("password") === value) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(
-                      new Error(
-                        "The new password that you entered do not match!"
-                      )
-                    );
-                  },
-                }),
-              ]}
-            >
-              <Input.Password />
             </Form.Item>
           </div>
 

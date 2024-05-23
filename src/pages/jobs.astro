@@ -1,0 +1,66 @@
+---
+import fetchApi from "../lib/strapi";
+import Layout from "../layouts/Layout.astro";
+import JobTable from "../components/partials/jobs/JobTable";
+
+if (!Astro.cookies.has("reef_token")) {
+  return Astro.redirect("/signin");
+}
+
+const urlParamsObject = {
+  populate: {
+    job_category: {
+      populate: "*",
+    },
+    applyButton: {
+      populate: "*",
+    },
+    postOwnerName: {
+      populate: "*",
+    },
+    timeline: {
+      populate: "*",
+    },
+    mainDutiesAndTasks: {
+      populate: "*",
+    },
+    jobDescription: {
+      populate: "*",
+    },
+    practicalExperience: {
+      populate: "*",
+    },
+    job_section: {
+      populate: "*",
+    },
+    job_type: {
+      populate: "*",
+    },
+  },
+};
+
+const strapiUrl = import.meta.env.STRAPI_URL;
+const strapiToken = import.meta.env.STRAPI_Token;
+
+const jobsData = await fetchApi({
+  endpoint: "jobs", // the content type to fetch
+  query: urlParamsObject,
+  apiUrl: strapiUrl,
+  apiToken: strapiToken,
+});
+
+console.log(jobsData, "servicesData");
+---
+
+<Layout title="Services">
+  <div
+    class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800"
+  >
+    <JobTable
+      apiUrl={strapiUrl}
+      apiToken={strapiToken}
+      jobsData={jobsData}
+      client:only="react"
+    />
+  </div>
+</Layout>

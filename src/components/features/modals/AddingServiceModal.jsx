@@ -10,6 +10,7 @@ import {
 } from "antd";
 import { useEffect, useState } from "react";
 import Loading from "../Loading";
+import ReactMarkdown from "react-markdown";
 import { toast } from "react-toastify";
 // import { useStackEdit } from "use-stackedit";
 
@@ -22,7 +23,7 @@ const AddingServiceModal = ({
   setLoading,
 }) => {
   const [form] = Form.useForm();
-  // const [value, setValue] = useState("");
+  const [textAreaValue, setTextAreaValue] = useState("");
   // const { openStackedit, onFileChange } = useStackEdit(setValue);
   const [fileList, setFileList] = useState([]);
   const [mediaUrl, setMediaUrl] = useState(null);
@@ -266,8 +267,13 @@ const AddingServiceModal = ({
           </div>
 
           <div className="col-span-12">
-          <Form.Item label="Body" name="body">
-              <Input.TextArea rows={6} placeholder="Please enter the body" />
+            <Form.Item label="Body" name="body">
+              <Input.TextArea
+                rows={6}
+                onChange={(e) => setTextAreaValue(e.target.value)}
+                placeholder="Please enter the body"
+              />
+              {/* <ReactMarkdown>{textAreaValue}</ReactMarkdown> */}
             </Form.Item>
             {/* <Form.Item label="Body(Markdown)" name="body">
               <Input.TextArea
