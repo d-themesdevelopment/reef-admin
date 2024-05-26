@@ -545,9 +545,9 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                             </div>
                           </td>
 
-                          <td className="p-4 text-base font-normal text-gray-900 whitespace-nowrap dark:text-white">
-                            <div className="flex items-center">
-                              {role?.indexOf("admin") > -1 && (
+                          {role?.indexOf("admin") > -1 && (
+                            <td className="p-4 text-base font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                              <div className="flex items-center">
                                 <>
                                   <Switch
                                     checked={
@@ -571,9 +571,9 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                                       : "Not Approved"}
                                   </span>
                                 </>
-                              )}
-                            </div>
-                          </td>
+                              </div>
+                            </td>
+                          )}
 
                           <td className="p-4 space-x-2 whitespace-nowrap">
                             <Button
