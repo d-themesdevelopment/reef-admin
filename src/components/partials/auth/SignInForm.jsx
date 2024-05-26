@@ -56,14 +56,12 @@ const SignInForm = ({ apiUrl, apiToken }) => {
         const data = await response.json();
 
         if (data.jwt) {
-          const roles = data?.user?.employee_roles?.map((role) => role?.value)?.toString();
-
-          if (roles?.indexOf("admin") > -1) {
+          if (data?.user?.isAdmin) {
             Cookies.set("reef_admin_token", data.jwt);
             roleStore.set("admin");
 
             setTimeout(() => {
-              toast.success("Login as an admin successfully 😎", {
+              toast.success("Login as admin successfully😎", {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -81,10 +79,12 @@ const SignInForm = ({ apiUrl, apiToken }) => {
             }, 1000);
           } else {
             if (data?.user.approvedAsEmployee) {
+              const roles = data?.user?.employee_roles?.toString();
+
               roleStore.set(roles);
               Cookies.set("reef_admin_token", data.jwt);
 
-              toast.success(`Login as ${roles?.replaceAll(",", ", ")} successfully 👌`, {
+              toast.success("👌 Login successful!", {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,

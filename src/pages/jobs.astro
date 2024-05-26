@@ -2,6 +2,7 @@
 import fetchApi from "../lib/strapi";
 import Layout from "../layouts/Layout.astro";
 import JobTable from "../components/partials/jobs/JobTable";
+import { roleStore } from "../store/roleStroe";
 
 if (!Astro.cookies.has("reef_admin_token")) {
   return Astro.redirect("/signin");
@@ -49,6 +50,8 @@ const jobsData = await fetchApi({
   apiToken: strapiToken,
 });
 
+const role = roleStore.get();
+
 console.log(jobsData, "servicesData");
 ---
 
@@ -57,6 +60,7 @@ console.log(jobsData, "servicesData");
     class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800"
   >
     <JobTable
+      role={role}
       apiUrl={strapiUrl}
       apiToken={strapiToken}
       jobsData={jobsData}

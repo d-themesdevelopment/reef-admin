@@ -435,7 +435,6 @@ const CustomersTable = ({ role, apiUrl, apiToken, employeeRoles }) => {
                         Address
                       </th>
 
-
                       <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
                         Actions
                       </th>

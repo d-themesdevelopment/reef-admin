@@ -48,7 +48,7 @@ const formItemLayout = {
   },
 };
 
-const JobRequestTable = ({ servicesData, strapiUrl, strapiToken }) => {
+const JobRequestTable = ({ role, servicesData, strapiUrl, strapiToken }) => {
   const [currentDate, setCurrentDate] = useState(null);
   const [confirmation, setConfirmation] = useState(true);
   const [fileList, setFileList] = useState([]);
@@ -139,86 +139,6 @@ const JobRequestTable = ({ servicesData, strapiUrl, strapiToken }) => {
     console.log(data, "datadatadatadata");
   };
 
-  const onFinish = async (values) => {
-    setLoading(true);
-    setTextArea(values?.message);
-
-    if (confirmation) {
-      const formData = new FormData();
-      formData.append("files", fileList[0]);
-
-      // You can use any AJAX library you like
-      try {
-        const res = await fetch(`${strapiUrl}/api/upload`, {
-          method: "POST",
-          body: formData,
-        });
-
-        if (res.ok) {
-          message.success(`${fileList[0].name} file uploaded successfully`);
-
-          const image = await res.json();
-
-          const data = {
-            attachedFile: image,
-            confirmation: confirmation,
-            rejected: !confirmation,
-            message: values.message,
-          };
-
-          await fetch(`${strapiUrl}/api/service-orders/${service.id}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              // set the auth token to the user's jwt
-              Authorization: `Bearer ${strapiToken}`,
-            },
-            body: JSON.stringify({
-              data: data,
-            }),
-          });
-
-          await getAllServices();
-          setStep(2);
-          setLoading(false);
-        } else {
-          message.error(`${fileList[0].name} file upload failed.`);
-          setLoading(false);
-        }
-      } catch (error) {
-        console.error(error);
-        setLoading(false);
-      }
-    } else {
-      const data = {
-        confirmation: confirmation,
-        message: values.message,
-        rejected: !confirmation,
-      };
-
-      try {
-        await fetch(`${strapiUrl}/api/service-orders/${service.id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            // set the auth token to the user's jwt
-            Authorization: `Bearer ${strapiToken}`,
-          },
-          body: JSON.stringify({
-            data: data,
-          }),
-        });
-
-        await getAllServices();
-        setStep(2);
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-        setLoading(false);
-      }
-    }
-  };
-
   return (
     <>
       {loading && <Loading />}
@@ -271,10 +191,14 @@ const JobRequestTable = ({ servicesData, strapiUrl, strapiToken }) => {
               Status
             </th>
 
-            <th
-              scope="col"
-              className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
-            ></th>
+            {role?.indexOf("guest") < 0 && (
+              <th
+                scope="col"
+                className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
+              >
+                Actions
+              </th>
+            )}
           </tr>
         </thead>
         <tbody className="bg-white dark:bg-gray-800">
@@ -307,7 +231,6 @@ const JobRequestTable = ({ servicesData, strapiUrl, strapiToken }) => {
                   {service?.attributes?.coverLetter?.value}
                 </td>
 
-
                 <td className="p-4 whitespace-nowrap">
                   {service?.attributes?.confirmation &&
                     !service?.attributes?.rejected && (
@@ -330,24 +253,26 @@ const JobRequestTable = ({ servicesData, strapiUrl, strapiToken }) => {
                     )}
                 </td>
 
-                <td>
-                  {service?.attributes?.confirmation &&
-                  !service?.attributes?.rejected ? (
-                    <span className="text-green-800 text-success border-black font-semibold">
-                      Done
-                    </span>
-                  ) : (
-                    <Button
-                      className="bg-red-500 border-red-500 text-white font-semibold"
-                      onClick={() => {
-                        setOpen(true);
-                        handleUpdateService(service);
-                      }}
-                    >
-                      Edit
-                    </Button>
-                  )}
-                </td>
+                {role?.indexOf("guest") < 0 && (
+                  <td>
+                    {service?.attributes?.confirmation &&
+                    !service?.attributes?.rejected ? (
+                      <span className="text-green-800 text-success border-black font-semibold">
+                        Done
+                      </span>
+                    ) : (
+                      <Button
+                        className="bg-red-500 border-red-500 text-white font-semibold"
+                        onClick={() => {
+                          setOpen(true);
+                          handleUpdateService(service);
+                        }}
+                      >
+                        Edit
+                      </Button>
+                    )}
+                  </td>
+                )}
               </tr>
             ))}
         </tbody>
@@ -362,9 +287,7 @@ const JobRequestTable = ({ servicesData, strapiUrl, strapiToken }) => {
         width={500}
         footer={null}
       >
-        <div className={`text-center ${step === 2 ? "py-10" : "py-5"}`}>
-         
-        </div>
+        <div className={`text-center ${step === 2 ? "py-10" : "py-5"}`}></div>
       </Modal>
     </>
   );

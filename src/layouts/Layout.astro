@@ -31,12 +31,16 @@ if (Astro.cookies.has("reef_admin_token")) {
   if (data?.isAdmin) {
     roleStore.set("admin");
   } else {
-    const roles = data?.employee_roles?.map((role: any) => role?.value)?.toString();
-    console.log(
-      data?.employee_roles?.map((role: any) => role?.value)?.toString(),
-      "employee_rolesemployee_roles"
-    );
-    roleStore.set(roles);
+
+    console.log(data?.approvedEmployeeRole, "data?.approvedEmployeeRole")
+    if (data?.approvedEmployeeRole) {
+      const roles = data?.employee_roles
+        ?.map((role: any) => role?.value)
+        ?.toString();
+      roleStore.set(roles);
+    } else {
+      roleStore.set("guest");
+    }
   }
 
   console.log(data, "Loaded");

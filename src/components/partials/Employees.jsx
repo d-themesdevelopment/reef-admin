@@ -241,7 +241,13 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
     let data = {};
 
     if (!roleEdit) {
-      data = { approvedEmployeeRole: !selectedUser?.approvedEmployeeRole };
+      data = { ...data, approvedEmployeeRole: !selectedUser?.approvedEmployeeRole };
+    }
+
+    if(openAdmin) {
+      data = { ...data, isAdmin: true };
+    } else {
+      data = { ...data, isAdmin: false };
     }
 
     if (selectedItems.length > 0) {
@@ -308,6 +314,7 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
           setLoading(false);
           setRoleEdit(false);
           setOpenEmployee(false);
+          setOpenAdmin(false)
           setSelectedItems([]);
         }, 1500);
       } else {
@@ -326,6 +333,7 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
           setLoading(false);
           setRoleEdit(false);
           setOpenEmployee(false);
+          setOpenAdmin(false)
           setSelectedItems([]);
         }, 1500);
       }
@@ -347,6 +355,7 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
         setLoading(false);
         setRoleEdit(false);
         setOpenEmployee(false);
+        setOpenAdmin(false)
         setSelectedItems([]);
       }, 1500);
     }
@@ -818,7 +827,6 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
               type="primary"
               onClick={() => {
                 handleMain();
-                setOpenAdmin();
               }}
             >
               OK

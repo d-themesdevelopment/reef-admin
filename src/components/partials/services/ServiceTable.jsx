@@ -9,7 +9,7 @@ import fetchApi from "../../../lib/strapi";
 import AddingServiceModal from "../../../components/features/modals/AddingServiceModal";
 import ServiceEditModal from "../../../components/features/modals/ServiceEditModal";
 
-const ServiceTable = ({ servicesData, apiUrl, apiToken }) => {
+const ServiceTable = ({ role, servicesData, apiUrl, apiToken }) => {
   const [fileList, setFileList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [services, setServices] = useState(null);
@@ -162,28 +162,31 @@ const ServiceTable = ({ servicesData, apiUrl, apiToken }) => {
             This is a list of latest Services
           </span>
         </div>
+        {console.log(role, "rolerole")}
         <div className="items-center sm:flex">
-          <Button
-            type="primary"
-            onClick={() => {
-              setOpenCustomerModal(true);
-            }}
-            className="inline-flex items-center justify-center px-3 py-3 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-          >
-            <svg
-              className="w-5 h-5 mr-2 -ml-1 rtl:ml-2 rtl:-mr-1"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
+          {role?.indexOf("guest") < 0 && (
+            <Button
+              type="primary"
+              onClick={() => {
+                setOpenCustomerModal(true);
+              }}
+              className="inline-flex items-center justify-center px-3 py-3 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
             >
-              <path
-                fillRule="evenodd"
-                d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
-            Add Service
-          </Button>
+              <svg
+                className="w-5 h-5 mr-2 -ml-1 rtl:ml-2 rtl:-mr-1"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                  clipRule="evenodd"
+                ></path>
+              </svg>
+              Add Service
+            </Button>
+          )}
         </div>
       </div>
 
@@ -231,7 +234,9 @@ const ServiceTable = ({ servicesData, apiUrl, apiToken }) => {
                     <th
                       scope="col"
                       className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
-                    ></th>
+                    >
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white dark:bg-gray-800">
@@ -288,8 +293,8 @@ const ServiceTable = ({ servicesData, apiUrl, apiToken }) => {
                           </div>
                         </td>
 
-                        <td className="flex items-center">
-                          <td className="p-4 space-x-2 whitespace-nowrap">
+                        {role?.indexOf("guest") < 0 && (
+                          <td className="flex items-center p-4 space-x-2 whitespace-nowrap">
                             <Button
                               type="primary"
                               onClick={() => {
@@ -337,7 +342,7 @@ const ServiceTable = ({ servicesData, apiUrl, apiToken }) => {
                               Delete Service
                             </Button>
                           </td>
-                        </td>
+                        )}
                       </tr>
                     ))}
                 </tbody>
