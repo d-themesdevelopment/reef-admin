@@ -177,53 +177,6 @@ const UserSettings = ({ user, pageData, apiUrl, apiToken }) => {
               </div>
             </div>
           </div>
-
-          <div className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
-            <div className="flow-root">
-              <h3 className="text-xl font-semibold dark:text-white">
-                Other accounts
-              </h3>
-              <ul className="mb-6 divide-y divide-gray-200 dark:divide-gray-700">
-                <li className="py-4">
-                  <div className="flex justify-between xl:block 2xl:flex align-center 2xl:space-x-4">
-                    <div className="flex xl:mb-4 2xl:mb-0">
-                      <div className="rtl:ml-4">
-                        <img
-                          className="w-10 h-10 rounded-full"
-                          src={
-                            "https://flowbite-admin-dashboard.vercel.app/images/users/bonnie-green-2x.png"
-                          }
-                          alt="Bonnie image"
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-base font-semibold text-gray-900 leading-none truncate mb-0.5 dark:text-white">
-                          Bonnie Green
-                        </p>
-                        <p className="mb-1 text-sm font-normal truncate text-primary-700 dark:text-primary-500">
-                          New York, USA
-                        </p>
-                        <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
-                          Last seen: 1 min ago
-                        </p>
-                      </div>
-                    </div>
-                    <div className="inline-flex items-center w-auto xl:w-full 2xl:w-auto">
-                      <a
-                        href="#"
-                        className="w-full px-3 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-primary-300 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                      >
-                        Disconnect
-                      </a>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-              <div>
-                <Button type="primary">احفظ الكل</Button>
-              </div>
-            </div>
-          </div>
         </div>
 
         <div className="col-span-2">
