@@ -18,11 +18,11 @@ const Sidebar = ({ role }) => {
         >
           <div className="flex-1 px-3 space-y-1 bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700 mt-5">
             <Collapse defaultActiveKey={["1"]}>
-              <Collapse.Panel header="Careers " key="1">
-                <ul className="space-y-1">
-                  {role?.indexOf("career-manager") > -1 ||
-                  role?.indexOf("admin") > -1 ||
-                  role?.indexOf("guest") > -1 ? (
+              {role?.indexOf("career-manager") > -1 ||
+              role?.indexOf("admin") > -1 ||
+              role?.indexOf("guest") > -1 ? (
+                <Collapse.Panel header="Careers " key="1">
+                  <ul className="space-y-1">
                     <li>
                       <a
                         href={"/jobs"}
@@ -36,13 +36,7 @@ const Sidebar = ({ role }) => {
                         </span>
                       </a>
                     </li>
-                  ) : (
-                    ""
-                  )}
 
-                  {role?.indexOf("career-manager") > -1 ||
-                  role?.indexOf("admin") > -1 ||
-                  role?.indexOf("guest") > -1 ? (
                     <li>
                       <a
                         href={"/job-requests"}
@@ -56,17 +50,17 @@ const Sidebar = ({ role }) => {
                         </span>
                       </a>
                     </li>
-                  ) : (
-                    ""
-                  )}
-                </ul>
-              </Collapse.Panel>
+                  </ul>
+                </Collapse.Panel>
+              ) : (
+                ""
+              )}
 
-              <Collapse.Panel header="Services" key="2">
-                <ul className="space-y-1">
-                  {role?.indexOf("service-manager") > -1 ||
-                  role?.indexOf("admin") > -1 ||
-                  role?.indexOf("guest") > -1 ? (
+              {role?.indexOf("service-manager") > -1 ||
+              role?.indexOf("admin") > -1 ||
+              role?.indexOf("guest") > -1 ? (
+                <Collapse.Panel header="Services" key="2">
+                  <ul className="space-y-1">
                     <li>
                       <a
                         href={"/services"}
@@ -80,13 +74,7 @@ const Sidebar = ({ role }) => {
                         </span>
                       </a>
                     </li>
-                  ) : (
-                    ""
-                  )}
 
-                  {role?.indexOf("service-manager") > -1 ||
-                  role?.indexOf("admin") > -1 ||
-                  role?.indexOf("guest") > -1 ? (
                     <li>
                       <a
                         href={"/services-requests"}
@@ -100,17 +88,15 @@ const Sidebar = ({ role }) => {
                         </span>
                       </a>
                     </li>
-                  ) : (
-                    ""
-                  )}
-                </ul>
-              </Collapse.Panel>
+                  </ul>
+                </Collapse.Panel>
+              ) : (
+                ""
+              )}
 
-              <Collapse.Panel header="Users" key="3">
-                <ul className="space-y-1">
-                  {role?.indexOf("hr") > -1 ||
-                  role?.indexOf("admin") > -1 ||
-                  role?.indexOf("guest") > -1 ? (
+              {role?.indexOf("hr") > -1 || role?.indexOf("admin") > -1 ? (
+                <Collapse.Panel header="Users" key="3">
+                  <ul className="space-y-1">
                     <li>
                       <a
                         href={"/employees"}
@@ -124,13 +110,7 @@ const Sidebar = ({ role }) => {
                         </span>
                       </a>
                     </li>
-                  ) : (
-                    ""
-                  )}
 
-                  {role?.indexOf("hr") > -1 ||
-                  role?.indexOf("admin") > -1 ||
-                  role?.indexOf("guest") > -1 ? (
                     <li>
                       <a
                         href={"/customers"}
@@ -144,17 +124,16 @@ const Sidebar = ({ role }) => {
                         </span>
                       </a>
                     </li>
-                  ) : (
-                    ""
-                  )}
-                </ul>
-              </Collapse.Panel>
+                  </ul>
+                </Collapse.Panel>
+              ) : (
+                ""
+              )}
 
-              <Collapse.Panel header="MediaCenter " key="4">
-                <ul className="space-y-1">
-                  {role?.indexOf("media-center-manager") > -1 ||
-                  role?.indexOf("admin") > -1 ||
-                  role?.indexOf("guest") > -1 ? (
+              {role?.indexOf("media-center-manager") > -1 ||
+              role?.indexOf("admin") > -1 ? (
+                <Collapse.Panel header="MediaCenter " key="4">
+                  <ul className="space-y-1">
                     <li>
                       <a
                         href={"/media-center"}
@@ -168,11 +147,11 @@ const Sidebar = ({ role }) => {
                         </span>
                       </a>
                     </li>
-                  ) : (
-                    ""
-                  )}
-                </ul>
-              </Collapse.Panel>
+                  </ul>
+                </Collapse.Panel>
+              ) : (
+                ""
+              )}
             </Collapse>
 
             {/* <ul className="">
