@@ -2,11 +2,12 @@
 import Layout from "../layouts/Layout.astro";
 import EmployeeTable from "../components/partials/Employees";
 import { roleStore } from "../store/roleStroe";
+import fetchApi from "../lib/strapi";
 
 const apiUrl = import.meta.env.STRAPI_URL;
 const apiToken = import.meta.env.STRAPI_Token;
 
-if (!Astro.cookies.has("reef_token")) {
+if (!Astro.cookies.has("reef_admin_token")) {
   return Astro.redirect("/signin");
 }
 
@@ -14,8 +15,24 @@ const role = roleStore.get();
 if (role !== "admin") {
   return Astro.redirect("/");
 }
+const urlParamsObject = {
+  populate: "*",
+};
+
+const employeeRoles = await fetchApi({
+  endpoint: "employee-roles", // the content type to fetch
+  query: urlParamsObject,
+  apiUrl: apiUrl,
+  apiToken: apiToken,
+});
 ---
 
 <Layout title="Employees Page">
-  <EmployeeTable apiUrl={apiUrl} apiToken={apiToken} client:only="react" />
+  <EmployeeTable
+    role={role}
+    apiUrl={apiUrl}
+    apiToken={apiToken}
+    employeeRoles={employeeRoles}
+    client:only="react"
+  />
 </Layout>

@@ -57,7 +57,7 @@ const SignInForm = ({ apiUrl, apiToken }) => {
 
         if (data.jwt) {
           if (data?.user?.isAdmin) {
-            Cookies.set("reef_token", data.jwt);
+            Cookies.set("reef_admin_token", data.jwt);
             roleStore.set("admin");
 
             setTimeout(() => {
@@ -79,8 +79,10 @@ const SignInForm = ({ apiUrl, apiToken }) => {
             }, 1000);
           } else {
             if (data?.user.approvedAsEmployee) {
-              roleStore.set("employee");
-              Cookies.set("reef_token", data.jwt);
+              const roles = data?.user?.employee_roles?.toString();
+
+              roleStore.set(roles);
+              Cookies.set("reef_admin_token", data.jwt);
 
               toast.success("👌 Login successful!", {
                 position: "top-right",

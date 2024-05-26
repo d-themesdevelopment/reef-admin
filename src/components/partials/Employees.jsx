@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import qs from "qs";
-import { Button, Modal, Switch } from "antd";
+import { Button, Modal, Select, Switch } from "antd";
 import UserModal from "../features/modals/UserModal";
 import UserEditModal from "../features/modals/UserEditModal";
 import Loading from "../common/Loading";
 import { toast } from "react-toastify";
+import { EditOutlined } from "@ant-design/icons";
 
 const urlParamsObject = {
   populate: {
@@ -26,10 +27,13 @@ const urlParamsObject = {
     attachedFile: {
       populate: "*",
     },
+    employee_roles: {
+      populate: "*",
+    },
   },
 };
 
-const Employees = ({ apiUrl, apiToken }) => {
+const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
   const [users, setUsers] = useState();
   const [roles, setRoles] = useState();
   const [loading, setLoading] = useState(false);
@@ -38,6 +42,7 @@ const Employees = ({ apiUrl, apiToken }) => {
   const [openUserEdit, setOpenUserEdit] = useState(false);
   const [openUserDelete, setOpenUserDelete] = useState(false);
   const [openApproved, setOpenApproved] = useState(false);
+  const [openEmployee, setOpenEmployee] = useState(false);
 
   useEffect(() => {
     getUsers();
@@ -226,6 +231,126 @@ const Employees = ({ apiUrl, apiToken }) => {
     }
   };
 
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [roleEdit, setRoleEdit] = useState(false);
+
+  const handleUpdateEmployeeRoles = async () => {
+    setLoading(true);
+
+    let data = {};
+
+    if (!roleEdit) {
+      data = { approvedEmployeeRole: !selectedUser?.approvedEmployeeRole };
+    }
+
+    if (selectedItems.length > 0) {
+      data = {
+        ...data,
+        employee_roles: employeeRoles?.filter((role) =>
+          selectedItems?.find((item) => item === role?.attributes?.value)
+        ),
+      };
+    }
+
+    try {
+      const req = await fetch(`${apiUrl}/api/users/${selectedUser?.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          // set the auth token to the user's jwt
+          Authorization: `Bearer ${apiToken}`,
+        },
+        body: JSON.stringify({
+          ...data,
+        }),
+      });
+
+      if (req.ok) {
+        getUsers();
+
+        const res = await req.json();
+
+        if (res?.approvedEmployeeRole) {
+          if (!roleEdit) {
+            handleSendEmail();
+          }
+
+          toast.success(
+            `${
+              roleEdit ? "👌 Successfully Updated" : "👌 Successfully Approve"
+            }`,
+            {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            }
+          );
+        } else {
+          toast.success("👌 Successfully Disabled", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        }
+
+        setTimeout(() => {
+          setLoading(false);
+          setRoleEdit(false);
+          setOpenEmployee(false);
+          setSelectedItems([]);
+        }, 1500);
+      } else {
+        toast.error(`${roleEdit ? "Update failed" : "Approve failed"}`, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+
+        setTimeout(() => {
+          setLoading(false);
+          setRoleEdit(false);
+          setOpenEmployee(false);
+          setSelectedItems([]);
+        }, 1500);
+      }
+    } catch (error) {
+      console.error(error);
+
+      toast.error("Error", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+
+      setTimeout(() => {
+        setLoading(false);
+        setRoleEdit(false);
+        setOpenEmployee(false);
+        setSelectedItems([]);
+      }, 1500);
+    }
+  };
+
   return (
     <>
       {loading && <Loading />}
@@ -288,19 +413,6 @@ const Employees = ({ apiUrl, apiToken }) => {
                 <table className="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">
                   <thead className="bg-gray-100 dark:bg-gray-700">
                     <tr>
-                      {/* <th className="p-4">
-                        <div className="flex items-center">
-                          <input
-                            id="checkbox-all"
-                            aria-describedby="checkbox-1"
-                            type="checkbox"
-                            className="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
-                          />
-                          <label htmlFor="checkbox-all" className="sr-only">
-                            checkbox
-                          </label>
-                        </div>
-                      </th> */}
                       <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
                         UserName
                       </th>
@@ -320,6 +432,9 @@ const Employees = ({ apiUrl, apiToken }) => {
                         User Status
                       </th>
                       <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
+                        Role Status
+                      </th>
+                      <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
                         Actions
                       </th>
                     </tr>
@@ -333,22 +448,6 @@ const Employees = ({ apiUrl, apiToken }) => {
                           className="hover:bg-gray-100 dark:hover:bg-gray-700"
                           key={index}
                         >
-                          {/* <td className="w-4 p-4">
-                          <div className="flex items-center">
-                            <input
-                              id="checkbox-{{ .id }}"
-                              aria-describedby="checkbox-1"
-                              type="checkbox"
-                              className="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
-                            />
-                            <label
-                              htmlFor="checkbox-{{ .id }}"
-                              className="sr-only"
-                            >
-                              checkbox
-                            </label>
-                          </div>
-                        </td> */}
                           <td className="flex items-center p-4 mr-12 rtl:mr-0 rtl:ml-0 whitespace-nowrap">
                             {user?.avatar ? (
                               <img
@@ -384,8 +483,39 @@ const Employees = ({ apiUrl, apiToken }) => {
                             {user?.address}
                           </td>
 
-                          <td className="max-w-sm p-4 font-semibold overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400">
-                            {user?.role?.name}
+                          <td className="max-w-sm p-4  font-semibold overflow-hidden text-base text-gray-500 truncate xl:max-w-xs dark:text-gray-400">
+                            <div className="flex flex-wrap">
+                              {user?.approvedEmployeeRole && (
+                                <button
+                                  title="Edit"
+                                  className="hover:text-primary"
+                                  onClick={() => {
+                                    setOpenEmployee(true);
+                                    setSelectedUser(user);
+                                    setRoleEdit(true);
+                                  }}
+                                >
+                                  <EditOutlined className="ml-2" />
+                                </button>
+                              )}
+
+                              {user?.employee_roles?.length > 0
+                                ? user?.employee_roles?.map(
+                                    (userRole, index) => (
+                                      <button
+                                        className={`ml-2 mb-2  px-2 py-2 rounded-lg text-xs ${
+                                          user?.approvedEmployeeRole
+                                            ? "bg-primary text-white"
+                                            : "bg-gray-300"
+                                        }`}
+                                        key={index}
+                                      >
+                                        {userRole?.title}
+                                      </button>
+                                    )
+                                  )
+                                : "Guest"}
+                            </div>
                           </td>
 
                           <td className="p-4 text-base font-normal text-gray-900 whitespace-nowrap dark:text-white">
@@ -411,6 +541,31 @@ const Employees = ({ apiUrl, apiToken }) => {
                               </span>
                             </div>
                           </td>
+
+                          <td className="p-4 text-base font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                            <div className="flex items-center">
+                              <Switch
+                                checked={user?.approvedEmployeeRole || false}
+                                onChange={() => {
+                                  setOpenEmployee(true);
+                                  setSelectedUser(user);
+                                }}
+                              />
+
+                              <span
+                                className={` mr-3 ${
+                                  user?.approvedEmployeeRole
+                                    ? "font-semibold"
+                                    : "text-gray-500"
+                                }`}
+                              >
+                                {user?.approvedEmployeeRole
+                                  ? "Approved"
+                                  : "Not Approved"}
+                              </span>
+                            </div>
+                          </td>
+
                           <td className="p-4 space-x-2 whitespace-nowrap">
                             <Button
                               type="primary"
@@ -484,6 +639,7 @@ const Employees = ({ apiUrl, apiToken }) => {
           setLoading={setLoading}
           apiToken={apiToken}
           setOpenAddUserModal={setOpenAddUserModal}
+          employeeRoles={employeeRoles}
         />
       </Modal>
 
@@ -524,6 +680,73 @@ const Employees = ({ apiUrl, apiToken }) => {
             OK
           </Button>
           <Button className="mr-2" onClick={() => setOpenUserDelete(false)}>
+            Cancel
+          </Button>
+        </div>
+      </Modal>
+
+      <Modal
+        centered
+        open={openEmployee}
+        onCancel={() => {
+          setOpenEmployee(false);
+          setSelectedItems([]);
+        }}
+        width={400}
+        footer={null}
+      >
+        {roleEdit ? (
+          <>
+            <h3 className="text-2xl font-semibold mb-6 text-center">
+              {" "}
+              Are u going to change the employee role?
+            </h3>
+          </>
+        ) : (
+          <>
+            <h3 className="text-2xl font-semibold mb-6 text-center">
+              {" "}
+              Are u going to{" "}
+              {selectedUser?.approvedEmployeeRole
+                ? "be disable"
+                : "approve"}{" "}
+              this employee's role?
+            </h3>
+
+            <h4 className="text-center text-lg mb-2">You can edit his roles</h4>
+          </>
+        )}
+
+        <Select
+          mode="multiple"
+          placeholder="Inserted are removed"
+          value={
+            selectedItems.length > 0
+              ? selectedItems
+              : selectedUser?.employee_roles.map((item) => item?.value)
+          }
+          onChange={setSelectedItems}
+          style={{
+            width: "100%",
+          }}
+          options={employeeRoles?.map((item) => ({
+            value: item?.attributes?.value,
+            label: item?.attributes?.title,
+          }))}
+        />
+
+        <div className="flex items-center justify-center mt-5">
+          <Button type="primary" onClick={() => handleUpdateEmployeeRoles()}>
+            OK
+          </Button>
+
+          <Button
+            className="mr-2"
+            onClick={() => {
+              setOpenEmployee(false);
+              setSelectedItems([]);
+            }}
+          >
             Cancel
           </Button>
         </div>

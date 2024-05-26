@@ -5,7 +5,7 @@ import fetchApi from "../lib/strapi";
 import { userStore } from "../store/UserStore";
 import { getCurrentUser } from "../utils/user";
 
-if (!Astro.cookies.has("reef_token")) {
+if (!Astro.cookies.has("reef_admin_token")) {
   return Astro.redirect("/signin");
 }
 
@@ -45,7 +45,7 @@ const profilePageData = await fetchApi({
 });
 
 const $user: any = await getCurrentUser(
-  Astro.cookies.get("reef_token")?.value as string
+  Astro.cookies.get("reef_admin_token")?.value as string
 );
 userStore.set($user);
 ---

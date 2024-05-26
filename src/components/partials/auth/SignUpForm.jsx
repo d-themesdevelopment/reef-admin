@@ -1,9 +1,9 @@
-import { Button, Input, Radio, Switch, Form } from "antd";
+import { Button, Input, Form, Select } from "antd";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Loading from "../../../components/common/Loading";
 
-const SignUpForm = ({ apiUrl, apiToken }) => {
+const SignUpForm = ({ apiUrl, apiToken, employeeRoles }) => {
   const [loading, setLoading] = useState(false);
 
   const onfinish = async (values) => {
@@ -13,6 +13,11 @@ const SignUpForm = ({ apiUrl, apiToken }) => {
     const email = values.email;
     const password = values.password;
     const isEmployee = true;
+    const employee_roles = employeeRoles?.filter((employeeRole) =>
+      values?.employeeRoles?.find(
+        (item) => item === employeeRole?.attributes?.value
+      )
+    );
 
     const reqOptions = {
       method: "POST",
@@ -25,7 +30,8 @@ const SignUpForm = ({ apiUrl, apiToken }) => {
         username,
         email,
         password,
-        isEmployee
+        isEmployee,
+        employee_roles
       }),
     };
 
@@ -80,6 +86,8 @@ const SignUpForm = ({ apiUrl, apiToken }) => {
     }
   };
 
+  const [selectedItems, setSelectedItems] = useState([]);
+
   return (
     <>
       {loading && <Loading />}
@@ -133,8 +141,10 @@ const SignUpForm = ({ apiUrl, apiToken }) => {
                 message: "Please input your password!",
               },
               {
-                pattern: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[-ـ!@#$%^&*()])[A-Za-z\d-ـ!@#$%^&*()]{12,}$/,
-                message: 'Password must be at least 12 characters long and contain at least one uppercase letter, one lowercase letter, and one number',
+                pattern:
+                  /^(?=.*[A-Za-z])(?=.*\d)(?=.*[-ـ!@#$%^&*()])[A-Za-z\d-ـ!@#$%^&*()]{12,}$/,
+                message:
+                  "Password must be at least 12 characters long and contain at least one uppercase letter, one lowercase letter, and one number",
               },
             ]}
           >
@@ -162,6 +172,31 @@ const SignUpForm = ({ apiUrl, apiToken }) => {
             ]}
           >
             <Input.Password />
+          </Form.Item>
+
+          <Form.Item
+            name="employeeRoles"
+            label="Employee Roles"
+            extra="Employee can have multi roles"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Select
+              mode="multiple"
+              placeholder="Inserted are removed"
+              value={selectedItems}
+              onChange={setSelectedItems}
+              style={{
+                width: "100%",
+              }}
+              options={employeeRoles?.map((item) => ({
+                value: item?.attributes?.value,
+                label: item?.attributes?.title,
+              }))}
+            />
           </Form.Item>
 
           <div className="mb-5">

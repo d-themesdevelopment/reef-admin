@@ -1,7 +1,7 @@
 ---
 import fetchApi from "../lib/strapi";
 import Layout from "../layouts/Layout.astro";
-import ServiceTable from "../components/partials/services/ServiceTable";
+import MediaCenterContent from "../components/partials/media-center/MediaCenterContent";
 
 if (!Astro.cookies.has("reef_admin_token")) {
   return Astro.redirect("/signin");
@@ -15,14 +15,14 @@ const urlParamsObject = {
     media: {
       populate: "*",
     },
-    category: {
+    icon: {
+      populate: "*",
+    },
+    article_category: {
       populate: "*",
     },
     personalInformation: {
-      populate: "*",
-    },
-    requestInformation: {
-      populate: "*",
+      briwseBtn: "*",
     },
   },
 };
@@ -30,24 +30,24 @@ const urlParamsObject = {
 const strapiUrl = import.meta.env.STRAPI_URL;
 const strapiToken = import.meta.env.STRAPI_Token;
 
-const servicesData = await fetchApi({
-  endpoint: "services", // the content type to fetch
+const articlesData = await fetchApi({
+  endpoint: "articles", // the content type to fetch
   query: urlParamsObject,
   apiUrl: strapiUrl,
   apiToken: strapiToken,
 });
 
-console.log(servicesData, "servicesData");
+console.log(articlesData, "servicesData");
 ---
 
 <Layout title="Services">
   <div
     class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800"
   >
-    <ServiceTable
+    <MediaCenterContent
       apiUrl={strapiUrl}
       apiToken={strapiToken}
-      servicesData={servicesData}
+      articlesData={articlesData}
       client:only="react"
     />
   </div>

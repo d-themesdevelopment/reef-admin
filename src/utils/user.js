@@ -1,6 +1,6 @@
 import qs from "qs";
 
-export const getCurrentUser = async (reef_token) => {
+export const getCurrentUser = async (reef_admin_token) => {
   const urlParamsObject = {
     populate: {
       avatar: {
@@ -18,7 +18,7 @@ export const getCurrentUser = async (reef_token) => {
       attachedFile: {
         populate: "*",
       },
-      role: {
+      employee_roles: {
         populate: "*",
       }
     },
@@ -32,7 +32,7 @@ export const getCurrentUser = async (reef_token) => {
 
   const userData = await fetch(`${requestUrl}`, {
     headers: {
-      Authorization: `bearer ${reef_token}`,
+      Authorization: `bearer ${reef_admin_token}`,
     },
   });
 

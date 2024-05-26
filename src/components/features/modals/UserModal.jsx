@@ -1,4 +1,4 @@
-import { Button, Form, Input, Radio, Switch } from "antd";
+import { Button, Form, Input, Radio, Select, Switch } from "antd";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Loading from "../Loading";
@@ -7,7 +7,7 @@ const UserModal = ({
   apiUrl,
   apiToken,
   setOpenAddUserModal,
-  roles,
+  employeeRoles,
   setLoading,
 }) => {
   const onfinish = async (values) => {
@@ -16,8 +16,11 @@ const UserModal = ({
     const username = values.fullName;
     const email = values.email;
     const password = values.password;
-    const role = roles.find((item) => item.type === values.employeeRole);
-    const approvedAsEmployee = values.active;
+    const employee_roles = employeeRoles?.filter((employeeRole) =>
+      values?.employeeRoles?.find(
+        (item) => item === employeeRole?.attributes?.value
+      )
+    );
 
     const reqOptions = {
       method: "POST",
@@ -30,8 +33,7 @@ const UserModal = ({
         username,
         email,
         password,
-        role,
-        approvedAsEmployee,
+        employee_roles
       }),
     };
 
@@ -77,7 +79,7 @@ const UserModal = ({
     }
   };
 
-  console.log(roles, "roles");
+  const [selectedItems, setSelectedItems] = useState([]);
 
   return (
     <div>
@@ -133,35 +135,28 @@ const UserModal = ({
         </Form.Item>
 
         <Form.Item
-          name="employeeRole"
-          label="Employee Role"
+          name="employeeRoles"
+          label="Employee Roles"
+          extra="Employee can have multi roles"
           rules={[
             {
               required: true,
-              message: "Please pick an item!",
             },
           ]}
         >
-          <Radio.Group>
-            {roles
-              ?.filter(
-                (item) =>
-                  item.type !== "public" && item.type !== "authenticated"
-              )
-              ?.map((role, index) => (
-                <Radio.Button value={role?.type} key={index}>
-                  {role?.name}
-                </Radio.Button>
-              ))}
-          </Radio.Group>
-        </Form.Item>
-
-        <Form.Item
-          name="active"
-          label="Active Employee"
-          valuePropName="checked"
-        >
-          <Switch />
+          <Select
+            mode="multiple"
+            placeholder="Inserted are removed"
+            value={selectedItems}
+            onChange={setSelectedItems}
+            style={{
+              width: "100%",
+            }}
+            options={employeeRoles?.map((item) => ({
+              value: item?.attributes?.value,
+              label: item?.attributes?.title,
+            }))}
+          />
         </Form.Item>
 
         <Form.Item>

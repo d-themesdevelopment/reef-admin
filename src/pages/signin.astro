@@ -5,7 +5,7 @@ import SignInForm from "../components/partials/auth/SignInForm";
 const apiUrl = import.meta.env.STRAPI_URL;
 const apiToken = import.meta.env.STRAPI_Token;
 
-if (Astro.cookies.has("reef_token")) {
+if (Astro.cookies.has("reef_admin_token")) {
   return Astro.redirect("/");
 }
 ---

@@ -23,15 +23,20 @@ interface Props {
 const { title } = Astro.props;
 const pathname = Astro.url.pathname;
 
-if (Astro.cookies.has("reef_token")) {
+if (Astro.cookies.has("reef_admin_token")) {
   const data: any = await getCurrentUser(
-    Astro.cookies.get("reef_token")?.value as string
+    Astro.cookies.get("reef_admin_token")?.value as string
   );
 
-  if(data?.isAdmin) {
+  if (data?.isAdmin) {
     roleStore.set("admin");
   } else {
-    roleStore.set("employee");
+    const roles = data?.employee_roles?.map((role: any) => role?.value)?.toString();
+    console.log(
+      data?.employee_roles?.map((role: any) => role?.value)?.toString(),
+      "employee_rolesemployee_roles"
+    );
+    roleStore.set(roles);
   }
 
   console.log(data, "Loaded");

@@ -12,7 +12,7 @@ const LoginButton = ({ isLoggedIn }) => {
     e.preventDefault();
     setLoading(true);
 
-    Cookies.remove("reef_token");
+    Cookies.remove("reef_admin_token");
     userStore.set("");
 
     toast.error("🤔 Logout!", {

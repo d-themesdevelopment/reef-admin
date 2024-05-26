@@ -16,15 +16,7 @@ const UserEditModal = ({
   const onfinish = async (values) => {
     setLoading(true);
 
-    console.log(
-      values?.role,
-      roles.find((item) => item.type === values?.role),
-      "heyhey"
-    );
-
     let data = {};
-
-    // data = { ...data, approvedAsEmployee: values.active };
 
     if (values?.fullName) {
       data = { ...data, username: values?.fullName };
@@ -41,13 +33,6 @@ const UserEditModal = ({
     if (values?.idNumber) {
       data = { ...data, idNumber: values?.idNumber };
     }
-
-    // if (values?.role) {
-    //   data = {
-    //     ...data,
-    //     role: roles.find((item) => item.type === values?.role),
-    //   };
-    // }
 
     if (values?.fatherName) {
       data = { ...data, fatherName: values?.fatherName };
@@ -141,7 +126,6 @@ const UserEditModal = ({
           slug: selectedUser?.slug,
           email: selectedUser?.email,
           idNumber: selectedUser?.idNumber,
-          role: selectedUser?.role?.type,
           fatherName: selectedUser?.fatherName,
           grandFatherName: selectedUser?.grandFatherName,
           address: selectedUser?.address,
@@ -170,23 +154,6 @@ const UserEditModal = ({
           <div className="col-span-12 sm:col-span-6">
             <Form.Item label="Slug" name="slug">
               <Input />
-            </Form.Item>
-          </div>
-
-          <div className="col-span-12 sm:col-span-6">
-            <Form.Item label="Employee Role" name="role">
-              <Select>
-                {roles
-                  ?.filter(
-                    (item) =>
-                      item.type !== "public" && item.type !== "authenticated"
-                  )
-                  ?.map((role, index) => (
-                    <Select.Option value={role?.type} key={index}>
-                      {role?.name}
-                    </Select.Option>
-                  ))}
-              </Select>
             </Form.Item>
           </div>
 
