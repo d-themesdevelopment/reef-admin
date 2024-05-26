@@ -50,7 +50,7 @@ const jobsData = await fetchApi({
   apiToken: strapiToken,
 });
 
-const role = roleStore.get();
+const role = Astro.cookies.get("role")?.value;
 
 console.log(jobsData, "servicesData");
 ---

@@ -31,6 +31,8 @@ const servicesData = await fetchApi({
   apiToken: strapiToken,
 });
 
+const role = Astro.cookies.get("role")?.value;
+
 console.log(servicesData, "servicesData");
 ---
 
@@ -57,6 +59,7 @@ console.log(servicesData, "servicesData");
         <div class="inline-block min-w-full align-middle">
           <div class="overflow-hidden shadow sm:rounded-lg">
             <ServiceRequestTable
+              role={role}
               strapiUrl={strapiUrl}
               strapiToken={strapiToken}
               servicesData={servicesData}

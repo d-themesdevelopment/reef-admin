@@ -1,7 +1,10 @@
 ---
 import { roleStore } from "../../store/roleStroe";
 
-const role = roleStore.get();
+// const role = Astro.cookies.get("role")?.value;
+const role: any = Astro.cookies.get("role")?.value;
+
+console.log(role, "rolerolerolerolerolerolerolerolerolerolerolerolerolerolerolerolerolerolerolerolerole")
 ---
 
 <!-- TODO: Dynamic dropdowns -->

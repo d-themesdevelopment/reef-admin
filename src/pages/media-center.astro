@@ -37,6 +37,7 @@ const articlesData = await fetchApi({
   apiToken: strapiToken,
 });
 
+const role = Astro.cookies.get("role")?.value;
 console.log(articlesData, "servicesData");
 ---
 
@@ -45,6 +46,7 @@ console.log(articlesData, "servicesData");
     class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800"
   >
     <MediaCenterContent
+      role={role}
       apiUrl={strapiUrl}
       apiToken={strapiToken}
       articlesData={articlesData}

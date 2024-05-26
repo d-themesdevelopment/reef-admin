@@ -48,7 +48,12 @@ const formItemLayout = {
   },
 };
 
-const ServiceRequestTable = ({ servicesData, strapiUrl, strapiToken }) => {
+const ServiceRequestTable = ({
+  role,
+  servicesData,
+  strapiUrl,
+  strapiToken,
+}) => {
   const [currentDate, setCurrentDate] = useState(null);
   const [confirmation, setConfirmation] = useState(true);
   const [fileList, setFileList] = useState([]);
@@ -262,11 +267,14 @@ const ServiceRequestTable = ({ servicesData, strapiUrl, strapiToken }) => {
             >
               Status
             </th>
-
-            <th
-              scope="col"
-              className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
-            ></th>
+            {role?.indexOf("guest") < 0 && (
+              <th
+                scope="col"
+                className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
+              >
+                Actions
+              </th>
+            )}
           </tr>
         </thead>
         <tbody className="bg-white dark:bg-gray-800">
@@ -315,25 +323,27 @@ const ServiceRequestTable = ({ servicesData, strapiUrl, strapiToken }) => {
                       </span>
                     )}
                 </td>
-
-                <td>
-                  {service?.attributes?.confirmation &&
-                  !service?.attributes?.rejected ? (
-                    <span className="text-green-800 text-success border-black font-semibold">
-                      Done
-                    </span>
-                  ) : (
-                    <Button
-                      className="bg-red-500 border-red-500 text-white font-semibold"
-                      onClick={() => {
-                        setOpen(true);
-                        handleUpdateService(service);
-                      }}
-                    >
-                      Edit
-                    </Button>
-                  )}
-                </td>
+                
+                {role?.indexOf("guest") < 0 && (
+                  <td>
+                    {service?.attributes?.confirmation &&
+                    !service?.attributes?.rejected ? (
+                      <span className="text-green-800 text-success border-black font-semibold">
+                        Done
+                      </span>
+                    ) : (
+                      <Button
+                        className="bg-red-500 border-red-500 text-white font-semibold"
+                        onClick={() => {
+                          setOpen(true);
+                          handleUpdateService(service);
+                        }}
+                      >
+                        Edit
+                      </Button>
+                    )}
+                  </td>
+                )}
               </tr>
             ))}
         </tbody>

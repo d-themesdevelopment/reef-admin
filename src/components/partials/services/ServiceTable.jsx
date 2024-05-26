@@ -230,13 +230,15 @@ const ServiceTable = ({ role, servicesData, apiUrl, apiToken }) => {
                     >
                       Type
                     </th>
-
-                    <th
-                      scope="col"
-                      className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
-                    >
-                      Actions
-                    </th>
+                    
+                    {role?.indexOf("guest") < 0 && (
+                      <th
+                        scope="col"
+                        className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
+                      >
+                        Actions
+                      </th>
+                    )}
                   </tr>
                 </thead>
                 <tbody className="bg-white dark:bg-gray-800">

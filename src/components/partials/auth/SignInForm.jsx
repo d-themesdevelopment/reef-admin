@@ -1,13 +1,38 @@
 import qs from "qs";
 import Cookies from "js-cookie";
 import { Button, Input, Radio, Form } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Loading from "../../../components/common/Loading";
-import { roleStore } from "../../../store/roleStroe";
+
+const urlParamsObject = {
+  populate: {
+    employee_roles: {
+      populate: "*",
+    },
+  },
+};
 
 const SignInForm = ({ apiUrl, apiToken }) => {
   const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const getUsers = async () => {
+      const queryString = qs.stringify(urlParamsObject);
+      const requestUrl = `${apiUrl}/api/users?${queryString}`;
+
+      try {
+        const response = await fetch(requestUrl);
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getUsers();
+  }, []);
 
   const onfinish = async (values) => {
     setLoading(true);
@@ -56,9 +81,15 @@ const SignInForm = ({ apiUrl, apiToken }) => {
         const data = await response.json();
 
         if (data.jwt) {
+          const roles = users
+            ?.find((item) => item.id === data?.user?.id)
+            ?.employee_roles?.map((role) => role?.value)
+            ?.toString();
+
           if (data?.user?.isAdmin) {
             Cookies.set("reef_admin_token", data.jwt);
-            roleStore.set("admin");
+            // roleStore.set("admin");
+            Cookies.set("role", "admin");
 
             setTimeout(() => {
               toast.success("Login as admin successfully😎", {
@@ -79,9 +110,14 @@ const SignInForm = ({ apiUrl, apiToken }) => {
             }, 1000);
           } else {
             if (data?.user.approvedAsEmployee) {
-              const roles = data?.user?.employee_roles?.toString();
+              // roleStore.set(roles);
 
-              roleStore.set(roles);
+              if (data?.user?.approvedEmployeeRole) {
+                Cookies.set("role", roles);
+              } else {
+                Cookies.set("role", "guest");
+              }
+
               Cookies.set("reef_admin_token", data.jwt);
 
               toast.success("👌 Login successful!", {

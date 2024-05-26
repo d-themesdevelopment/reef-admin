@@ -28,21 +28,6 @@ if (Astro.cookies.has("reef_admin_token")) {
     Astro.cookies.get("reef_admin_token")?.value as string
   );
 
-  if (data?.isAdmin) {
-    roleStore.set("admin");
-  } else {
-
-    console.log(data?.approvedEmployeeRole, "data?.approvedEmployeeRole")
-    if (data?.approvedEmployeeRole) {
-      const roles = data?.employee_roles
-        ?.map((role: any) => role?.value)
-        ?.toString();
-      roleStore.set(roles);
-    } else {
-      roleStore.set("guest");
-    }
-  }
-
   console.log(data, "Loaded");
   userStore.set(data);
 }
