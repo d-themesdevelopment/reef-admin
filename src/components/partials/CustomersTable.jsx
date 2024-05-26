@@ -360,6 +360,8 @@ const CustomersTable = ({ role, apiUrl, apiToken, employeeRoles }) => {
     }
   };
 
+  const [search, setSearch] = useState("");
+
   return (
     <>
       {loading && <Loading />}
@@ -369,7 +371,7 @@ const CustomersTable = ({ role, apiUrl, apiToken, employeeRoles }) => {
           <div className="w-full mb-1">
             <div className="mb-4">
               <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
-                All CustomersTable
+                All Customers
               </h1>
             </div>
 
@@ -382,6 +384,7 @@ const CustomersTable = ({ role, apiUrl, apiToken, employeeRoles }) => {
                   <div className="relative mt-1 lg:w-64 xl:w-96">
                     <input
                       type="text"
+                      onChange={(e) => setSearch(e.target.value)}
                       name="email"
                       id="users-search"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -447,7 +450,12 @@ const CustomersTable = ({ role, apiUrl, apiToken, employeeRoles }) => {
 
                   <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                     {users
-                      ?.filter((item) => !item.isEmployee && !item?.isAdmin)
+                      ?.filter(
+                        (item) =>
+                          !item.isEmployee &&
+                          !item?.isAdmin &&
+                          item.username?.toLowerCase().includes(search)
+                      )
                       ?.sort((a, b) => b.id - a.id)
                       .map((user, index) => (
                         <tr

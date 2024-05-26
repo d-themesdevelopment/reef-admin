@@ -218,7 +218,7 @@ const MediaCenterContent = ({ role, articlesData, apiUrl, apiToken }) => {
                   </tr>
                 </thead>
 
-                {console.log(articles, "articlesarticlesarticles")}
+     
                 <tbody className="bg-white dark:bg-gray-800">
                   {articles
                     ?.sort((a, b) => b.id - a.id)
@@ -228,7 +228,7 @@ const MediaCenterContent = ({ role, articlesData, apiUrl, apiToken }) => {
                         key={index}
                       >
                         <td className="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
-                          <span className="font-semibold flex items-center">
+                          <span className="font-semibold flex items-center max-w-[286px] overflow-hidden text-ellipsis">
                             {Article?.attributes?.media ? (
                               <img
                                 className="w-10 h-10 rounded-full rtl:ml-3 object-cover"
@@ -244,7 +244,7 @@ const MediaCenterContent = ({ role, articlesData, apiUrl, apiToken }) => {
                               </div>
                             )}
 
-                            {Article?.attributes?.title}
+                            <span>{Article?.attributes?.title}</span>
                           </span>
                         </td>
 

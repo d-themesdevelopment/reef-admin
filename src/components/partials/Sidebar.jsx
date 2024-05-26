@@ -17,7 +17,7 @@ const Sidebar = ({ role }) => {
           ]}
         >
           <div className="flex-1 px-3 space-y-1 bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700 mt-5">
-            <Collapse defaultActiveKey={["1"]}>
+            <Collapse defaultActiveKey={["1", "2", "3", "4"]}>
               {role?.indexOf("career-manager") > -1 ||
               role?.indexOf("admin") > -1 ||
               role?.indexOf("guest") > -1 ? (
