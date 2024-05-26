@@ -11,8 +11,10 @@ if (!Astro.cookies.has("reef_admin_token")) {
   return Astro.redirect("/signin");
 }
 
+
 const role = roleStore.get();
-if (role !== "admin") {
+
+if (role !== "admin" && role?.indexOf("hr") < 0) {
   return Astro.redirect("/");
 }
 const urlParamsObject = {

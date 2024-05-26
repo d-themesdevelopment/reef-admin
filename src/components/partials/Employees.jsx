@@ -431,9 +431,12 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                       <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
                         User Status
                       </th>
-                      <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
-                        Role Status
-                      </th>
+                      {role?.indexOf("admin") > -1 && (
+                        <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
+                          Role Status
+                        </th>
+                      )}
+
                       <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
                         Actions
                       </th>
@@ -544,25 +547,31 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
 
                           <td className="p-4 text-base font-normal text-gray-900 whitespace-nowrap dark:text-white">
                             <div className="flex items-center">
-                              <Switch
-                                checked={user?.approvedEmployeeRole || false}
-                                onChange={() => {
-                                  setOpenEmployee(true);
-                                  setSelectedUser(user);
-                                }}
-                              />
+                              {role?.indexOf("admin") > -1 && (
+                                <>
+                                  <Switch
+                                    checked={
+                                      user?.approvedEmployeeRole || false
+                                    }
+                                    onChange={() => {
+                                      setOpenEmployee(true);
+                                      setSelectedUser(user);
+                                    }}
+                                  />
 
-                              <span
-                                className={` mr-3 ${
-                                  user?.approvedEmployeeRole
-                                    ? "font-semibold"
-                                    : "text-gray-500"
-                                }`}
-                              >
-                                {user?.approvedEmployeeRole
-                                  ? "Approved"
-                                  : "Not Approved"}
-                              </span>
+                                  <span
+                                    className={` mr-3 ${
+                                      user?.approvedEmployeeRole
+                                        ? "font-semibold"
+                                        : "text-gray-500"
+                                    }`}
+                                  >
+                                    {user?.approvedEmployeeRole
+                                      ? "Approved"
+                                      : "Not Approved"}
+                                  </span>
+                                </>
+                              )}
                             </div>
                           </td>
 
