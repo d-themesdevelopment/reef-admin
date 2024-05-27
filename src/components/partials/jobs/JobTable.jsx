@@ -181,6 +181,8 @@ const JobTable = ({ role, jobsData, apiUrl, apiToken }) => {
     setJobSections(data);
   };
 
+  const [search, setSearch] = useState("");
+
   return (
     <>
       {loading && <Loading />}
@@ -190,9 +192,17 @@ const JobTable = ({ role, jobsData, apiUrl, apiToken }) => {
           <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
             All jobs
           </h3>
-          <span className="text-base font-normal text-gray-500 dark:text-gray-400">
+          {/* <span className="text-base font-normal text-gray-500 dark:text-gray-400">
             This is a list of latest jobs
-          </span>
+          </span> */}
+
+          <Input
+            className="h-[42px] w-[382px]"
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
+            placeholder="Search..."
+          />
         </div>
         <div className="items-center sm:flex">
           {role?.indexOf("guest") < 0 && (
@@ -281,6 +291,9 @@ const JobTable = ({ role, jobsData, apiUrl, apiToken }) => {
                 </thead>
                 <tbody className="bg-white dark:bg-gray-800">
                   {jobs
+                    ?.filter((item) =>
+                      item?.attributes?.title?.toLowerCase().includes(search)
+                    )
                     ?.sort((a, b) => b.id - a.id)
                     ?.map((Job, index) => (
                       <tr

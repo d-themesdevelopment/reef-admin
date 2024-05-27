@@ -224,130 +224,170 @@ const ServiceRequestTable = ({
     }
   };
 
+  const [search, setSearch] = useState("");
+
   return (
     <>
       {loading && <Loading />}
 
-      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
-        <thead className="bg-gray-50 dark:bg-gray-700">
-          <tr>
-            <th
-              scope="col"
-              className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
-            >
-              Service ID
-            </th>
-            <th
-              scope="col"
-              className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
-            >
-              Service Name
-            </th>
-            <th
-              scope="col"
-              className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
-            >
-              Date &amp; Time
-            </th>
-            <th
-              scope="col"
-              className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
-            >
-              Username
-            </th>
-            <th
-              scope="col"
-              className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
-            >
-              Applicant Category
-            </th>
-            <th
-              scope="col"
-              className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
-            >
-              Status
-            </th>
-            {role?.indexOf("guest") < 0 && (
-              <th
-                scope="col"
-                className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
-              >
-                Actions
-              </th>
-            )}
-          </tr>
-        </thead>
-        <tbody className="bg-white dark:bg-gray-800">
-          {services
-            ?.sort((a, b) => b.id - a.id)
-            ?.map((service, index) => (
-              <tr
-                className="hover:bg-gray-100 dark:hover:bg-gray-700"
-                key={index}
-              >
-                <td className="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
-                  <span className="font-semibold">
-                    {service?.attributes?.serviceID}
-                  </span>
-                </td>
-                <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                  {service?.attributes?.serviceName}
-                </td>
-                <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                  {service?.attributes?.createdAt.slice(0, 10)}
-                </td>
-                <td className="p-4 text-sm font-semibold text-gray-900 whitespace-nowrap dark:text-white">
-                  {service?.attributes?.user?.data?.attributes?.username}
-                </td>
-                <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                  {service?.attributes?.requestInformation?.applicantCategory}
-                </td>
-                <td className="p-4 whitespace-nowrap">
-                  {service?.attributes?.confirmation &&
-                    !service?.attributes?.rejected && (
-                      <span className="bg-green-100 text-green-800 text-xs font-medium mr-2 rtl:mr-0 rtl:ml-2 px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 border border-green-100 dark:border-green-500">
-                        Completed
-                      </span>
-                    )}
+      <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+        <div className="items-center justify-between lg:flex">
+          <div className="mb-4 lg:mb-0">
+            <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
+              All Service Requests
+            </h3>
 
-                  {service?.attributes?.rejected && (
-                    <span className="bg-red-100 text-red-800 text-xs font-medium mr-2 rtl:mr-0 rtl:ml-2 px-2.5 py-0.5 rounded-md border border-red-100 dark:border-red-400 dark:bg-gray-700 dark:text-red-400">
-                      Rejected
-                    </span>
-                  )}
+            <Input
+              className="h-[42px] w-[382px]"
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
+              placeholder="Search..."
+            />
+          </div>
+          <div className="items-center sm:flex"></div>
+        </div>
 
-                  {!service?.attributes?.confirmation &&
-                    !service?.attributes?.rejected && (
-                      <span className="bg-purple-100 text-purple-800 text-xs font-medium mr-2 rtl:mr-0 rtl:ml-2 px-2.5 py-0.5 rounded-md border border-purple-100 dark:bg-gray-700 dark:border-purple-500 dark:text-purple-400">
-                        In progress
-                      </span>
-                    )}
-                </td>
-                
-                {role?.indexOf("guest") < 0 && (
-                  <td>
-                    {service?.attributes?.confirmation &&
-                    !service?.attributes?.rejected ? (
-                      <span className="text-green-800 text-success border-black font-semibold">
-                        Done
-                      </span>
-                    ) : (
-                      <Button
-                        className="bg-red-500 border-red-500 text-white font-semibold"
-                        onClick={() => {
-                          setOpen(true);
-                          handleUpdateService(service);
-                        }}
+        <div className="flex flex-col mt-6">
+          <div className="overflow-x-auto rounded-lg">
+            <div className="inline-block min-w-full align-middle">
+              <div className="overflow-hidden shadow sm:rounded-lg">
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
+                  <thead className="bg-gray-50 dark:bg-gray-700">
+                    <tr>
+                      <th
+                        scope="col"
+                        className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
                       >
-                        Edit
-                      </Button>
-                    )}
-                  </td>
-                )}
-              </tr>
-            ))}
-        </tbody>
-      </table>
+                        Service ID
+                      </th>
+                      <th
+                        scope="col"
+                        className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
+                      >
+                        Service Name
+                      </th>
+                      <th
+                        scope="col"
+                        className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
+                      >
+                        Date &amp; Time
+                      </th>
+                      <th
+                        scope="col"
+                        className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
+                      >
+                        Username
+                      </th>
+                      <th
+                        scope="col"
+                        className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
+                      >
+                        Applicant Category
+                      </th>
+                      <th
+                        scope="col"
+                        className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
+                      >
+                        Status
+                      </th>
+                      {role?.indexOf("guest") < 0 && (
+                        <th
+                          scope="col"
+                          className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
+                        >
+                          Actions
+                        </th>
+                      )}
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white dark:bg-gray-800">
+                    {services
+                      ?.filter((item) =>
+                        item?.attributes?.serviceName
+                          ?.toLowerCase()
+                          .includes(search)
+                      )
+                      ?.sort((a, b) => b.id - a.id)
+                      ?.map((service, index) => (
+                        <tr
+                          className="hover:bg-gray-100 dark:hover:bg-gray-700"
+                          key={index}
+                        >
+                          <td className="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                            <span className="font-semibold">
+                              {service?.attributes?.serviceID}
+                            </span>
+                          </td>
+                          <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                            {service?.attributes?.serviceName}
+                          </td>
+                          <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                            {service?.attributes?.createdAt.slice(0, 10)}
+                          </td>
+                          <td className="p-4 text-sm font-semibold text-gray-900 whitespace-nowrap dark:text-white">
+                            {
+                              service?.attributes?.user?.data?.attributes
+                                ?.username
+                            }
+                          </td>
+                          <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                            {
+                              service?.attributes?.requestInformation
+                                ?.applicantCategory
+                            }
+                          </td>
+                          <td className="p-4 whitespace-nowrap">
+                            {service?.attributes?.confirmation &&
+                              !service?.attributes?.rejected && (
+                                <span className="bg-green-100 text-green-800 text-xs font-medium mr-2 rtl:mr-0 rtl:ml-2 px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 border border-green-100 dark:border-green-500">
+                                  Completed
+                                </span>
+                              )}
+
+                            {service?.attributes?.rejected && (
+                              <span className="bg-red-100 text-red-800 text-xs font-medium mr-2 rtl:mr-0 rtl:ml-2 px-2.5 py-0.5 rounded-md border border-red-100 dark:border-red-400 dark:bg-gray-700 dark:text-red-400">
+                                Rejected
+                              </span>
+                            )}
+
+                            {!service?.attributes?.confirmation &&
+                              !service?.attributes?.rejected && (
+                                <span className="bg-purple-100 text-purple-800 text-xs font-medium mr-2 rtl:mr-0 rtl:ml-2 px-2.5 py-0.5 rounded-md border border-purple-100 dark:bg-gray-700 dark:border-purple-500 dark:text-purple-400">
+                                  In progress
+                                </span>
+                              )}
+                          </td>
+
+                          {role?.indexOf("guest") < 0 && (
+                            <td>
+                              {service?.attributes?.confirmation &&
+                              !service?.attributes?.rejected ? (
+                                <span className="text-green-800 text-success border-black font-semibold">
+                                  Done
+                                </span>
+                              ) : (
+                                <Button
+                                  className="bg-red-500 border-red-500 text-white font-semibold"
+                                  onClick={() => {
+                                    setOpen(true);
+                                    handleUpdateService(service);
+                                  }}
+                                >
+                                  Edit
+                                </Button>
+                              )}
+                            </td>
+                          )}
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <Modal
         centered

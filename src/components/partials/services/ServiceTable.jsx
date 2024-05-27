@@ -149,6 +149,8 @@ const ServiceTable = ({ role, servicesData, apiUrl, apiToken }) => {
     setCategories(data);
   };
 
+  const [search, setSearch] = useState("");
+
   return (
     <>
       {loading && <Loading />}
@@ -158,11 +160,15 @@ const ServiceTable = ({ role, servicesData, apiUrl, apiToken }) => {
           <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
             All Services
           </h3>
-          <span className="text-base font-normal text-gray-500 dark:text-gray-400">
-            This is a list of latest Services
-          </span>
+          <Input
+            className="h-[42px] w-[382px]"
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
+            placeholder="Search..."
+          />
         </div>
-        {console.log(role, "rolerole")}
+
         <div className="items-center sm:flex">
           {role?.indexOf("guest") < 0 && (
             <Button
@@ -230,7 +236,7 @@ const ServiceTable = ({ role, servicesData, apiUrl, apiToken }) => {
                     >
                       Type
                     </th>
-                    
+
                     {role?.indexOf("guest") < 0 && (
                       <th
                         scope="col"
@@ -243,6 +249,9 @@ const ServiceTable = ({ role, servicesData, apiUrl, apiToken }) => {
                 </thead>
                 <tbody className="bg-white dark:bg-gray-800">
                   {services
+                    ?.filter((item) =>
+                      item?.attributes?.title?.toLowerCase().includes(search)
+                    )
                     ?.sort((a, b) => b.id - a.id)
                     ?.map((service, index) => (
                       <tr

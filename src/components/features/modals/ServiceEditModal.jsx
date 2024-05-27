@@ -104,7 +104,7 @@ const ServiceEditModal = ({
 
           data = { ...data, media: { image, alt: "Media" } };
 
-          await fetch(`${apiUrl}/api/services`, {
+          await fetch(`${apiUrl}/api/services/${selectedService?.id}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",

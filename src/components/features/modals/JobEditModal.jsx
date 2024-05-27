@@ -144,7 +144,7 @@ const JobEditModal = ({
         setOpenJobEdit(false);
       }, 1500);
 
-      toast.success("👌 Successfully Added!", {
+      toast.success("👌 Successfully Updated!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,

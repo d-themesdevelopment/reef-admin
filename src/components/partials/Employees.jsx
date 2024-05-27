@@ -455,9 +455,13 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                       <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
                         Roles
                       </th>
-                      <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
-                        User Status
-                      </th>
+
+                      {role?.indexOf("admin") > -1 && (
+                        <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
+                          User Status
+                        </th>
+                      )}
+
                       {role?.indexOf("admin") > -1 && (
                         <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
                           Role Status
@@ -474,7 +478,11 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
 
                   <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                     {users
-                      ?.filter((item) => item.isEmployee && item.username?.toLowerCase().includes(search) )
+                      ?.filter(
+                        (item) =>
+                          item.isEmployee &&
+                          item.username?.toLowerCase().includes(search)
+                      )
                       ?.sort((a, b) => b.id - a.id)
                       ?.map((user, index) => (
                         <tr
@@ -551,37 +559,66 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                             </div>
                           </td>
 
-                          <td className="p-4 text-base font-normal text-gray-900 whitespace-nowrap dark:text-white">
-                            <div className="flex items-center">
-                              {role?.indexOf("guest") < 0 && (
-                                <Switch
-                                  checked={user?.approvedAsEmployee}
+                          {role?.indexOf("admin") > -1 && (
+                            <td className="p-4 text-base font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                              <div className="flex items-center">
+                                <Select
                                   onChange={() => {
                                     setOpenApproved(true);
                                     setSelectedUser(user);
                                   }}
+                                  value={`${
+                                    user?.approvedAsEmployee
+                                      ? "active"
+                                      : "inactive"
+                                  }`}
+                                  style={{
+                                    width: 120,
+                                  }}
+                                  options={[
+                                    {
+                                      value: "active",
+                                      label: "Active",
+                                    },
+                                    {
+                                      value: "inactive",
+                                      label: "Inactive",
+                                    },
+                                  ]}
                                 />
-                              )}
-
-                              <span
-                                className={` mr-3 ${
-                                  user?.approvedAsEmployee
-                                    ? "font-semibold"
-                                    : "text-gray-500"
-                                }`}
-                              >
-                                {user?.approvedAsEmployee
-                                  ? "Approved"
-                                  : "Not Approved"}
-                              </span>
-                            </div>
-                          </td>
+                              </div>
+                            </td>
+                          )}
 
                           {role?.indexOf("admin") > -1 && (
                             <td className="p-4 text-base font-normal text-gray-900 whitespace-nowrap dark:text-white">
                               <div className="flex items-center">
                                 <>
-                                  <Switch
+                                  <Select
+                                    onChange={() => {
+                                      setOpenEmployee(true);
+                                      setSelectedUser(user);
+                                    }}
+                                    value={`${
+                                      user?.approvedEmployeeRole
+                                        ? "active"
+                                        : "inactive"
+                                    }`}
+                                    style={{
+                                      width: 120,
+                                    }}
+                                    options={[
+                                      {
+                                        value: "active",
+                                        label: "Active",
+                                      },
+                                      {
+                                        value: "inactive",
+                                        label: "Inactive",
+                                      },
+                                    ]}
+                                  />
+                                  {/* <Switch
                                     checked={
                                       user?.approvedEmployeeRole || false
                                     }
@@ -601,7 +638,7 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                                     {user?.approvedEmployeeRole
                                       ? "Approved"
                                       : "Not Approved"}
-                                  </span>
+                                  </span> */}
                                 </>
                               </div>
                             </td>
