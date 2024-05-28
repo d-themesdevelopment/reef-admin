@@ -4,7 +4,11 @@ import styled from "styled-components";
 import { Label } from "../../../components/ui/label";
 
 import { message, Modal, Input } from "antd";
-import { CheckCircleFilled, CloseCircleFilled } from "@ant-design/icons";
+import {
+  CheckCircleFilled,
+  CloseCircleFilled,
+  DownloadOutlined,
+} from "@ant-design/icons";
 
 import { InboxOutlined, UploadOutlined } from "@ant-design/icons";
 import {
@@ -63,6 +67,9 @@ const JobRequestTable = ({ role, servicesData, apiUrl, apiToken }) => {
           populate: "*",
         },
         email: {
+          populate: "*",
+        },
+        attachedFile: {
           populate: "*",
         },
         coverLetter: {
@@ -238,6 +245,14 @@ const JobRequestTable = ({ role, servicesData, apiUrl, apiToken }) => {
                       >
                         coverLetter
                       </th>
+
+                      <th
+                        scope="col"
+                        className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
+                      >
+                        CV
+                      </th>
+
                       <th
                         scope="col"
                         className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
@@ -289,6 +304,29 @@ const JobRequestTable = ({ role, servicesData, apiUrl, apiToken }) => {
 
                           <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
                             {service?.attributes?.coverLetter?.value}
+                          </td>
+
+                          <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                            {service?.attributes?.attachedFile?.data ? (
+                              <a
+                                className="flex items-center"
+                                target="__blank"
+                                href={
+                                  service?.attributes?.attachedFile?.data
+                                    ?.attributes?.url
+                                }
+                              >
+                                <DownloadOutlined />
+                                <span className="mr-2">
+                                  {
+                                    service?.attributes?.attachedFile?.data
+                                      ?.attributes?.name
+                                  }
+                                </span>
+                              </a>
+                            ) : (
+                              <span>No file</span>
+                            )}
                           </td>
 
                           <td className="p-4 whitespace-nowrap">
