@@ -125,7 +125,7 @@ const UserSettings = ({ user, pageData, apiUrl, apiToken }) => {
       username: values?.firstName,
       address: values?.address,
       email: values?.email,
-      phoneNumber: values?.phoneNumber,
+      mobileNumber: values?.phoneNumber,
     });
   };
 
