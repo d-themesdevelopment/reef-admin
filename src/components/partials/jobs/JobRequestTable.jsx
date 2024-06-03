@@ -194,7 +194,7 @@ const JobRequestTable = ({ role, servicesData, apiUrl, apiToken }) => {
               onChange={(e) => {
                 setSearch(e.target.value);
               }}
-              placeholder="Search..."
+              placeholder="Search for job request by username..."
             />
           </div>
           <div className="items-center sm:flex"></div>
@@ -274,7 +274,7 @@ const JobRequestTable = ({ role, servicesData, apiUrl, apiToken }) => {
                   <tbody className="bg-white dark:bg-gray-800">
                     {services
                       ?.filter((item) =>
-                        item?.attributes?.jobTitle
+                        item?.attributes?.fullName?.value
                           ?.toLowerCase()
                           .includes(search)
                       )
@@ -303,13 +303,15 @@ const JobRequestTable = ({ role, servicesData, apiUrl, apiToken }) => {
                           </td>
 
                           <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                            <div className="max-w-[300px] overflow-hidden text-ellipsis">
                             {service?.attributes?.coverLetter?.value}
+                            </div>
                           </td>
 
                           <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
                             {service?.attributes?.attachedFile?.data ? (
                               <a
-                                className="flex items-center"
+                                className="flex items-center max-w-[200px] overflow-hidden text-ellipsis"
                                 target="__blank"
                                 href={
                                   service?.attributes?.attachedFile?.data

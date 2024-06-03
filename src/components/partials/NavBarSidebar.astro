@@ -51,11 +51,6 @@ const user = userStore.get();
         </button>
 
         <a href="/" class="flex ml-2 md:mr-24 md:rtl:mr-0 md:ltr:ml-24">
-          <img
-            src={`${import.meta.env.REMOTE_ASSETS_BASE_URL}/images/logo.svg`}
-            class="h-8 mr-3 rtl:mr-0 rtl:ml-3"
-            alt="FlowBite Logo"
-          />
           <span
             class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white"
             >Flowbite</span
@@ -73,8 +68,7 @@ const user = userStore.get();
         <!-- Profile -->
         <div class="flex items-center ml-3">
           <div>
-            <button
-              type="button"
+            <a href="/settings"
               class="flex items-center justify-center text-sm rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 bg-gray-300 w-8 h-8"
               id="user-menu-button-2"
               aria-expanded="false"
@@ -92,7 +86,7 @@ const user = userStore.get();
                   user?.username?.slice(0, 1)
                 )
               }
-            </button>
+            </a>
           </div>
         </div>
 

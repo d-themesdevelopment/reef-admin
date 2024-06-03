@@ -133,6 +133,8 @@ const MediaCenterContent = ({ role, articlesData, apiUrl, apiToken }) => {
     setCategories(data);
   };
 
+  const [search, setSearch] = useState("");
+
   return (
     <>
       {loading && <Loading />}
@@ -142,9 +144,13 @@ const MediaCenterContent = ({ role, articlesData, apiUrl, apiToken }) => {
           <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
             All Media Center
           </h3>
-          <span className="text-base font-normal text-gray-500 dark:text-gray-400">
-            This is a list of latest media center
-          </span>
+          <Input
+            className="h-[42px] w-[382px]"
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
+            placeholder="Search for blog by title..."
+          />
         </div>
         <div className="items-center sm:flex">
           {role?.indexOf("guest") < 0 && (
@@ -218,10 +224,12 @@ const MediaCenterContent = ({ role, articlesData, apiUrl, apiToken }) => {
                   </tr>
                 </thead>
 
-     
+
                 <tbody className="bg-white dark:bg-gray-800">
-                  {articles
-                    ?.sort((a, b) => b.id - a.id)
+                  {articles.filter((item) =>
+                    item?.attributes?.title?.toLowerCase()
+                      .includes(search)
+                  )?.sort((a, b) => b.id - a.id)
                     ?.map((Article, index) => (
                       <tr
                         className="hover:bg-gray-100 dark:hover:bg-gray-700"

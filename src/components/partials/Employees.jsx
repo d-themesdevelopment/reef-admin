@@ -286,8 +286,7 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
           }
 
           toast.success(
-            `${
-              roleEdit ? "👌 Successfully Updated" : "👌 Successfully Approve"
+            `${roleEdit ? "👌 Successfully Updated" : "👌 Successfully Approve"
             }`,
             {
               position: "top-right",
@@ -425,7 +424,7 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                         clipRule="evenodd"
                       ></path>
                     </svg>
-                    Add user
+                    Add Employee
                   </Button>
                 )}
               </div>
@@ -452,9 +451,13 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                       <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
                         Address
                       </th>
-                      <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
-                        Roles
-                      </th>
+
+                      {
+                        role?.indexOf("admin") > -1 && <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
+                          Roles
+                        </th>
+
+                      }
 
                       {role?.indexOf("admin") > -1 && (
                         <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
@@ -468,7 +471,7 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                         </th>
                       )}
 
-                      {role?.indexOf("guest") < 0 && (
+                      {(role?.indexOf("admin") > -1 || role?.indexOf("hr") > -1) && (
                         <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
                           Actions
                         </th>
@@ -520,44 +523,49 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                             {user?.companyName}
                           </td>
 
+
+
                           <td className="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400">
                             {user?.address}
                           </td>
 
-                          <td className="max-w-sm p-4  font-semibold overflow-hidden text-base text-gray-500 truncate xl:max-w-xs dark:text-gray-400">
-                            <div className="flex flex-wrap">
-                              {user?.approvedEmployeeRole && (
-                                <button
-                                  title="Edit"
-                                  className="hover:text-primary"
-                                  onClick={() => {
-                                    setOpenEmployee(true);
-                                    setSelectedUser(user);
-                                    setRoleEdit(true);
-                                  }}
-                                >
-                                  <EditOutlined className="ml-2" />
-                                </button>
-                              )}
+                          {
+                            role?.indexOf("admin") > -1 && <td className="max-w-sm p-4  font-semibold overflow-hidden text-base text-gray-500 truncate xl:max-w-xs dark:text-gray-400">
+                              <div className="flex flex-wrap">
+                                {user?.approvedEmployeeRole && (
+                                  <button
+                                    title="Edit"
+                                    className="hover:text-primary"
+                                    onClick={() => {
+                                      setOpenEmployee(true);
+                                      setSelectedUser(user);
+                                      setRoleEdit(true);
+                                    }}
+                                  >
+                                    <EditOutlined className="ml-2" />
+                                  </button>
+                                )}
 
-                              {user?.employee_roles?.length > 0
-                                ? user?.employee_roles?.map(
+                                {user?.employee_roles?.length > 0
+                                  ? user?.employee_roles?.map(
                                     (userRole, index) => (
                                       <button
-                                        className={`ml-2 mb-2  px-2 py-2 rounded-lg text-xs ${
-                                          user?.approvedEmployeeRole
-                                            ? "bg-primary text-white"
-                                            : "bg-gray-300"
-                                        }`}
+                                        className={`ml-2 mb-2  px-2 py-2 rounded-lg text-xs ${user?.approvedEmployeeRole
+                                          ? "bg-primary text-white"
+                                          : "bg-gray-300"
+                                          }`}
                                         key={index}
                                       >
                                         {userRole?.title}
                                       </button>
                                     )
                                   )
-                                : "Guest"}
-                            </div>
-                          </td>
+                                  : "Guest"}
+                              </div>
+                            </td>
+                          }
+
+
 
                           {role?.indexOf("admin") > -1 && (
                             <td className="p-4 text-base font-normal text-gray-900 whitespace-nowrap dark:text-white">
@@ -567,11 +575,10 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                                     setOpenApproved(true);
                                     setSelectedUser(user);
                                   }}
-                                  value={`${
-                                    user?.approvedAsEmployee
-                                      ? "active"
-                                      : "inactive"
-                                  }`}
+                                  value={`${user?.approvedAsEmployee
+                                    ? "active"
+                                    : "inactive"
+                                    }`}
                                   style={{
                                     width: 120,
                                   }}
@@ -599,11 +606,10 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                                       setOpenEmployee(true);
                                       setSelectedUser(user);
                                     }}
-                                    value={`${
-                                      user?.approvedEmployeeRole
-                                        ? "active"
-                                        : "inactive"
-                                    }`}
+                                    value={`${user?.approvedEmployeeRole
+                                      ? "active"
+                                      : "inactive"
+                                      }`}
                                     style={{
                                       width: 120,
                                     }}
@@ -643,7 +649,7 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                               </div>
                             </td>
                           )}
-                          {role?.indexOf("guest") < 0 && (
+                          {(role?.indexOf("admin") > -1 || role?.indexOf("hr") > -1) && (
                             <td className="p-4 space-x-2 whitespace-nowrap">
                               <Button
                                 type="primary"

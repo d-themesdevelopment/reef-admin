@@ -1,6 +1,6 @@
 import qs from "qs";
 import Cookies from "js-cookie";
-import { Button, Input, Radio, Form } from "antd";
+import { Button, Input, Modal, Form } from "antd";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Loading from "../../../components/common/Loading";
@@ -15,7 +15,12 @@ const urlParamsObject = {
 
 const SignInForm = ({ apiUrl, apiToken }) => {
   const [loading, setLoading] = useState(false);
+  const [token, setToken] = useState("");
   const [users, setUsers] = useState([]);
+  const [verifiedCode, setVerifiedCode] = useState(0);
+  const [verificationCode, setVerificationCode] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState();
 
   useEffect(() => {
     const getUsers = async () => {
@@ -81,81 +86,29 @@ const SignInForm = ({ apiUrl, apiToken }) => {
         const data = await response.json();
 
         if (data.jwt) {
-          const roles = users
-            ?.find((item) => item.id === data?.user?.id)
-            ?.employee_roles?.map((role) => role?.value)
-            ?.toString();
 
-          if (data?.user?.isAdmin) {
-            Cookies.set("reef_admin_token", data.jwt);
-            // roleStore.set("admin");
-            Cookies.set("role", "admin");
+          setUser(data?.user)
+          setToken(data.jwt);
+          // Request Verification
+          const res = await fetch(`${apiUrl}/api/auth/request-verification`, {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              Authorization: `bearer ${apiToken}`,
+            },
+            body: JSON.stringify({
+              identifier,
+            }),
+          });
 
-            setTimeout(() => {
-              toast.success("Login as admin successfully😎", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-              });
+          const resData = await res.json();
 
-              setTimeout(() => {
-                setLoading(false);
-                location.href = "/";
-              }, 1500);
-            }, 1000);
-          } else {
-            if (data?.user.approvedAsEmployee) {
-              // roleStore.set(roles);
+          setVerifiedCode(resData?.verifiedCode);
+          setLoading(false);
+          setIsOpen(true);
 
-              if (data?.user?.approvedEmployeeRole) {
-                Cookies.set("role", roles);
-              } else {
-                Cookies.set("role", "guest");
-              }
 
-              Cookies.set("reef_admin_token", data.jwt);
-
-              toast.success("👌 Login successful!", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-              });
-
-              setTimeout(() => {
-                setLoading(false);
-                location.href = "/";
-              }, 1500);
-            } else {
-              console.log("Login successful");
-
-              setTimeout(() => {
-                toast.info("Not allowed by admin yet", {
-                  position: "top-right",
-                  autoClose: 3000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "colored",
-                });
-
-                setTimeout(() => {
-                  setLoading(false);
-                }, 1500);
-              }, 1000);
-            }
-          }
         }
       } else {
         toast.error("Invalid identifier or password", {
@@ -185,6 +138,101 @@ const SignInForm = ({ apiUrl, apiToken }) => {
 
       setLoading(false);
       console.error("Error occurred during login:", error);
+    }
+  };
+
+  const handleVerification = async () => {
+    setLoading(true);
+
+    if (verificationCode === verifiedCode) {
+      setIsOpen(false);
+      Cookies.set("reef_admin_token", token);
+      const roles = users
+        ?.find((item) => item.id === user?.id)
+        ?.employee_roles?.map((role) => role?.value)
+        ?.toString();
+
+      if (user?.isAdmin) {
+        Cookies.set("role", "admin");
+
+        setTimeout(() => {
+          toast.success("Login as admin successfully😎", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+
+          setTimeout(() => {
+            setLoading(false);
+            location.href = "/";
+          }, 1500);
+        }, 1000);
+      } else {
+        if (user.approvedAsEmployee) {
+          // roleStore.set(roles);
+
+          if (user?.approvedEmployeeRole) {
+            Cookies.set("role", roles);
+          } else {
+            Cookies.set("role", "guest");
+          }
+
+          Cookies.set("reef_admin_token", token);
+
+          toast.success("👌 Login successful!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+
+          setTimeout(() => {
+            setLoading(false);
+            location.href = "/";
+          }, 1500);
+        } else {
+          console.log("Login successful");
+
+          setTimeout(() => {
+            toast.info("Not allowed by admin yet", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+
+            setTimeout(() => {
+              setLoading(false);
+            }, 1500);
+          }, 1000);
+        }
+      }
+    } else {
+      toast.error("Verification Failed", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+
+      setLoading(false);
     }
   };
 
@@ -250,6 +298,70 @@ const SignInForm = ({ apiUrl, apiToken }) => {
           </Form.Item>
         </Form>
       </div>
+
+      <Modal
+        centered
+        open={isOpen}
+        onCancel={() => setIsOpen(false)}
+        footer={null}
+        width={400}
+      >
+        <div className="mb-0 py-6 px-4" style={{ textAlign: "center" }}>
+          <h3 className="text-3xl font-semibold mb-5">Confirmation</h3>
+
+          <div className="verification-form flex items-center justify-between">
+            <input
+              className="w-16 h-20 border rounded-lg flex items-center justify-center text-center text-4xl"
+              onChange={(e) => {
+                setVerificationCode(verificationCode.concat(e.target.value));
+              }}
+              maxLength={1}
+              type="text"
+            />
+
+            <input
+              className="w-16 h-20 border rounded-lg flex items-center justify-center text-center text-4xl"
+              onChange={(e) => {
+                setVerificationCode(verificationCode.concat(e.target.value));
+              }}
+              maxLength={1}
+              type="text"
+            />
+
+            <input
+              className="w-16 h-20 border rounded-lg flex items-center justify-center text-center text-4xl"
+              onChange={(e) => {
+                setVerificationCode(verificationCode.concat(e.target.value));
+              }}
+              maxLength={1}
+              type="text"
+            />
+
+            <input
+              className="w-16 h-20 border rounded-lg flex items-center justify-center text-center text-4xl"
+              onChange={(e) => {
+                setVerificationCode(verificationCode.concat(e.target.value));
+              }}
+              maxLength={1}
+              type="text"
+            />
+          </div>
+
+          <Button
+            type="primary"
+            size="large"
+            onClick={(e) => {
+              e.preventDefault();
+              handleVerification();
+            }}
+            className="f-form-button next w-button inline-block mt-7"
+            style={{ display: "inline-flex" }}
+          >
+            Verify
+          </Button>
+        </div>
+      </Modal>
+
     </>
   );
 };

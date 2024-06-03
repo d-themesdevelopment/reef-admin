@@ -277,8 +277,7 @@ const CustomersTable = ({ role, apiUrl, apiToken, employeeRoles }) => {
           }
 
           toast.success(
-            `${
-              roleEdit ? "👌 Successfully Updated" : "👌 Successfully Approve"
+            `${roleEdit ? "👌 Successfully Updated" : "👌 Successfully Approve"
             }`,
             {
               position: "top-right",
@@ -431,6 +430,15 @@ const CustomersTable = ({ role, apiUrl, apiToken, employeeRoles }) => {
                         UserName
                       </th>
                       <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
+                        Father Name
+                      </th>
+                      <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
+                        GrandFather Name
+                      </th>
+                      <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
+                        ID Number
+                      </th>
+                      <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
                         Mobile Number
                       </th>
                       <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
@@ -440,7 +448,7 @@ const CustomersTable = ({ role, apiUrl, apiToken, employeeRoles }) => {
                         Address
                       </th>
 
-                      {role?.indexOf("guest") < 0 && (
+                      {(role?.indexOf("admin") > -1) && (
                         <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
                           Actions
                         </th>
@@ -486,6 +494,18 @@ const CustomersTable = ({ role, apiUrl, apiToken, employeeRoles }) => {
                           </td>
 
                           <td className="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400">
+                            {user?.fatherName}
+                          </td>
+
+                          <td className="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400">
+                            {user?.grandFatherName}
+                          </td>
+
+                          <td className="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400">
+                            {user?.idNumber}
+                          </td>
+
+                          <td className="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400">
                             {user?.mobileNumber}
                           </td>
 
@@ -497,7 +517,7 @@ const CustomersTable = ({ role, apiUrl, apiToken, employeeRoles }) => {
                             {user?.address}
                           </td>
 
-                          {role?.indexOf("guest") < 0 && (
+                          {role?.indexOf("admin") > -1 && (
                             <td className="p-4 space-x-2 whitespace-nowrap">
                               <Button
                                 type="primary"

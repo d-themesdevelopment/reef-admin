@@ -242,7 +242,7 @@ const ServiceRequestTable = ({
               onChange={(e) => {
                 setSearch(e.target.value);
               }}
-              placeholder="Search..."
+              placeholder="Search for service request by username..."
             />
           </div>
           <div className="items-center sm:flex"></div>
@@ -304,7 +304,8 @@ const ServiceRequestTable = ({
                   <tbody className="bg-white dark:bg-gray-800">
                     {services
                       ?.filter((item) =>
-                        item?.attributes?.serviceName
+                        item?.attributes?.user?.data?.attributes
+                        ?.username
                           ?.toLowerCase()
                           .includes(search)
                       )

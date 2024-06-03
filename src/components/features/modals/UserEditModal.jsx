@@ -22,10 +22,6 @@ const UserEditModal = ({
       data = { ...data, username: values?.fullName };
     }
 
-    if (values?.slug) {
-      data = { ...data, slug: values?.slug };
-    }
-
     if (values?.email) {
       data = { ...data, email: values?.email };
     }
@@ -123,7 +119,6 @@ const UserEditModal = ({
         layout="vertical"
         initialValues={{
           fullName: selectedUser?.username,
-          slug: selectedUser?.slug,
           email: selectedUser?.email,
           idNumber: selectedUser?.idNumber,
           fatherName: selectedUser?.fatherName,
@@ -138,7 +133,7 @@ const UserEditModal = ({
         <div className="grid grid-flex-row grid-cols-12 gap-4">
           <div className="col-span-12 sm:col-span-6">
             <Form.Item
-              label="Full Name"
+              label="First Name"
               name="fullName"
               rules={[
                 {
@@ -147,12 +142,6 @@ const UserEditModal = ({
                 },
               ]}
             >
-              <Input />
-            </Form.Item>
-          </div>
-
-          <div className="col-span-12 sm:col-span-6">
-            <Form.Item label="Slug" name="slug">
               <Input />
             </Form.Item>
           </div>

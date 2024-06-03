@@ -26,6 +26,7 @@ const employeeRoles = await fetchApi({
   apiUrl: apiUrl,
   apiToken: apiToken,
 });
+
 ---
 
 <Layout title="Employees Page">
@@ -33,7 +34,9 @@ const employeeRoles = await fetchApi({
     role={role}
     apiUrl={apiUrl}
     apiToken={apiToken}
-    employeeRoles={employeeRoles}
+    employeeRoles={employeeRoles?.filter(
+      (item: any) => item?.attributes?.value !== "admin",
+    )}
     client:only="react"
   />
 </Layout>
