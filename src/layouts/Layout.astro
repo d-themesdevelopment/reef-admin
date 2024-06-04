@@ -47,7 +47,7 @@ const role = Astro.cookies.get("role")?.value;
   </head>
   <body>
     {
-      !pathname.includes("signin") && !pathname.includes("signup") ? (
+      !pathname.includes("signin") && !pathname.includes("signup") && !pathname.includes("404") ? (
         <>
           <NavBarSidebar />
 
