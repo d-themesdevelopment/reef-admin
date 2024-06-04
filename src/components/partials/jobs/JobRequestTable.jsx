@@ -207,12 +207,12 @@ const JobRequestTable = ({ role, servicesData, apiUrl, apiToken }) => {
                 <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
                   <thead className="bg-gray-50 dark:bg-gray-700">
                     <tr>
-                      <th
+                      {/* <th
                         scope="col"
                         className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
                       >
                         Job ID
-                      </th>
+                      </th> */}
                       <th
                         scope="col"
                         className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
@@ -284,11 +284,11 @@ const JobRequestTable = ({ role, servicesData, apiUrl, apiToken }) => {
                           className="hover:bg-gray-100 dark:hover:bg-gray-700"
                           key={index}
                         >
-                          <td className="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                          {/* <td className="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
                             <span className="font-semibold">
                               {service?.attributes?.jobRequestID}
                             </span>
-                          </td>
+                          </td> */}
                           <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
                             {service?.attributes?.jobTitle}
                           </td>
