@@ -33,7 +33,7 @@ const UserModal = ({
         username,
         email,
         password,
-        employee_roles
+        employee_roles,
       }),
     };
 
@@ -76,7 +76,38 @@ const UserModal = ({
         progress: undefined,
         theme: "colored",
       });
+
+      const password = generatePassword();
+
+      await fetch(`${apiUrl}/api/auth/new-user`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `bearer ${apiToken}`,
+        },
+        body: JSON.stringify({
+          identifier,
+          password
+        }),
+      });
     }
+  };
+
+  const generatePassword = () => {
+    // Define the character set
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
+
+    // Generate the random password
+    let result = "";
+    for (let i = 0; i < 12; i++) {
+      result += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
+    }
+
+    return result;
   };
 
   const [selectedItems, setSelectedItems] = useState([]);
