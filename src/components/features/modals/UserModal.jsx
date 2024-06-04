@@ -15,7 +15,7 @@ const UserModal = ({
     const registerationEndpoint = `${apiUrl}/api/auth/local/register`;
     const username = values.fullName;
     const email = values.email;
-    const password = values.password;
+    const password = generatePassword();
     const employee_roles = employeeRoles?.filter((employeeRole) =>
       values?.employeeRoles?.find(
         (item) => item === employeeRole?.attributes?.value
@@ -77,7 +77,7 @@ const UserModal = ({
         theme: "colored",
       });
 
-      const password = generatePassword();
+      const identifier = email;
 
       await fetch(`${apiUrl}/api/auth/new-user`, {
         method: "POST",
