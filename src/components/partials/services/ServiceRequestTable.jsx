@@ -225,6 +225,7 @@ const ServiceRequestTable = ({
   };
 
   const [search, setSearch] = useState("");
+  const [openViewModal, setOpenViewModal] = useState(false);
 
   return (
     <>
@@ -312,6 +313,7 @@ const ServiceRequestTable = ({
                       ?.sort((a, b) => b.id - a.id)
                       ?.map((service, index) => (
                         <tr
+                          onClick={() => {setOpenViewModal(true); setService(service);}}
                           className="hover:bg-gray-100 dark:hover:bg-gray-700"
                           key={index}
                         >
@@ -389,6 +391,113 @@ const ServiceRequestTable = ({
           </div>
         </div>
       </div>
+
+      <Modal
+        centered
+        open={openViewModal}
+        onCancel={() => {
+          setOpenViewModal(false);
+        }}
+        width={600}
+        footer={null}
+      >
+        <div className="py-5">
+          <div className="grid grid-flex-row grid-cols-12 gap-5">
+            <div className="col-span-12">
+              <h4 className="text-xl font-semibold mb-1">معرف الخدمة</h4>
+              <h5>{service?.attributes?.serviceID}</h5>
+            </div>
+
+            <div className="col-span-12">
+              <h4 className="text-xl font-semibold mb-1">1. معلومات المستخدم</h4>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">الاسم الأول</h4>
+              <h5>{service?.attributes?.personalInformation?.firstName}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">اسم العائلة</h4>
+              <h5>{service?.attributes?.personalInformation?.lastName}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">اسم الأب</h4>
+              <h5>{service?.attributes?.personalInformation?.fatherName}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">اسم جده</h4>
+              <h5>{service?.attributes?.personalInformation?.grandFatherName}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">بريد إلكتروني</h4>
+              <h5>{service?.attributes?.personalInformation?.email}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">عنوان</h4>
+              <h5>{service?.attributes?.personalInformation?.address}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">رقم الهوية</h4>
+              <h5>{service?.attributes?.personalInformation?.idNumber}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">رقم الهاتف المحمول</h4>
+              <h5>{service?.attributes?.personalInformation?.mobileNumber}</h5>
+            </div>
+
+            <div className="col-span-12">
+              <h4 className="text-xl font-semibold mb-1">2. طلب ​​المعلومات</h4>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">اسم الخدمة</h4>
+              <h5>{service?.attributes?.serviceName}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">فئة</h4>
+              <h5>{service?.attributes?.requestInformation
+                  ?.applicantCategory}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">تخصص</h4>
+              <h5>{service?.attributes?.requestInformation
+                  ?.specialty}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">نوع التأهيل</h4>
+              <h5>{service?.attributes?.requestInformation
+                  ?.qualificationType}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">الحاله المهنية</h4>
+              <h5>{service?.attributes?.requestInformation
+                  ?.professionalStatus}</h5>
+            </div>
+
+            <div className="col-span-12">
+              <h4 className="text-xl font-semibold mb-1">وصف</h4>
+              <h5>{service?.attributes?.requestInformation
+                  ?.qualificationDesc}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">تاريخ الإنشاء</h4>
+              <h5>{service?.attributes?.createdAt.slice(0, 10)}</h5>
+            </div>            
+          </div>
+        </div>
+      </Modal>
 
       <Modal
         centered

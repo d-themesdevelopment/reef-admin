@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { toast } from "react-toastify";
+import ReactMarkdown from "react-markdown";
 
 import { message, Modal, Input } from "antd";
 import { Button } from "antd";
@@ -134,6 +135,8 @@ const MediaCenterContent = ({ role, articlesData, apiUrl, apiToken }) => {
   };
 
   const [search, setSearch] = useState("");
+  const [openViewModal, setOpenViewModal] = useState(true);
+
 
   return (
     <>
@@ -226,12 +229,13 @@ const MediaCenterContent = ({ role, articlesData, apiUrl, apiToken }) => {
 
 
                 <tbody className="bg-white dark:bg-gray-800">
-                  {articles.filter((item) =>
+                  {articles?.filter((item) =>
                     item?.attributes?.title?.toLowerCase()
                       .includes(search)
                   )?.sort((a, b) => b.id - a.id)
                     ?.map((Article, index) => (
                       <tr
+                        onClick={() => {setOpenViewModal(true); setSelectedArticle(Article);}}
                         className="hover:bg-gray-100 dark:hover:bg-gray-700"
                         key={index}
                       >
@@ -280,7 +284,8 @@ const MediaCenterContent = ({ role, articlesData, apiUrl, apiToken }) => {
                             <td className="p-4 space-x-2 whitespace-nowrap">
                               <Button
                                 type="primary"
-                                onClick={() => {
+                                onClick={(e) => {
+                                  e.stopPropagation();
                                   setOpenArticleEdit(true);
                                   setSelectedArticle(Article);
                                 }}
@@ -304,7 +309,8 @@ const MediaCenterContent = ({ role, articlesData, apiUrl, apiToken }) => {
                                 Edit Article
                               </Button>
                               <Button
-                                onClick={() => {
+                                onClick={(e) => {
+                                  e.stopPropagation();
                                   setOpenArticleDelete(true);
                                   setSelectedArticle(Article);
                                 }}
@@ -335,6 +341,67 @@ const MediaCenterContent = ({ role, articlesData, apiUrl, apiToken }) => {
           </div>
         </div>
       </div>
+
+      <Modal
+        centered
+        open={openViewModal}
+        onCancel={() => {
+          setOpenViewModal(false);
+        }}
+        width={600}
+        footer={null}
+      >
+        <div className="py-5">
+          <div className="grid grid-flex-row grid-cols-12 gap-5">
+            <div className="col-span-12">
+              <span className="font-semibold flex items-center max-w-[286px] overflow-hidden text-ellipsis">
+                {selectedArticle?.attributes?.media ? (
+                  <img
+                    className="w-16 h-16 rounded-full rtl:ml-3 object-cover"
+                    src={
+                      selectedArticle?.attributes?.media?.image?.data
+                        ?.attributes?.url
+                    }
+                    alt={`avatar`}
+                  />
+                ) : (
+                  <div className="flex items-center justify-center font-semibold text-xl w-16 h-16 rounded-full rtl:ml-6 bg-gray-200">
+                    ?
+                  </div>
+                )}
+              </span>
+            </div>
+
+            <div className="col-span-12">
+              <h4 className="text-xl font-semibold mb-1">عنوان</h4>
+              <h5>{selectedArticle?.attributes?.title}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">فئة المقالة</h4>
+              <h5>{
+                            selectedArticle?.attributes?.article_category?.data
+                              ?.attributes?.title
+                          }</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">تاريخ الإنشاء</h4>
+              <h5>{selectedArticle?.attributes?.createdAt.slice(0, 10)}</h5>
+            </div>
+
+            <div className="col-span-12">
+              <h4 className="text-xl font-semibold mb-1">وصف</h4>
+              <h5>{selectedArticle?.attributes?.desc}</h5>
+            </div>
+
+            <div className="col-span-12">
+              <h4 className="text-xl font-semibold mb-1">جسم</h4>
+              <h5><ReactMarkdown>{selectedArticle?.attributes?.body}</ReactMarkdown></h5>
+            </div>
+          </div>
+        </div>
+      </Modal>
 
       <Modal
         centered

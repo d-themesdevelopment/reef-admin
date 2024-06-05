@@ -182,6 +182,7 @@ const JobTable = ({ role, jobsData, apiUrl, apiToken }) => {
   };
 
   const [search, setSearch] = useState("");
+  const [openViewModal, setOpenViewModal] = useState(false);
 
   return (
     <>
@@ -298,6 +299,7 @@ const JobTable = ({ role, jobsData, apiUrl, apiToken }) => {
                     ?.map((Job, index) => (
                       <tr
                         className="hover:bg-gray-100 dark:hover:bg-gray-700"
+                        onClick={() => { setOpenViewModal(true); setSelectedJob(Job);}}
                         key={index}
                       >
                         <td className="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
@@ -342,7 +344,7 @@ const JobTable = ({ role, jobsData, apiUrl, apiToken }) => {
 
                         {role?.indexOf("guest") < 0 && (
                           <td className="flex items-center">
-                            <td className="p-4 space-x-2 whitespace-nowrap">
+                            <div className="p-4 space-x-2 whitespace-nowrap">
                               <Button
                                 type="primary"
                                 onClick={() => {
@@ -389,7 +391,7 @@ const JobTable = ({ role, jobsData, apiUrl, apiToken }) => {
                                 </svg>
                                 Delete Job
                               </Button>
-                            </td>
+                            </div>
                           </td>
                         )}
                       </tr>
@@ -401,6 +403,49 @@ const JobTable = ({ role, jobsData, apiUrl, apiToken }) => {
         </div>
       </div>
 
+      <Modal
+        centered
+        open={openViewModal}
+        onCancel={() => {
+          setOpenViewModal(false);
+        }}
+        width={600}
+        footer={null}
+      >
+        <div className="py-5">
+          <div className="grid grid-flex-row grid-cols-12 gap-5">
+            <div className="col-span-12">
+              <h4 className="text-2xl font-semibold">مسمى وظيفي</h4>
+              <h5 className="text-lg">{selectedJob?.attributes?.title}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+                <h4 className="text-2xl font-semibold">فئة</h4>
+                <h5 className="text-lg">{selectedJob?.attributes?.job_category?.data?.attributes?.title}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+                <h4 className="text-2xl font-semibold">قسم</h4>
+                <h5 className="text-lg">{selectedJob?.attributes?.job_section?.data?.attributes?.title}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+                <h4 className="text-2xl font-semibold">يكتب</h4>
+                <h5 className="text-lg">{selectedJob?.attributes?.job_type?.data?.attributes?.title}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+                <h4 className="text-2xl font-semibold">الجدول الزمني</h4>
+                <h5 className="text-lg">{selectedJob?.attributes?.timeline.value.slice(0, 10)}</h5>
+            </div>
+
+            <div className="col-span-12">
+                <h4 className="text-2xl font-semibold">وصف</h4>
+                <h5 className="text-lg">{selectedJob?.attributes?.jobDescription?.value}</h5>
+            </div>
+          </div>
+        </div>
+      </Modal>
       <Modal
         centered
         open={openCustomerModal}

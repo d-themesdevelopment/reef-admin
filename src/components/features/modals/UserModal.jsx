@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import Loading from "../Loading";
 
 const UserModal = ({
+  isCustomer,
   apiUrl,
   apiToken,
   setOpenAddUserModal,
@@ -15,12 +16,18 @@ const UserModal = ({
     const registerationEndpoint = `${apiUrl}/api/auth/local/register`;
     const username = values.fullName;
     const email = values.email;
-    const password = generatePassword();
+    const password = values.password;
     const employee_roles = employeeRoles?.filter((employeeRole) =>
       values?.employeeRoles?.find(
         (item) => item === employeeRole?.attributes?.value
       )
     );
+
+    let data = {username, email, password};
+
+    if(isCustomer) {
+      data = {...data, employee_roles}
+    }
 
     const reqOptions = {
       method: "POST",
@@ -30,10 +37,7 @@ const UserModal = ({
         Authorization: `bearer ${apiToken}`,
       },
       body: JSON.stringify({
-        username,
-        email,
-        password,
-        employee_roles,
+        ...data
       }),
     };
 
@@ -76,38 +80,7 @@ const UserModal = ({
         progress: undefined,
         theme: "colored",
       });
-
-      const identifier = email;
-
-      await fetch(`${apiUrl}/api/auth/new-user`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `bearer ${apiToken}`,
-        },
-        body: JSON.stringify({
-          identifier,
-          password
-        }),
-      });
     }
-  };
-
-  const generatePassword = () => {
-    // Define the character set
-    const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
-
-    // Generate the random password
-    let result = "";
-    for (let i = 0; i < 12; i++) {
-      result += characters.charAt(
-        Math.floor(Math.random() * characters.length)
-      );
-    }
-
-    return result;
   };
 
   const [selectedItems, setSelectedItems] = useState([]);
@@ -165,7 +138,8 @@ const UserModal = ({
           <Input.Password />
         </Form.Item>
 
-        <Form.Item
+        {
+          !isCustomer &&  <Form.Item
           name="employeeRoles"
           label="Employee Roles"
           extra="Employee can have multi roles"
@@ -189,6 +163,7 @@ const UserModal = ({
             }))}
           />
         </Form.Item>
+        }
 
         <Form.Item>
           <Button type="primary" htmlType="submit">

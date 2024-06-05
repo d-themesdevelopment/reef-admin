@@ -39,6 +39,7 @@ const servicesData = await fetchApi({
   query: urlParamsObject,
   apiUrl: strapiUrl,
   apiToken: strapiToken,
+  locale: "ar"
 });
 
 const role = Astro.cookies.get("role")?.value;

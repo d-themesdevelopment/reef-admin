@@ -1,31 +1,12 @@
-import React, { useEffect, useMemo, useState } from "react";
-import styled from "styled-components";
-
-import { Label } from "../../../components/ui/label";
-
-import { message, Modal, Input } from "antd";
+import React, { useEffect, useState } from "react";
+import { Modal, Input } from "antd";
 import {
-  CheckCircleFilled,
-  CloseCircleFilled,
   DownloadOutlined,
 } from "@ant-design/icons";
 
-import { InboxOutlined, UploadOutlined } from "@ant-design/icons";
 import {
   Button,
-  Checkbox,
-  Col,
-  ColorPicker,
-  Form,
-  InputNumber,
-  Radio,
-  Rate,
-  Row,
   Select,
-  Slider,
-  Space,
-  Switch,
-  Upload,
 } from "antd";
 import Loading from "../../../components/common/Loading";
 import fetchApi from "../../../lib/strapi";
@@ -178,6 +159,8 @@ const JobRequestTable = ({ role, servicesData, apiUrl, apiToken }) => {
     }
   };
 
+  const [openViewModal, setOpenViewModal] = useState(false);
+
   return (
     <>
       {loading && <Loading />}
@@ -281,6 +264,7 @@ const JobRequestTable = ({ role, servicesData, apiUrl, apiToken }) => {
                       ?.sort((a, b) => b.id - a.id)
                       ?.map((service, index) => (
                         <tr
+                        onClick={() => {setOpenViewModal(true); handleUpdateService(service);}}
                           className="hover:bg-gray-100 dark:hover:bg-gray-700"
                           key={index}
                         >
@@ -311,6 +295,7 @@ const JobRequestTable = ({ role, servicesData, apiUrl, apiToken }) => {
                           <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
                             {service?.attributes?.attachedFile?.data ? (
                               <a
+                              onClick={(e) => e.stopPropagation()}
                                 className="flex items-center max-w-[200px] overflow-hidden text-ellipsis"
                                 target="__blank"
                                 href={
@@ -363,8 +348,9 @@ const JobRequestTable = ({ role, servicesData, apiUrl, apiToken }) => {
                               ) : (
                                 <Button
                                   className="bg-red-500 border-red-500 text-white font-semibold"
-                                  onClick={() => {
+                                  onClick={(e) => {
                                     setOpen(true);
+                                    e.stopPropagation();
                                     handleUpdateService(service);
                                   }}
                                 >
@@ -382,6 +368,76 @@ const JobRequestTable = ({ role, servicesData, apiUrl, apiToken }) => {
           </div>
         </div>
       </div>
+
+      <Modal
+        centered
+        open={openViewModal}
+        onCancel={() => {
+          setOpenViewModal(false);
+        }}
+        width={600}
+        footer={null}
+      >
+        <div className="py-5">
+          <div className="grid grid-flex-row grid-cols-12 gap-5">
+            <div className="col-span-12">
+                <h4 className="text-2xl font-semibold">مسمى وظيفي</h4>
+                <h5 className="text-lg">{service?.attributes?.jobTitle}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+                <h4 className="text-2xl font-semibold">اسم المستخدم</h4>
+                <h5 className="text-lg">{service?.attributes?.fullName?.value}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+                <h4 className="text-2xl font-semibold">بريد إلكتروني</h4>
+                <h5 className="text-lg">{service?.attributes?.email?.value}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+                <h4 className="text-2xl font-semibold">هاتف</h4>
+                <h5 className="text-lg">{service?.attributes?.phone?.value}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+                <h4 className="text-2xl font-semibold">رابط المحفظة</h4>
+                <h5 className="text-lg">{service?.attributes?.portfolioLink?.value}</h5>
+            </div>
+
+            <div className="col-span-12">
+                <h4 className="text-2xl font-semibold">غطاء الرسالة</h4>
+                <h5 className="text-lg">{service?.attributes?.coverLetter?.value}</h5>
+            </div>
+            
+            <div className="col-span-12">
+                <h4 className="text-2xl font-semibold">الملف المرفق</h4>
+                <h5 className="text-lg">
+                  {service?.attributes?.attachedFile?.data ? (
+                    <a
+                      className="text-primary"
+                      target="__blank"
+                      href={
+                        service?.attributes?.attachedFile?.data
+                          ?.attributes?.url
+                      }
+                    >
+                      <DownloadOutlined />
+                      <span className="mr-2">
+                        {
+                          service?.attributes?.attachedFile?.data
+                            ?.attributes?.name
+                        }
+                      </span>
+                    </a>
+                  ) : (
+                    <span>No file</span>
+                  )}
+                </h5>
+            </div>
+          </div>
+        </div>
+      </Modal>
 
       <Modal
         centered

@@ -372,6 +372,7 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
   };
 
   const [search, setSearch] = useState("");
+  const [openViewModal, setOpenViewModal] = useState(false);
 
   return (
     <>
@@ -489,6 +490,7 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                       ?.sort((a, b) => b.id - a.id)
                       ?.map((user, index) => (
                         <tr
+                          onClick={() => {setOpenViewModal(true); setSelectedUser(user);}}
                           className="hover:bg-gray-100 dark:hover:bg-gray-700"
                           key={index}
                         >
@@ -564,8 +566,6 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                               </div>
                             </td>
                           }
-
-
 
                           {role?.indexOf("admin") > -1 && (
                             <td className="p-4 text-base font-normal text-gray-900 whitespace-nowrap dark:text-white">
@@ -653,7 +653,8 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                             <td className="p-4 space-x-2 whitespace-nowrap">
                               <Button
                                 type="primary"
-                                onClick={() => {
+                                onClick={(e) => {
+                                  e.stopPropagation();
                                   setOpenUserEdit(true);
                                   setSelectedUser(user);
                                 }}
@@ -677,7 +678,8 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                                 Edit user
                               </Button>
                               <Button
-                                onClick={() => {
+                                onClick={(e) => {
+                                  e.stopPropagation();
                                   setOpenUserDelete(true);
                                   setSelectedUser(user);
                                 }}
@@ -708,6 +710,83 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
           </div>
         </div>
       </div>
+
+      <Modal
+        centered
+        open={openViewModal}
+        onCancel={() => {
+          setOpenViewModal(false);
+        }}
+        width={600}
+        footer={null}
+      >
+        <div className="py-5">
+          <div className="grid grid-flex-row grid-cols-12 gap-5">
+            <div className="col-span-12 flex items-center">
+              {selectedUser?.avatar ? (
+                <img
+                  className="w-16 h-16 rounded-full rtl:ml-6"
+                  src={selectedUser?.avatar?.url}
+                  alt={`avatar`}
+                />
+              ) : (
+                <div className="flex items-center justify-center font-semibold text-xl w-16 h-16 rounded-full rtl:ml-6 bg-gray-200">
+                  {selectedUser?.username?.charAt(0)}
+                </div>
+              )}
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">اسم المستخدم</h4>
+              <h5>{selectedUser?.username}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">بريد إلكتروني</h4>
+              <h5>{selectedUser?.email}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">رقم الهاتف المحمول</h4>
+              <h5>{selectedUser?.mobileNumber}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">اسم الشركة</h4>
+              <h5>{selectedUser?.companyName}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">عنوان</h4>
+              <h5>{selectedUser?.address}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">أدوار الموظفين</h4>
+              <h5>{selectedUser?.employee_roles?.length > 0
+                    ? selectedUser?.employee_roles?.map(
+                      (userRole, index) => (
+                        <button
+                          className={`ml-2 mb-2  px-2 py-2 rounded-lg text-xs ${selectedUser?.approvedEmployeeRole
+                            ? "bg-primary text-white"
+                            : "bg-gray-300"
+                            }`}
+                          key={index}
+                        >
+                          {userRole?.title}
+                        </button>
+                      )
+                    )
+                    : "Guest"}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+              <h4 className="text-xl font-semibold mb-1">وصف</h4>
+              <h5>{selectedUser?.desc}</h5>
+            </div>
+          </div>
+        </div>
+      </Modal>
 
       <Modal
         centered

@@ -143,10 +143,13 @@ const SignInForm = ({ apiUrl, apiToken }) => {
 
   const handleVerification = async () => {
     setLoading(true);
-
+ 
     if (verificationCode === verifiedCode) {
       setIsOpen(false);
-      Cookies.set("reef_admin_token", token, { expires: 60/1440 });
+      Cookies.set("reef_admin_token", token);
+
+      // Cookies.set("reef_admin_token", token, { expires: 60/1440 });
+
       const roles = users
         ?.find((item) => item.id === user?.id)
         ?.employee_roles?.map((role) => role?.value)
@@ -156,7 +159,7 @@ const SignInForm = ({ apiUrl, apiToken }) => {
         Cookies.set("role", "admin");
 
         setTimeout(() => {
-          toast.success("Login as admin successfully😎", {
+          toast.success("Login as admin successfully 😎", {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,

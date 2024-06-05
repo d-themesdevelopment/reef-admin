@@ -150,6 +150,7 @@ const ServiceTable = ({ role, servicesData, apiUrl, apiToken }) => {
   };
 
   const [search, setSearch] = useState("");
+  const [openViewModal, setOpenViewModal] = useState(false);
 
   return (
     <>
@@ -256,6 +257,7 @@ const ServiceTable = ({ role, servicesData, apiUrl, apiToken }) => {
                     ?.map((service, index) => (
                       <tr
                         className="hover:bg-gray-100 dark:hover:bg-gray-700"
+                        onClick={() => { setOpenViewModal(true); setSelectedService(service);}}
                         key={index}
                       >
                         <td className="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
@@ -362,6 +364,63 @@ const ServiceTable = ({ role, servicesData, apiUrl, apiToken }) => {
           </div>
         </div>
       </div>
+
+      <Modal
+        centered
+        open={openViewModal}
+        onCancel={() => {
+          setOpenViewModal(false);
+        }}
+        width={600}
+        footer={null}
+      >
+        <div className="py-5">
+          <div className="grid grid-flex-row grid-cols-12 gap-5">
+            <div className="col-span-12">
+              <h4 className="text-2xl font-semibold mb-2">عنوان</h4>
+              <span className="font-semibold flex items-center">
+                {selectedService?.attributes?.media ? (
+                  <img
+                    className="w-10 h-10 rounded-full rtl:ml-3"
+                    src={
+                      selectedService?.attributes?.media?.image?.data
+                        ?.attributes?.url
+                    }
+                    alt={`avatar`}
+                  />
+                ) : (
+                  <div className="flex items-center justify-center font-semibold text-xl w-10 h-10 rounded-full rtl:ml-6 bg-gray-200">
+                    ?
+                  </div>
+                )}
+
+                {selectedService?.attributes?.title}
+              </span>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+                <h4 className="text-2xl font-semibold mb-2">فئة</h4>
+                <h5 className="text-lg">{selectedService?.attributes?.category?.data?.attributes?.title}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+                <h4 className="text-2xl font-semibold mb-2">يوم عمل</h4>
+                <h5 className="text-lg">{selectedService?.attributes?.workingDay}</h5>
+            </div>
+
+            <div className="col-span-12 md:col-span-6">
+                <h4 className="text-2xl font-semibold mb-2">يكتب</h4>
+                <h5 className="text-lg">{selectedService?.attributes?.type}</h5>
+            </div>
+
+            <div className="col-span-12">
+                <h4 className="text-2xl font-semibold mb-2">وصف</h4>
+                <h5 className="text-lg">{selectedService?.attributes?.desc}</h5>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
 
       <Modal
         centered
