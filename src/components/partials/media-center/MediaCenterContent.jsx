@@ -135,7 +135,7 @@ const MediaCenterContent = ({ role, articlesData, apiUrl, apiToken }) => {
   };
 
   const [search, setSearch] = useState("");
-  const [openViewModal, setOpenViewModal] = useState(true);
+  const [openViewModal, setOpenViewModal] = useState(false);
 
 
   return (

@@ -372,8 +372,9 @@ const ServiceRequestTable = ({
                               ) : (
                                 <Button
                                   className="bg-red-500 border-red-500 text-white font-semibold"
-                                  onClick={() => {
+                                  onClick={(e) => {
                                     setOpen(true);
+                                    e.stopPropagation();
                                     handleUpdateService(service);
                                   }}
                                 >

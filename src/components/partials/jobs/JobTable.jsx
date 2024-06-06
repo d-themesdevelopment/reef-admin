@@ -347,7 +347,8 @@ const JobTable = ({ role, jobsData, apiUrl, apiToken }) => {
                             <div className="p-4 space-x-2 whitespace-nowrap">
                               <Button
                                 type="primary"
-                                onClick={() => {
+                                onClick={(e) => {
+                                  e.stopPropagation();
                                   setOpenJobEdit(true);
                                   setSelectedJob(Job);
                                 }}
@@ -371,7 +372,8 @@ const JobTable = ({ role, jobsData, apiUrl, apiToken }) => {
                                 Edit Job
                               </Button>
                               <Button
-                                onClick={() => {
+                                onClick={(e) => {
+                                  e.stopPropagation();
                                   setOpenJobDelete(true);
                                   setSelectedJob(Job);
                                 }}

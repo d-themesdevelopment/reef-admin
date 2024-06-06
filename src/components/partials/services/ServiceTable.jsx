@@ -310,7 +310,8 @@ const ServiceTable = ({ role, servicesData, apiUrl, apiToken }) => {
                           <td className="flex items-center p-4 space-x-2 whitespace-nowrap">
                             <Button
                               type="primary"
-                              onClick={() => {
+                              onClick={(e) => {
+                                e.stopPropagation();
                                 setOpenServiceEdit(true);
                                 setSelectedService(service);
                               }}
@@ -334,7 +335,8 @@ const ServiceTable = ({ role, servicesData, apiUrl, apiToken }) => {
                               Edit Service
                             </Button>
                             <Button
-                              onClick={() => {
+                              onClick={(e) => {
+                                e.stopPropagation();
                                 setOpenServiceDelete(true);
                                 setSelectedService(service);
                               }}

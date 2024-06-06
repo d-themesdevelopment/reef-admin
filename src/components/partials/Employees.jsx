@@ -538,7 +538,8 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                                   <button
                                     title="Edit"
                                     className="hover:text-primary"
-                                    onClick={() => {
+                                    onClick={(e) => {
+                                      e.stopPropagation();
                                       setOpenEmployee(true);
                                       setSelectedUser(user);
                                       setRoleEdit(true);
@@ -571,7 +572,9 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                             <td className="p-4 text-base font-normal text-gray-900 whitespace-nowrap dark:text-white">
                               <div className="flex items-center">
                                 <Select
-                                  onChange={() => {
+                                  onClick={(e) => e.stopPropagation()}
+                                  onChange={(e) => {
+                                    e.stopPropagation();
                                     setOpenApproved(true);
                                     setSelectedUser(user);
                                   }}
@@ -602,7 +605,9 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                               <div className="flex items-center">
                                 <>
                                   <Select
-                                    onChange={() => {
+                                    onClick={(e) => e.stopPropagation()}
+                                    onChange={(e) => {
+                                      e.stopPropagation();
                                       setOpenEmployee(true);
                                       setSelectedUser(user);
                                     }}
