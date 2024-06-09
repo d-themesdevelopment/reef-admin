@@ -146,9 +146,9 @@ const SignInForm = ({ apiUrl, apiToken }) => {
  
     if (verificationCode === verifiedCode) {
       setIsOpen(false);
-      Cookies.set("reef_admin_token", token);
+      // Cookies.set("reef_admin_token", token);
 
-      // Cookies.set("reef_admin_token", token, { expires: 60/1440 });
+      Cookies.set("reef_admin_token", token, { expires: 60/1440 });
 
       const roles = users
         ?.find((item) => item.id === user?.id)

@@ -56,11 +56,7 @@ const ServiceEditModal = ({
     let data = {};
 
     if (values?.title) {
-      data = { ...data, title: values?.title };
-    }
-
-    if (values?.slug) {
-      data = { ...data, slug: values?.slug };
+      data = { ...data, title: values?.title, slug: values?.title?.toLowerCase().replaceAll(" ", "-").replaceAll(".", "") };
     }
 
     if (values?.desc) {
@@ -248,7 +244,6 @@ const ServiceEditModal = ({
         autoComplete="off"
         initialValues={{
           title: selectedService?.attributes?.title,
-          slug: selectedService?.attributes?.slug,
           desc: selectedService?.attributes?.desc,
           body: selectedService?.attributes?.body,
           type: selectedService?.attributes?.type,
@@ -267,21 +262,6 @@ const ServiceEditModal = ({
                 {
                   required: true,
                   message: "Please input your title!",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          </div>
-
-          <div className="col-span-12 sm:col-span-6">
-            <Form.Item
-              label="Slug"
-              name="slug"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your slug!",
                 },
               ]}
             >

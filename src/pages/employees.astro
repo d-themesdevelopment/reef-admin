@@ -17,16 +17,15 @@ if (role?.indexOf("admin") < 0 && role?.indexOf("hr") < 0) {
   return Astro.redirect("/");
 }
 const urlParamsObject = {
-  populate: "*",
+  populate: "*"
 };
 
 const employeeRoles = await fetchApi({
   endpoint: "employee-roles", // the content type to fetch
   query: urlParamsObject,
   apiUrl: apiUrl,
-  apiToken: apiToken,
+  apiToken: apiToken
 });
-
 ---
 
 <Layout title="Employees Page">
@@ -34,9 +33,11 @@ const employeeRoles = await fetchApi({
     role={role}
     apiUrl={apiUrl}
     apiToken={apiToken}
-    employeeRoles={employeeRoles?.filter(
-      (item: any) => item?.attributes?.value !== "admin",
-    )}
+    employeeRoles={role?.indexOf("admin") > -1
+      ? employeeRoles
+      : employeeRoles?.filter(
+          (item: any) => item?.attributes?.value !== "admin"
+        )}
     client:only="react"
   />
 </Layout>

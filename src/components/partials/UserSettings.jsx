@@ -168,7 +168,7 @@ const UserSettings = ({ user, pageData, apiUrl, apiToken }) => {
                   JPG, GIF or PNG. Max size of 800K
                 </div>
                 <div className="flex items-center">
-                  <Upload {...props}>
+                  <Upload accept="image/*" {...props}>
                     <Button type="primary">
                       {pageData?.editProfilePicture}
                     </Button>

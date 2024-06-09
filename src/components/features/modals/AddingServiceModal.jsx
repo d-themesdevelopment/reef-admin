@@ -75,11 +75,7 @@ const AddingServiceModal = ({
     let data = {};
 
     if (values?.title) {
-      data = { ...data, title: values?.title };
-    }
-
-    if (values?.slug) {
-      data = { ...data, slug: values?.slug };
+      data = { ...data, title: values?.title, slug: values?.title?.toLowerCase().replaceAll(" ", "-").replaceAll(".", "") };
     }
 
     if (values?.desc) {
@@ -195,21 +191,6 @@ const AddingServiceModal = ({
                 {
                   required: true,
                   message: "Please input your title!",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          </div>
-
-          <div className="col-span-12 sm:col-span-6">
-            <Form.Item
-              label="Slug"
-              name="slug"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your slug!",
                 },
               ]}
             >

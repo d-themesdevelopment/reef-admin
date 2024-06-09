@@ -574,7 +574,6 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                                 <Select
                                   onClick={(e) => e.stopPropagation()}
                                   onChange={(e) => {
-                                    e.stopPropagation();
                                     setOpenApproved(true);
                                     setSelectedUser(user);
                                   }}
@@ -607,7 +606,6 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                                   <Select
                                     onClick={(e) => e.stopPropagation()}
                                     onChange={(e) => {
-                                      e.stopPropagation();
                                       setOpenEmployee(true);
                                       setSelectedUser(user);
                                     }}

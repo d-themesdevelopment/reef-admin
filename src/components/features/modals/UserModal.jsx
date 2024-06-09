@@ -16,7 +16,7 @@ const UserModal = ({
     const registerationEndpoint = `${apiUrl}/api/auth/local/register`;
     const username = values.fullName;
     const email = values.email;
-    const password = values.password;
+    const password = generatePassword();
     const employee_roles = employeeRoles?.filter((employeeRole) =>
       values?.employeeRoles?.find(
         (item) => item === employeeRole?.attributes?.value
@@ -80,7 +80,40 @@ const UserModal = ({
         progress: undefined,
         theme: "colored",
       });
+      
+      try {
+        await fetch(`${apiUrl}/api/auth/new-user`, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `bearer ${apiToken}`,
+          },
+          body: JSON.stringify({
+            identifier,
+            password
+          }),
+        });     
+      } catch (error) {
+        console.error(error);
+      }
     }
+  };
+
+  const generatePassword = () => {
+    // Define the character set
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
+
+    // Generate the random password
+    let result = "";
+    for (let i = 0; i < 12; i++) {
+      result += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
+    }
+
+    return result;
   };
 
   const [selectedItems, setSelectedItems] = useState([]);
@@ -91,10 +124,6 @@ const UserModal = ({
       <Form
         name="basic"
         layout="vertical"
-        initialValues={{
-          password: "1234567",
-          active: true,
-        }}
         autoComplete="off"
         onFinish={onfinish}
       >
@@ -122,20 +151,6 @@ const UserModal = ({
           ]}
         >
           <Input />
-        </Form.Item>
-
-        <Form.Item
-          label="Password"
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: "Please input your password!",
-            },
-          ]}
-          extra="Password must be at least 6 characters(default password: 1234567)"
-        >
-          <Input.Password />
         </Form.Item>
 
         {

@@ -37,11 +37,7 @@ const JobEditModal = ({
     let data = {};
 
     if (values?.title) {
-      data = { ...data, title: values?.title };
-    }
-
-    if (values?.slug) {
-      data = { ...data, slug: values?.slug };
+      data = { ...data, title: values?.title, slug: values?.title?.toLowerCase().replaceAll(" ", "-").replaceAll(".", "") };
     }
 
     if (values?.desc) {
@@ -185,7 +181,6 @@ const JobEditModal = ({
         autoComplete="off"
         initialValues={{
           title: selectedJob?.attributes?.title,
-          slug: selectedJob?.attributes?.slug,
           desc: selectedJob?.attributes?.jobDescription?.value,
           mainDutiesAndTasks:
             selectedJob?.attributes?.mainDutiesAndTasks?.value,
@@ -210,21 +205,6 @@ const JobEditModal = ({
                 {
                   required: true,
                   message: "Please input your title!",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          </div>
-
-          <div className="col-span-12 sm:col-span-6">
-            <Form.Item
-              label="Slug"
-              name="slug"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your slug!",
                 },
               ]}
             >

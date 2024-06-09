@@ -1,0 +1,29 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SignUpForm from "../components/partials/auth/SignUpForm";
+import fetchApi from "../lib/strapi";
+
+// Sign Up Page
+const apiUrl = import.meta.env.STRAPI_URL;
+const apiToken = import.meta.env.STRAPI_Token;
+
+const urlParamsObject = {
+  populate: "*",
+};
+
+const employeeRoles = await fetchApi({
+  endpoint: "eomployee-roles", // the content type to fetch
+  query: urlParamsObject,
+  apiUrl: apiUrl,
+  apiToken: apiToken,
+});
+---
+
+<Layout title="Sign Up Page">
+  <!-- <SignUpForm
+    apiUrl={apiUrl}
+    apiToken={apiToken}
+    employeeRoles={employeeRoles}
+    client:only="react"
+  /> -->
+</Layout>
