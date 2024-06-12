@@ -472,7 +472,7 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                         </th>
                       )}
 
-                      {(role?.indexOf("admin") > -1 || role?.indexOf("hr") > -1) && (
+                      {role?.indexOf("admin") > -1 && (
                         <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
                           Actions
                         </th>
@@ -652,7 +652,7 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                               </div>
                             </td>
                           )}
-                          {(role?.indexOf("admin") > -1 || role?.indexOf("hr") > -1) && (
+                          {role?.indexOf("admin") > -1 && (
                             <td className="p-4 space-x-2 whitespace-nowrap">
                               <Button
                                 type="primary"
@@ -802,6 +802,7 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
       >
         <UserModal
           roles={roles}
+          getUsers={getUsers()}
           apiUrl={apiUrl}
           setLoading={setLoading}
           apiToken={apiToken}

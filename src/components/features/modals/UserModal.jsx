@@ -10,6 +10,7 @@ const UserModal = ({
   setOpenAddUserModal,
   employeeRoles,
   setLoading,
+  getUsers
 }) => {
   const onfinish = async (values) => {
     setLoading(true);
@@ -25,8 +26,8 @@ const UserModal = ({
 
     let data = {username, email, password};
 
-    if(isCustomer) {
-      data = {...data, employee_roles}
+    if(!isCustomer) {
+      data = {...data, employee_roles, isEmployee: true}
     }
 
     const reqOptions = {
@@ -80,6 +81,8 @@ const UserModal = ({
         progress: undefined,
         theme: "colored",
       });
+
+      getUsers();
       
       try {
         await fetch(`${apiUrl}/api/auth/new-user`, {

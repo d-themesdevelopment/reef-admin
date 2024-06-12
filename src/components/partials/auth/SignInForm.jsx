@@ -1,7 +1,7 @@
 import qs from "qs";
 import Cookies from "js-cookie";
 import { Button, Input, Modal, Form } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import Loading from "../../../components/common/Loading";
 
@@ -21,6 +21,8 @@ const SignInForm = ({ apiUrl, apiToken }) => {
   const [verificationCode, setVerificationCode] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState();
+  const [form] = Form.useForm();
+  const inputRefs = useRef([]);
 
   useEffect(() => {
     const getUsers = async () => {
@@ -224,7 +226,7 @@ const SignInForm = ({ apiUrl, apiToken }) => {
         }
       }
     } else {
-      toast.error("Verification Failed", {
+      toast.error("Verification Code not correct!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -235,7 +237,22 @@ const SignInForm = ({ apiUrl, apiToken }) => {
         theme: "colored",
       });
 
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+        setIsOpen(false);
+        form.resetFields();
+        setVerificationCode("");
+      }, 1500);
+    }
+  };
+
+  const onInputKeyUp = (event, index) => {
+    if (event.key === 'Enter' || event.target.value.length === 1) {
+      const nextIndex = parseInt(index.slice(3, 4)) + 1;
+
+      if (nextIndex < 4) {
+        inputRefs.current[nextIndex].focus();
+      }
     }
   };
 
@@ -312,57 +329,78 @@ const SignInForm = ({ apiUrl, apiToken }) => {
         <div className="mb-0 py-6 px-4" style={{ textAlign: "center" }}>
           <h3 className="text-3xl font-semibold mb-5">Confirmation</h3>
 
-          <div className="verification-form flex items-center justify-between">
-            <input
-              className="w-16 h-20 border rounded-lg flex items-center justify-center text-center text-4xl"
-              onChange={(e) => {
-                setVerificationCode(verificationCode.concat(e.target.value));
-              }}
-              maxLength={1}
-              type="text"
-            />
+          <Form form={form} onFinish={handleVerification}>
+            <div className="flex items-center justify-between">
+              <Form.Item
+                name={['tfa', '0']}
+              >
+                <Input
+                  maxLength={1}
+                  className="text-4xl"
+                  style={{ width: '72px', height: "80px", textAlign: 'center' }}
+                  onKeyUp={(event) => onInputKeyUp(event, 'tfa0')}
+                  onChange={(e) => {
+                    setVerificationCode(verificationCode.concat(e.target.value));
+                  }}
+                  ref={(input) => (inputRefs.current[0] = input)}
+                />
+              </Form.Item>
 
-            <input
-              className="w-16 h-20 border rounded-lg flex items-center justify-center text-center text-4xl"
-              onChange={(e) => {
-                setVerificationCode(verificationCode.concat(e.target.value));
-              }}
-              maxLength={1}
-              type="text"
-            />
+              <Form.Item
+                name={['tfa', '1']}
+              >
+                <Input
+                  maxLength={1}
+                  className="text-4xl"
+                  style={{ width: '72px', height: "80px", textAlign: 'center' }}
+                  onKeyUp={(event) => onInputKeyUp(event, 'tfa1')}
+                  onChange={(e) => {
+                    setVerificationCode(verificationCode.concat(e.target.value));
+                  }}
+                  ref={(input) => (inputRefs.current[1] = input)}
+                />
+              </Form.Item>
 
-            <input
-              className="w-16 h-20 border rounded-lg flex items-center justify-center text-center text-4xl"
-              onChange={(e) => {
-                setVerificationCode(verificationCode.concat(e.target.value));
-              }}
-              maxLength={1}
-              type="text"
-            />
+              <Form.Item
+                name={['tfa', '2']}
+              >
+                <Input
+                  maxLength={1}
+                  className="text-4xl"
+                  style={{ width: '72px', height: "80px", textAlign: 'center' }}
+                  onKeyUp={(event) => onInputKeyUp(event, 'tfa2')}
+                  onChange={(e) => {
+                    setVerificationCode(verificationCode.concat(e.target.value));
+                  }}
+                  ref={(input) => (inputRefs.current[2] = input)}
+                />
+              </Form.Item>
 
-            <input
-              className="w-16 h-20 border rounded-lg flex items-center justify-center text-center text-4xl"
-              onChange={(e) => {
-                setVerificationCode(verificationCode.concat(e.target.value));
-              }}
-              maxLength={1}
-              type="text"
-            />
-          </div>
+              <Form.Item
+                name={['tfa', '3']}
+              >
+                <Input
+                  maxLength={1}
+                  className="text-4xl"
+                  style={{ width: '72px', height: "80px", textAlign: 'center' }}
+                  onKeyUp={(event) => onInputKeyUp(event, 'tfa3')}
+                  onChange={(e) => {
+                    setVerificationCode(verificationCode.concat(e.target.value));
+                  }}
+                  ref={(input) => (inputRefs.current[3] = input)}
+                />
+              </Form.Item>
+            </div>
 
-          <Button
-            type="primary"
-            size="large"
-            onClick={(e) => {
-              e.preventDefault();
-              handleVerification();
-            }}
-            className="f-form-button next w-button inline-block mt-7"
-            style={{ display: "inline-flex" }}
-          >
-            Verify
-          </Button>
+            <Form.Item className="mb-0">
+              <Button type="primary" htmlType="submit" size="large">
+                Verify
+              </Button>
+            </Form.Item>
+          </Form>
         </div>
+
+        
       </Modal>
 
     </>
