@@ -83,6 +83,7 @@ const UserModal = ({
       });
 
       getUsers();
+      const identifier = email;
       
       try {
         await fetch(`${apiUrl}/api/auth/new-user`, {
