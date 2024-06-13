@@ -24,12 +24,12 @@ const { title } = Astro.props;
 const pathname = Astro.url.pathname;
 
 if (Astro.cookies.has("reef_admin_token")) {
-  const data: any = await getCurrentUser(
-    Astro.cookies.get("reef_admin_token")?.value as string
-  );
+  // const data: any = await getCurrentUser(
+  //   Astro.cookies.get("reef_admin_token")?.value as string
+  // );
 
-  console.log(data, "Loaded");
-  userStore.set(data);
+  // console.log(data, "Loaded");
+  // userStore.set(data);
 }
 
 const role = Astro.cookies.get("role")?.value;

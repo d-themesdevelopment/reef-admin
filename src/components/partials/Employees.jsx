@@ -802,7 +802,7 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
       >
         <UserModal
           roles={roles}
-          getUsers={getUsers()}
+          getUsers={getUsers}
           apiUrl={apiUrl}
           setLoading={setLoading}
           apiToken={apiToken}
