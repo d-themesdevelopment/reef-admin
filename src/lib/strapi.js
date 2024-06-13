@@ -26,7 +26,7 @@ export default async function fetchApi({
 
   const queryString = qs.stringify(query);
 
-  const requestUrl = `${apiUrl}/api/${endpoint}?${queryString}`;
+  const requestUrl = `${apiUrl}/api/${endpoint}?${queryString}&locale=${locale}`;
 
   try {
     const res = await fetch(requestUrl, mergedOptions);
