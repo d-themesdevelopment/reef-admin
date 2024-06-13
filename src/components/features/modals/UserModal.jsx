@@ -161,11 +161,6 @@ const UserModal = ({
           name="employeeRoles"
           label="Employee Roles"
           extra="Employee can have multi roles"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
         >
           <Select
             mode="multiple"
