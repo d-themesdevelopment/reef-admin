@@ -84,3 +84,14 @@ const role = Astro.cookies.get("role")?.value;
     />
   </body>
 </html>
+
+<script>
+  import Cookies from "js-cookie";
+  const isloggedIn = Cookies.get("reef_admin_token");
+
+  if (!isloggedIn) {
+    if(window.location.href?.indexOf("signin") < 0) {
+      window.location.href = "/signin";
+    }
+  }
+</script>

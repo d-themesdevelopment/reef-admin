@@ -143,6 +143,28 @@ const SignInForm = ({ apiUrl, apiToken }) => {
     }
   };
 
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        setIsOpen(false);
+        setVerifiedCode(0);
+        setLoading(false);
+        setVerificationCode("");
+
+        toast.warn("Session timeout!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }, 60000);
+    }
+  }, [isOpen]);
+
   const handleVerification = async () => {
     setLoading(true);
  
