@@ -30,7 +30,7 @@ if (Astro.cookies.has("reef_admin_token")) {
 
   console.log(data, "Loaded");
   userStore.set(data);
-}
+} 
 
 const role = Astro.cookies.get("role")?.value;
 ---

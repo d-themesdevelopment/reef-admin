@@ -395,7 +395,7 @@ const CustomersTable = ({ role, apiUrl, apiToken, employeeRoles }) => {
               </div>
 
               <div className="flex items-center rtl:ml-0 rtl:mr-auto ml-auto space-x-2 sm:space-x-3">
-                {role?.indexOf("guest") < 0 && (
+                {/* {role?.indexOf("guest") < 0 && (
                   <Button
                     type="primary"
                     onClick={() => setOpenAddUserModal(true)}
@@ -415,7 +415,7 @@ const CustomersTable = ({ role, apiUrl, apiToken, employeeRoles }) => {
                     </svg>
                     Add user
                   </Button>
-                )}
+                )} */}
               </div>
             </div>
           </div>

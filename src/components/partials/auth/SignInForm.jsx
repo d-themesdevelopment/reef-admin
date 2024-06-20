@@ -326,13 +326,6 @@ const SignInForm = ({ apiUrl, apiToken }) => {
             <Input.Password />
           </Form.Item>
 
-          <div className="mb-5">
-            Don't have an account?{" "}
-            <a href="/signup" className="font-semibold text-primary">
-              Register today
-            </a>
-          </div>
-
           <Form.Item className="mb-0">
             <Button type="primary" htmlType="submit">
               Login

@@ -6,7 +6,6 @@ import ServiceRequestTable from "../components/partials/services/ServiceRequestT
 if (!Astro.cookies.has("reef_admin_token")) {
   return Astro.redirect("/signin");
 }
-
 const urlParamsObject = {
   populate: {
     user: {

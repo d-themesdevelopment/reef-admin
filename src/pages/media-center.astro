@@ -6,7 +6,6 @@ import MediaCenterContent from "../components/partials/media-center/MediaCenterC
 if (!Astro.cookies.has("reef_admin_token")) {
   return Astro.redirect("/signin");
 }
-
 const urlParamsObject = {
   populate: {
     user: {

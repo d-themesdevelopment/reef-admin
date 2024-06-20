@@ -46,6 +46,10 @@ const UserEditModal = ({
       data = { ...data, mobileNumber: values?.mobileNumber };
     }
 
+    if (values?.extNumber) {
+      data = { ...data, extNumber: values?.extNumber };
+    }
+
     try {
       const req = await fetch(`${apiUrl}/api/users/${selectedUser?.id}`, {
         method: "PUT",
@@ -125,6 +129,7 @@ const UserEditModal = ({
           grandFatherName: selectedUser?.grandFatherName,
           address: selectedUser?.address,
           mobileNumber: selectedUser?.mobileNumber,
+          extNumber: selectedUser?.extNumber
           //   active: selectedUser?.approvedAsEmployee,
         }}
         autoComplete="off"
@@ -169,6 +174,12 @@ const UserEditModal = ({
 
           <div className="col-span-12 sm:col-span-6">
             <Form.Item label="Mobile Number" name="mobileNumber">
+              <Input />
+            </Form.Item>
+          </div>
+
+          <div className="col-span-12 sm:col-span-6">
+            <Form.Item label="Ext Number" name="extNumber">
               <Input />
             </Form.Item>
           </div>

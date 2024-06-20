@@ -8,7 +8,6 @@ import { getCurrentUser } from "../utils/user";
 if (!Astro.cookies.has("reef_admin_token")) {
   return Astro.redirect("/signin");
 }
-
 const strapiUrl = import.meta.env.STRAPI_URL;
 const strapiToken = import.meta.env.STRAPI_Token;
 

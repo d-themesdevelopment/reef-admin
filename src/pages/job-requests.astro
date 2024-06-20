@@ -7,7 +7,6 @@ import { roleStore } from "../store/roleStroe";
 if (!Astro.cookies.has("reef_admin_token")) {
   return Astro.redirect("/signin");
 }
-
 const urlParamsObject = {
   populate: {
     fullName: {

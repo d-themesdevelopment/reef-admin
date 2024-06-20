@@ -1,6 +1,8 @@
 import { Button, Form, Input, Upload } from "antd";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import qs from "qs";
+
 import Loading from "../common/Loading";
 
 const UserSettings = ({ user, pageData, apiUrl, apiToken }) => {
@@ -129,10 +131,90 @@ const UserSettings = ({ user, pageData, apiUrl, apiToken }) => {
     });
   };
 
-  const handleUpdatePassword = (values) => {
-    handleUpdateFunc({
-      password: values?.password,
-    });
+  const handleUpdatePassword = async (values) => {
+    setLoading(true);
+
+    const identifier = user?.email;
+    const password = values.currentPassword;
+
+    const urlParamsObject = {
+      populate: "*",
+    };
+
+    const queryString = qs.stringify(urlParamsObject);
+    const requestUrl = `${apiUrl}/api/auth/local?${queryString}`;
+
+    try {
+      const response = await fetch(`${requestUrl}`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `bearer ${apiToken}`,
+        },
+        body: JSON.stringify({
+          identifier,
+          password,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+
+        if (data.jwt) {
+          await handleUpdateProfile({
+            password: values.newPassword,
+          });
+
+          toast.success("👌 Updated your password successfully", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+
+          setTimeout(() => {
+            setLoading(false);
+            setConfirmation(false);
+          }, 1500);
+        }
+      } else {
+        toast.error("Current password not correct!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+
+        setTimeout(() => {
+          setLoading(false);
+          setConfirmation(false);
+        }, 1500);
+      }
+    } catch (error) {
+      console.error("Error occurred during login:", error);
+
+      toast.error("Server Error!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+
+      setLoading(false);
+    }
   };
 
   console.log(user, "fileListfileList");
@@ -270,17 +352,12 @@ const UserSettings = ({ user, pageData, apiUrl, apiToken }) => {
               <div className="grid grid-flex-row grid-cols-12 gap-4">
                 <div className="col-span-12 md:col-span-6">
                   <Form.Item
-                    label={pageData?.newPassword?.title}
-                    name="password"
+                    label={pageData?.currentPassword?.title}
+                    name="currentPassword"
                     rules={[
                       {
                         required: true,
-                        message: "Please input your password!",
-                      },
-                      {
-                        required: true,
-                        message: "Please input more than 6 characters",
-                        min: 6,
+                        message: "Please input your old password!",
                       },
                     ]}
                   >
@@ -289,6 +366,27 @@ const UserSettings = ({ user, pageData, apiUrl, apiToken }) => {
                 </div>
 
                 <div className="col-span-12 md:col-span-6">
+                  <Form.Item
+                    label={pageData?.newPassword?.title}
+                    name="password"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your password!",
+                      },
+                      {
+                        pattern:
+                          /^(?=.*[A-Z])(?=.*\d{2,})(?=.*[~!@#$%^&*_\-+=`|(){}:;"'<>,.?/])[A-Za-z\d~!@#$%^&*_\-+=`|(){}:;"'<>,.?/]{12,}$/,
+                        message:
+                          `1. At leaset one uppercase letter. 2. At least one lowercase letter. 3. At least two digits(0-9). 4. Must include a special charater: ~~!@#$%^&*_\-+=|(){}[]:;"'<>,.?/. 5. Spaces are not allowed in the password.`,
+                      },
+                    ]}
+                  >
+                    <Input.Password />
+                  </Form.Item>
+                </div>
+
+                {/* <div className="col-span-12 md:col-span-6">
                   <Form.Item
                     label="تأكيد كلمة المرور"
                     name="confirmPassword"
@@ -313,7 +411,7 @@ const UserSettings = ({ user, pageData, apiUrl, apiToken }) => {
                   >
                     <Input.Password />
                   </Form.Item>
-                </div>
+                </div> */}
 
                 <div className="col-span-12">
                   <Form.Item className="mb-0">

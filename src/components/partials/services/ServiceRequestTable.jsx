@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Label } from "../../../components/ui/label";
 
 import { message, Modal, Input } from "antd";
-import { CheckCircleFilled, CloseCircleFilled } from "@ant-design/icons";
+import { CheckCircleFilled, CheckCircleOutlined, CheckOutlined, CloseCircleFilled, FilePdfOutlined, FileTextOutlined } from "@ant-design/icons";
 
 import { InboxOutlined, UploadOutlined } from "@ant-design/icons";
 import {
@@ -256,12 +256,12 @@ const ServiceRequestTable = ({
                 <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
                   <thead className="bg-gray-50 dark:bg-gray-700">
                     <tr>
-                      <th
+                      {/* <th
                         scope="col"
                         className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
                       >
                         Service ID
-                      </th>
+                      </th> */}
                       <th
                         scope="col"
                         className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
@@ -302,6 +302,7 @@ const ServiceRequestTable = ({
                       )}
                     </tr>
                   </thead>
+                  
                   <tbody className="bg-white dark:bg-gray-800">
                     {services
                       ?.filter((item) =>
@@ -317,11 +318,11 @@ const ServiceRequestTable = ({
                           className="hover:bg-gray-100 dark:hover:bg-gray-700"
                           key={index}
                         >
-                          <td className="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                          {/* <td className="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
                             <span className="font-semibold">
                               {service?.attributes?.serviceID}
                             </span>
-                          </td>
+                          </td> */}
                           <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
                             {service?.attributes?.serviceName}
                           </td>
@@ -366,8 +367,10 @@ const ServiceRequestTable = ({
                             <td>
                               {service?.attributes?.confirmation &&
                               !service?.attributes?.rejected ? (
-                                <span className="text-green-800 text-success border-black font-semibold">
-                                  Done
+                                <span className="relative text-green-800 text-success border-black font-semibold">
+                                  <FileTextOutlined className="text-2xl"/>
+
+                                  <CheckCircleFilled className="bg-white absolute -bottom-1 -right-1"/>
                                 </span>
                               ) : (
                                 <Button

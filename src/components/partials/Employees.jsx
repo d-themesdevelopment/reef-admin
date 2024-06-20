@@ -447,10 +447,10 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                         Mobile Number
                       </th>
                       <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
-                        Company Name
+                        Ext Number
                       </th>
                       <th className="p-4 text-xs font-medium text-left rtl:text-right text-gray-500 uppercase dark:text-gray-400">
-                        Address
+                        Email
                       </th>
 
                       {
@@ -511,9 +511,6 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                               <div className="text-base font-semibold text-gray-900 dark:text-white">
                                 {user?.username}
                               </div>
-                              <div className="text-sm font-normal text-gray-500 dark:text-gray-400">
-                                {user?.email}
-                              </div>
                             </div>
                           </td>
 
@@ -522,13 +519,11 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
                           </td>
 
                           <td className="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400">
-                            {user?.companyName}
+                            {user?.extNumber ?? user?.extNumber}
                           </td>
 
-
-
                           <td className="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400">
-                            {user?.address}
+                            {user?.email}
                           </td>
 
                           {
