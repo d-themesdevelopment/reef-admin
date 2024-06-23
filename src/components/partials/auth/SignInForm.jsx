@@ -3,6 +3,8 @@ import Cookies from "js-cookie";
 import { Button, Input, Modal, Form } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
+
+// Import Custom Components
 import Loading from "../../../components/common/Loading";
 
 const urlParamsObject = {
@@ -414,8 +416,6 @@ const SignInForm = ({ apiUrl, apiToken }) => {
             </Form.Item>
           </Form>
         </div>
-
-        
       </Modal>
 
     </>

@@ -3,15 +3,18 @@ import Sidebar from "../components/partials/Sidebar";
 import NavBarSidebar from "../components/partials/NavBarSidebar.astro";
 import FooterSidebar from "../components/common/FooterSidebar.astro";
 import { ToastContainer, toast } from "react-toastify";
+import { ConfigProvider } from 'antd';
 
 import { getCurrentUser } from "../utils/user";
 
 // Import Store
 import { userStore } from "../store/UserStore";
-import { roleStore } from "../store/roleStroe";
+
 
 // Import Library Styles
 import "react-toastify/dist/ReactToastify.css";
+
+import theme from "../styles/theme";
 
 // Import Global Styles
 import "../styles/globals.scss";
@@ -45,43 +48,44 @@ const role = Astro.cookies.get("role")?.value;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
+
   <body>
-    {
-      !pathname.includes("signin") && !pathname.includes("signup") && !pathname.includes("404") ? (
-        <>
-          <NavBarSidebar />
-
-          <Sidebar role={role} client:only="react" />
-
-          <div class="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900">
-            <div
-              id="main-content"
-              class="relative w-full h-full overflow-y-auto bg-gray-50 lg:rtl:ml-0 lg:rtl:mr-64 lg:ml-64 dark:bg-gray-900 min-h-screen"
-            >
-              <slot />
-
-              <FooterSidebar />
+      {
+        !pathname.includes("signin") && !pathname.includes("signup") && !pathname.includes("404") ? (
+          <>
+            <NavBarSidebar />
+  
+            <Sidebar role={role} client:only="react" />
+  
+            <div class="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900">
+              <div
+                id="main-content"
+                class="relative w-full h-full overflow-y-auto bg-gray-50 lg:rtl:ml-0 lg:rtl:mr-64 lg:ml-64 dark:bg-gray-900 min-h-screen"
+              >
+                <slot />
+  
+                <FooterSidebar />
+              </div>
             </div>
-          </div>
-        </>
-      ) : (
-        <slot />
-      )
-    }
-
-    <ToastContainer
-      client:only="react"
-      position="top-right"
-      autoClose={5000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="light"
-    />
+          </>
+        ) : (
+          <slot />
+        )
+      }
+  
+      <ToastContainer
+        client:only="react"
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />   
   </body>
 </html>
 

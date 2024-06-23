@@ -13,7 +13,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 215 100% 54%;
+    --primary: 171 100% 31%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -269,4 +269,29 @@ html body {
   .ant-upload-list-item-actions {
     display: none !important;
   }
+}
+
+.ant-btn-primary {
+  background-color: #00a087; /* Change the background color */
+  border-color: #00a087; /* Change the border color */
+}
+
+.ant-btn-primary:hover,
+.ant-btn-primary:focus {
+  background-color: #00a087b3 !important; /* Change the hover and focus background color */
+  border-color: #00a087b3 !important; /* Change the hover and focus border color */
+}
+
+a:hover {
+  color: #00a087;
+}
+
+.ant-input:hover,
+.ant-input:active,
+.ant-input:focus,
+.ant-select .ant-select-selector:hover,
+.ant-select .ant-select-selector:active,
+.ant-select .ant-select-selector:focus {
+  box-shadow: 0 0 0 2px #00a0871a !important;
+  border-color: #00a087 !important; 
 }
