@@ -163,7 +163,7 @@ const SignInForm = ({ apiUrl, apiToken }) => {
           progress: undefined,
           theme: "colored",
         });
-      }, 60000);
+      }, 120000);
     }
   }, [isOpen]);
 
