@@ -174,7 +174,8 @@ const SignInForm = ({ apiUrl, apiToken }) => {
       setIsOpen(false);
       // Cookies.set("reef_admin_token", token);
 
-      Cookies.set("reef_admin_token", token, { expires: 60/1440 });
+      // Cookies.set("reef_admin_token", token, { expires: 60/1440 });
+      Cookies.set("reef_admin_token", token, { expires: 120/1440 });
 
       const roles = users
         ?.find((item) => item.id === user?.id)
