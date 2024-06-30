@@ -159,7 +159,7 @@ const ServiceTable = ({ role, servicesData, apiUrl, apiToken }) => {
       <div className="items-end justify-between lg:flex">
         <div className="mb-4 lg:mb-0">
           <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
-            All Services
+            الخدمات
           </h3>
           <Input
             className="h-[42px] w-[382px]"
@@ -191,7 +191,7 @@ const ServiceTable = ({ role, servicesData, apiUrl, apiToken }) => {
                   clipRule="evenodd"
                 ></path>
               </svg>
-              Add Service
+              اضافة خدمة
             </Button>
           )}
         </div>
@@ -208,34 +208,34 @@ const ServiceTable = ({ role, servicesData, apiUrl, apiToken }) => {
                       scope="col"
                       className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
                     >
-                      Title
+                      عنوان الخدمة
                     </th>
                     <th
                       scope="col"
                       className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
                     >
-                      Desc
-                    </th>
-
-                    <th
-                      scope="col"
-                      className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
-                    >
-                      Category
+                      وصف الخدمة
                     </th>
 
                     <th
                       scope="col"
                       className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
                     >
-                      Working Day
+                      الفئة
                     </th>
 
                     <th
                       scope="col"
                       className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
                     >
-                      Type
+                      مدة تنفيذ الخدمة
+                    </th>
+
+                    <th
+                      scope="col"
+                      className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
+                    >
+                      الحالة
                     </th>
 
                     {role?.indexOf("guest") < 0 && (
@@ -243,7 +243,7 @@ const ServiceTable = ({ role, servicesData, apiUrl, apiToken }) => {
                         scope="col"
                         className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
                       >
-                        Actions
+                        الاجرائات
                       </th>
                     )}
                   </tr>
@@ -332,7 +332,7 @@ const ServiceTable = ({ role, servicesData, apiUrl, apiToken }) => {
                                   />
                                 </>
                               </svg>
-                              Edit Service
+                              تعديل
                             </Button>
                             <Button
                               onClick={(e) => {
@@ -354,7 +354,7 @@ const ServiceTable = ({ role, servicesData, apiUrl, apiToken }) => {
                                   clipRule="evenodd"
                                 />
                               </svg>
-                              Delete Service
+                              حذف
                             </Button>
                           </td>
                         )}
@@ -411,7 +411,7 @@ const ServiceTable = ({ role, servicesData, apiUrl, apiToken }) => {
             </div>
 
             <div className="col-span-12 md:col-span-6">
-                <h4 className="text-2xl font-semibold mb-2">يكتب</h4>
+                <h4 className="text-2xl font-semibold mb-2">الحالة</h4>
                 <h5 className="text-lg">{selectedService?.attributes?.type}</h5>
             </div>
 
@@ -474,17 +474,17 @@ const ServiceTable = ({ role, servicesData, apiUrl, apiToken }) => {
         width={300}
         footer={null}
       >
-        <h3 className="text-2xl font-semibold mb-6 text-center">Are u sure?</h3>
+        <h3 className="text-2xl font-semibold mb-6 text-center">متأكد من حذف الخدمة؟</h3>
 
         <div className="flex items-center justify-center">
           <Button
             type="primary"
             onClick={() => handleDeleteService(selectedService)}
           >
-            OK
+            تأكيد
           </Button>
           <Button className="mr-2" onClick={() => setOpenServiceDelete(false)}>
-            Cancel
+            الغاء
           </Button>
         </div>
       </Modal>

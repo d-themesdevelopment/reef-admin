@@ -173,7 +173,7 @@ const AddingServiceModal = ({
 
   return (
     <>
-      <h3 className="text-2xl font-semibold mb-6">Create New Service</h3>
+      <h3 className="text-2xl font-semibold mb-6">اضافة خدمة جديدة</h3>
 
       <Form
         name="basic"
@@ -185,12 +185,12 @@ const AddingServiceModal = ({
         <div className="grid grid-flex-row grid-cols-12 gap-4">
           <div className="col-span-12 sm:col-span-6">
             <Form.Item
-              label="Title"
+              label="العنوان"
               name="title"
               rules={[
                 {
                   required: true,
-                  message: "Please input your title!",
+                  message: "الرجاء اضافة العنوان!",
                 },
               ]}
             >
@@ -199,7 +199,7 @@ const AddingServiceModal = ({
           </div>
 
           <div className="col-span-12">
-            <Form.Item label="Category" name="category">
+            <Form.Item label="الفئة" name="category">
               <Select>
                 {categories?.map((category, index) => (
                   <Select.Option
@@ -215,11 +215,12 @@ const AddingServiceModal = ({
 
           <div className="col-span-12 sm:col-span-6">
             <Form.Item
-              label="Type"
+              label="الحالة"
               name="type"
               rules={[
                 {
                   required: true,
+                  message: "الرجاء اضافة الحالة!",
                 },
               ]}
             >
@@ -229,11 +230,12 @@ const AddingServiceModal = ({
 
           <div className="col-span-12 sm:col-span-6">
             <Form.Item
-              label="Working Day"
+              label="مدة تنفيذ الخدمة"
               name="workingDay"
               rules={[
                 {
                   required: true,
+                  message: "الرجاء اضافة مدة تنفيذ الخدمة!",
                 },
               ]}
             >
@@ -242,17 +244,17 @@ const AddingServiceModal = ({
           </div>
 
           <div className="col-span-12">
-            <Form.Item label="Desc" name="desc">
-              <Input.TextArea rows={6} placeholder="Please enter the dec" />
+            <Form.Item label="الوصف" name="desc">
+              <Input.TextArea rows={6} placeholder="رجاء اضافة الوصف..." />
             </Form.Item>
           </div>
 
           <div className="col-span-12">
-            <Form.Item label="Body" name="body">
+            <Form.Item label="المحتوى" name="body">
               <Input.TextArea
                 rows={6}
                 onChange={(e) => setTextAreaValue(e.target.value)}
-                placeholder="Please enter the body"
+                placeholder="رجاء اضافة المحتوى..."
               />
               {/* <ReactMarkdown>{textAreaValue}</ReactMarkdown> */}
             </Form.Item>
@@ -310,12 +312,13 @@ const AddingServiceModal = ({
               rules={[
                 {
                   required: true,
+                  message: "الرجاء اضافة ملف !",
                 },
               ]}
             >
               <Upload {...props}>
                 <Button className="bg-white text-black hover:bg-white hover:text-primary">
-                  Upload Media
+                  اضافة ملف
                 </Button>
               </Upload>
             </Form.Item>
@@ -332,7 +335,7 @@ const AddingServiceModal = ({
 
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            Submit
+            اضافة الخدمة
           </Button>
         </Form.Item>
       </Form>
