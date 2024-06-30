@@ -44,6 +44,32 @@ if (!Astro.cookies.has("reef_admin_token")) {
   <div
     class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800"
   >
-    <h1 class="text-5xl">Welcome to the dashboard</h1>
+    <h1 class="text-5xl">البوابة الرئيسية</h1>
+  </div>
+
+  <div class="flex justify-center align-middle py-8 my-8">
+    <!-- Email Icon -->
+    <div class="flex flex-col items-center">
+      <a href="https://outlook.live.com/mail/0/">
+        <img
+          src="./images/Outlook-Logo.svg"
+          alt="Email Icon"
+          class="w-32 h-32 md:w-48 md:h-48 lg:w-64 lg:h-64"
+        />
+      </a>
+      <span class="mt-2 text-xl">البريد</span>
+    </div>
+
+    <!-- Platform Icon -->
+    <div class="flex flex-col items-center">
+      <a href="https://reef-ar2.webflow.io/">
+        <img
+          src="./images/reef_icon.svg"
+          alt="Platform Icon"
+          class="w-32 h-32 md:w-48 md:h-48 lg:w-64 lg:h-64"
+        />
+      </a>
+      <span class="mt-2 text-xl">البوابة الخارجية</span>
+    </div>
   </div>
 </Layout>
