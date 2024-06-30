@@ -169,7 +169,7 @@ const JobRequestTable = ({ role, servicesData, apiUrl, apiToken }) => {
         <div className="items-center justify-between lg:flex">
           <div className="mb-4 lg:mb-0">
             <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
-              All Job Requests
+              طلبات التوظيف
             </h3>
 
             <Input
@@ -200,26 +200,26 @@ const JobRequestTable = ({ role, servicesData, apiUrl, apiToken }) => {
                         scope="col"
                         className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
                       >
-                        Job Title
+                        العنوان
                       </th>
                       <th
                         scope="col"
                         className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
                       >
-                        Username
+                        اسم المستخدم
                       </th>
                       <th
                         scope="col"
                         className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
                       >
-                        Email
+                        الايميل
                       </th>
 
                       <th
                         scope="col"
                         className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
                       >
-                        Phone
+                        رقم الهاتف
                       </th>
 
                       <th
@@ -240,7 +240,7 @@ const JobRequestTable = ({ role, servicesData, apiUrl, apiToken }) => {
                         scope="col"
                         className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
                       >
-                        Status
+                        الحالة
                       </th>
 
                       {role?.indexOf("guest") < 0 && (
@@ -248,7 +248,7 @@ const JobRequestTable = ({ role, servicesData, apiUrl, apiToken }) => {
                           scope="col"
                           className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
                         >
-                          Actions
+                          الاجرائات
                         </th>
                       )}
                     </tr>
@@ -312,7 +312,7 @@ const JobRequestTable = ({ role, servicesData, apiUrl, apiToken }) => {
                                 </span>
                               </a>
                             ) : (
-                              <span>No file</span>
+                              <span>غير مرفق</span>
                             )}
                           </td>
 
@@ -320,20 +320,20 @@ const JobRequestTable = ({ role, servicesData, apiUrl, apiToken }) => {
                             {service?.attributes?.approved &&
                               !service?.attributes?.rejected && (
                                 <span className="bg-green-100 text-green-800 text-xs font-medium mr-2 rtl:mr-0 rtl:ml-2 px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 border border-green-100 dark:border-green-500">
-                                  Completed
+                                  مكتمل
                                 </span>
                               )}
 
                             {service?.attributes?.rejected && (
                               <span className="bg-red-100 text-red-800 text-xs font-medium mr-2 rtl:mr-0 rtl:ml-2 px-2.5 py-0.5 rounded-md border border-red-100 dark:border-red-400 dark:bg-gray-700 dark:text-red-400">
-                                Rejected
+                                مرفوض
                               </span>
                             )}
 
                             {!service?.attributes?.approved &&
                               !service?.attributes?.rejected && (
                                 <span className="bg-purple-100 text-purple-800 text-xs font-medium mr-2 rtl:mr-0 rtl:ml-2 px-2.5 py-0.5 rounded-md border border-purple-100 dark:bg-gray-700 dark:border-purple-500 dark:text-purple-400">
-                                  In progress
+                                  قيد المراجعة
                                 </span>
                               )}
                           </td>
@@ -343,7 +343,7 @@ const JobRequestTable = ({ role, servicesData, apiUrl, apiToken }) => {
                               {service?.attributes?.approved &&
                               !service?.attributes?.rejected ? (
                                 <span className="text-green-800 text-success border-black font-semibold">
-                                  Done
+                                  منتهي
                                 </span>
                               ) : (
                                 <Button
@@ -354,7 +354,7 @@ const JobRequestTable = ({ role, servicesData, apiUrl, apiToken }) => {
                                     handleUpdateService(service);
                                   }}
                                 >
-                                  Edit
+                                  تعديل
                                 </Button>
                               )}
                             </td>
