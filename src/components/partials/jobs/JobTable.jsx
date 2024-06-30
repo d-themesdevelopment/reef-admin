@@ -191,7 +191,7 @@ const JobTable = ({ role, jobsData, apiUrl, apiToken }) => {
       <div className="items-end justify-between lg:flex">
         <div className="mb-4 lg:mb-0">
           <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
-            All jobs
+            الوظائف
           </h3>
           {/* <span className="text-base font-normal text-gray-500 dark:text-gray-400">
             This is a list of latest jobs
@@ -226,7 +226,7 @@ const JobTable = ({ role, jobsData, apiUrl, apiToken }) => {
                   clipRule="evenodd"
                 ></path>
               </svg>
-              Add Job
+              نشر وظيفة
             </Button>
           )}
         </div>
@@ -243,41 +243,41 @@ const JobTable = ({ role, jobsData, apiUrl, apiToken }) => {
                       scope="col"
                       className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
                     >
-                      Title
+                      العنوان
                     </th>
                     <th
                       scope="col"
                       className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
                     >
-                      Desc
-                    </th>
-
-                    <th
-                      scope="col"
-                      className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
-                    >
-                      Category
+                      الوصف
                     </th>
 
                     <th
                       scope="col"
                       className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
                     >
-                      Job Section
+                      الفئة
                     </th>
 
                     <th
                       scope="col"
                       className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
                     >
-                      Job Type
+                      القسم
                     </th>
 
                     <th
                       scope="col"
                       className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
                     >
-                      Timeline
+                      نوع التوظيف
+                    </th>
+
+                    <th
+                      scope="col"
+                      className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
+                    >
+                      التاريخ
                     </th>
 
                     {role?.indexOf("guest") < 0 && (
@@ -285,7 +285,7 @@ const JobTable = ({ role, jobsData, apiUrl, apiToken }) => {
                         scope="col"
                         className="p-4 text-xs font-medium tracking-wider text-left rtl:text-right text-gray-500 uppercase dark:text-white"
                       >
-                        Actions
+                        الاجرائات
                       </th>
                     )}
                   </tr>
@@ -369,7 +369,7 @@ const JobTable = ({ role, jobsData, apiUrl, apiToken }) => {
                                     />
                                   </>
                                 </svg>
-                                Edit Job
+                                تعديل
                               </Button>
                               <Button
                                 onClick={(e) => {
@@ -391,7 +391,7 @@ const JobTable = ({ role, jobsData, apiUrl, apiToken }) => {
                                     clipRule="evenodd"
                                   />
                                 </svg>
-                                Delete Job
+                                حذف
                               </Button>
                             </div>
                           </td>
