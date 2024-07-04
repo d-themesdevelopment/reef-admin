@@ -174,7 +174,6 @@ const SignInForm = ({ apiUrl, apiToken }) => {
       setIsOpen(false);
       // Cookies.set("reef_admin_token", token);
 
-      // Cookies.set("reef_admin_token", token, { expires: 60/1440 });
       Cookies.set("reef_admin_token", token, { expires: 120/1440 });
 
       const roles = users
@@ -340,7 +339,7 @@ const SignInForm = ({ apiUrl, apiToken }) => {
       <Modal
         centered
         open={isOpen}
-        onCancel={() => setIsOpen(false)}
+        onCancel={() => {setIsOpen(false); setVerificationCode(""); form.resetFields();}}
         footer={null}
         width={400}
       >
@@ -348,7 +347,7 @@ const SignInForm = ({ apiUrl, apiToken }) => {
           <h3 className="text-3xl font-semibold mb-5">Confirmation</h3>
 
           <Form form={form} onFinish={handleVerification}>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between direction-ltr">
               <Form.Item
                 name={['tfa', '0']}
               >

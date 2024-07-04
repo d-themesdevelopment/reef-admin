@@ -234,11 +234,11 @@ const UserSettings = ({ user, pageData, apiUrl, apiToken }) => {
           <div className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
             <div className="items-center sm:flex xl:block 2xl:flex">
               <img
-                className="mb-4 rounded-lg w-28 h-28 sm:mb-0 xl:mb-4 2xl:mb-0"
+                className={`mb-4 rounded-lg w-28 h-28 sm:mb-0 xl:mb-4 2xl:mb-0 ${user?.avatar?.url ? "" : "object-contain"}`}
                 src={`${
                   avatarUrl
                     ? avatarUrl
-                    : user?.avatar?.url
+                    : user?.avatar?.url ? user?.avatar?.url : "./images/profile-2.png"
                 }`}
                 alt="Jese picture"
               />

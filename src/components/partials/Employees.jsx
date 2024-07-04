@@ -232,8 +232,102 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
     }
   };
 
-  const [selectedItems, setSelectedItems] = useState([]);
   const [roleEdit, setRoleEdit] = useState(false);
+  const [customRoles, setCustomRoles] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  useEffect(() => {
+    getCustomRoles();
+  }, [employeeRoles])
+
+  useEffect(() => {
+    if(selectedItems.length > 0) {
+      if(selectedItems.find((item) => item === "admin")) {
+        const temp = customRoles.reduce((arr, cur) => {
+          if(cur.value !== "admin") {
+            arr.push({
+              ...cur,
+              disabled: true,
+            })
+          } else {
+            arr.push(cur);
+          }
+
+          return arr;
+        }, []);
+
+        setCustomRoles(temp);
+      } else {
+        const temp = customRoles.reduce((arr, cur) => {
+          if(cur.value === "admin") {
+            arr.push({
+              ...cur,
+              disabled: true,
+            })
+          } else {
+            arr.push(cur);
+          }
+
+          return arr;
+        }, []);
+
+        setCustomRoles(temp);
+      }
+    } else {
+      getCustomRoles();
+    }
+  }, [selectedItems])
+
+  useEffect(() => {
+    if(selectedUser) {
+      // selectedUser?.employee_roles.map((item) => item?.value)
+      if(selectedUser?.employee_roles?.find((role) => role.value === "admin")) {
+        const temp = customRoles.reduce((arr, cur) => {
+          if(cur.value !== "admin") {
+            arr.push({
+              ...cur,
+              disabled: true,
+            })
+          } else {
+            arr.push(cur);
+          }
+
+          return arr;
+        }, []);
+
+        setCustomRoles(temp);
+      } else {
+        const temp = customRoles.reduce((arr, cur) => {
+          if(cur.value === "admin") {
+            arr.push({
+              ...cur,
+              disabled: true,
+            })
+          } else {
+            arr.push(cur);
+          }
+
+          return arr;
+        }, []);
+
+        setCustomRoles(temp);
+      }
+    }
+  }, [selectedUser])
+
+  const getCustomRoles = () => {
+    const temp = employeeRoles.reduce((arr, cur) => {
+      arr.push({
+        label: cur?.attributes?.title,
+        value: cur?.attributes?.value,
+        disabled: false
+      })
+
+      return arr;
+    }, [])
+
+    setCustomRoles(temp);
+  }
 
   const handleMain = async () => {
     setLoading(true);
@@ -248,7 +342,7 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
     }
 
     if (openAdmin) {
-      data = { ...data, isAdmin: true };
+      data = { ...data, isAdmin: true, isEmployee: true };
     } else {
       data = { ...data, isAdmin: false };
     }
@@ -256,9 +350,7 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
     if (selectedItems.length > 0) {
       data = {
         ...data,
-        employee_roles: employeeRoles?.filter((role) =>
-          selectedItems?.find((item) => item === role?.attributes?.value)
-        ),
+        employee_roles: employeeRoles?.filter((role) => selectedItems?.find((item) => item === "admin") ? selectedItems?.find((item) => item === "admin") === role?.attributes?.value :  selectedItems?.find((item) => item === role?.attributes?.value)),
       };
     }
 
@@ -312,12 +404,13 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
           });
         }
 
+        setRoleEdit(false);
+        setOpenEmployee(false);
+        setOpenAdmin(false);
+        setSelectedItems([]);
+
         setTimeout(() => {
           setLoading(false);
-          setRoleEdit(false);
-          setOpenEmployee(false);
-          setOpenAdmin(false);
-          setSelectedItems([]);
         }, 1500);
       } else {
         toast.error(`${roleEdit ? "Update failed" : "Approve failed"}`, {
@@ -331,12 +424,13 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
           theme: "colored",
         });
 
+        setRoleEdit(false);
+        setOpenEmployee(false);
+        setOpenAdmin(false);
+        setSelectedItems([]);
+
         setTimeout(() => {
           setLoading(false);
-          setRoleEdit(false);
-          setOpenEmployee(false);
-          setOpenAdmin(false);
-          setSelectedItems([]);
         }, 1500);
       }
     } catch (error) {
@@ -355,11 +449,12 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
 
       setTimeout(() => {
         setLoading(false);
-        setRoleEdit(false);
-        setOpenEmployee(false);
-        setOpenAdmin(false);
-        setSelectedItems([]);
       }, 1500);
+
+      setRoleEdit(false);
+      setOpenEmployee(false);
+      setOpenAdmin(false);
+      setSelectedItems([]);
     }
   };
 
@@ -370,6 +465,7 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
       handleMain();
     }
   };
+
 
   const [search, setSearch] = useState("");
   const [openViewModal, setOpenViewModal] = useState(false);
@@ -883,7 +979,7 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
         <Select
           mode="multiple"
           placeholder="Inserted are removed"
-          value={
+          defaultValue={
             selectedItems.length > 0
               ? selectedItems
               : selectedUser?.employee_roles.map((item) => item?.value)
@@ -892,9 +988,10 @@ const Employees = ({ role, apiUrl, apiToken, employeeRoles }) => {
           style={{
             width: "100%",
           }}
-          options={employeeRoles?.map((item) => ({
-            value: item?.attributes?.value,
-            label: item?.attributes?.title,
+          options={customRoles?.map((item) => ({
+            value: item?.value,
+            label: item?.label,
+            disabled: item?.disabled
           }))}
         />
 

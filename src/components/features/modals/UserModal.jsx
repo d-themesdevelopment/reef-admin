@@ -1,5 +1,5 @@
 import { Button, Form, Input, Radio, Select, Switch } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Loading from "../Loading";
 
@@ -19,7 +19,7 @@ const UserModal = ({
     const email = values.email;
     const password = generatePassword();
     const employee_roles = employeeRoles?.filter((employeeRole) =>
-      values?.employeeRoles?.find(
+      values?.employeeRoles?.find((item) => item === "admin" ) ? values?.employeeRoles?.find((item) => item === "admin" ) === employeeRole?.attributes?.value : values?.employeeRoles?.find(
         (item) => item === employeeRole?.attributes?.value
       )
     );
@@ -120,7 +120,64 @@ const UserModal = ({
     return result;
   };
 
+  const [roles, setRoles] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
+
+  const getRoles = () => {
+    const temp = employeeRoles.reduce((arr, cur) => {
+      arr.push({
+        label: cur?.attributes?.title,
+        value: cur?.attributes?.value,
+        disabled: false
+      })
+
+      return arr;
+    }, [])
+
+    setRoles(temp);
+  }
+
+  useEffect(() => {
+    getRoles();
+  }, [employeeRoles])
+
+  useEffect(() => {
+    if(selectedItems.length > 0) {
+      if(selectedItems.find((item) => item === "admin")) {
+        const temp = roles.reduce((arr, cur) => {
+          if(cur.value !== "admin") {
+            arr.push({
+              ...cur,
+              disabled: true,
+            })
+          } else {
+            arr.push(cur);
+          }
+
+          return arr;
+        }, []);
+
+        setRoles(temp);
+      } else {
+        const temp = roles.reduce((arr, cur) => {
+          if(cur.value === "admin") {
+            arr.push({
+              ...cur,
+              disabled: true,
+            })
+          } else {
+            arr.push(cur);
+          }
+
+          return arr;
+        }, []);
+
+        setRoles(temp);
+      }
+    } else {
+      getRoles();
+    }
+  }, [selectedItems])
 
   return (
     <div>
@@ -171,9 +228,10 @@ const UserModal = ({
             style={{
               width: "100%",
             }}
-            options={employeeRoles?.map((item) => ({
-              value: item?.attributes?.value,
-              label: item?.attributes?.title,
+            options={roles?.map((item) => ({
+              value: item?.value,
+              label: item?.label,
+              disabled: item?.disabled
             }))}
           />
         </Form.Item>

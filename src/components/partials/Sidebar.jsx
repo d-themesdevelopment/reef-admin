@@ -38,7 +38,7 @@ const Sidebar = ({ role }) => {
               {role?.indexOf("career-manager") > -1 ||
               role?.indexOf("admin") > -1 ||
               role?.indexOf("guest") > -1 ? (
-                <Collapse.Panel header="Careers " key="1">
+                <Collapse.Panel header="وظائف" key="1">
                   <ul className="space-y-1">
                     <li>
                       <a
@@ -49,7 +49,7 @@ const Sidebar = ({ role }) => {
                           className="ml-3 rtl:ml-0 rtl:mr-3"
                           sidebar-toggle-item
                         >
-                          Jobs
+                          وظائف
                         </span>
                       </a>
                     </li>
@@ -63,7 +63,7 @@ const Sidebar = ({ role }) => {
                           className="ml-3 rtl:ml-0 rtl:mr-3"
                           sidebar-toggle-item
                         >
-                          Job Requests
+                          طلبات العمل
                         </span>
                       </a>
                     </li>
@@ -76,7 +76,7 @@ const Sidebar = ({ role }) => {
               {role?.indexOf("service-manager") > -1 ||
               role?.indexOf("admin") > -1 ||
               role?.indexOf("guest") > -1 ? (
-                <Collapse.Panel header="Services" key="2">
+                <Collapse.Panel header="خدمات" key="2">
                   <ul className="space-y-1">
                     <li>
                       <a
@@ -87,7 +87,7 @@ const Sidebar = ({ role }) => {
                           className="ml-3 rtl:ml-0 rtl:mr-3"
                           sidebar-toggle-item
                         >
-                          Services
+                          خدمات
                         </span>
                       </a>
                     </li>
@@ -101,7 +101,7 @@ const Sidebar = ({ role }) => {
                           className="ml-3 rtl:ml-0 rtl:mr-3"
                           sidebar-toggle-item
                         >
-                          Service Requests
+                          طلبات الخدمة
                         </span>
                       </a>
                     </li>
@@ -112,7 +112,7 @@ const Sidebar = ({ role }) => {
               )}
 
               {role?.indexOf("hr") > -1 || role?.indexOf("admin") > -1 ? (
-                <Collapse.Panel header="Users" key="3">
+                <Collapse.Panel header="المستخدمين" key="3">
                   <ul className="space-y-1">
                     <li>
                       <a
@@ -123,7 +123,7 @@ const Sidebar = ({ role }) => {
                           className="ml-3 rtl:ml-0 rtl:mr-3"
                           sidebar-toggle-item
                         >
-                          Employees
+                          موظفين
                         </span>
                       </a>
                     </li>
@@ -137,7 +137,7 @@ const Sidebar = ({ role }) => {
                           className="ml-3 rtl:ml-0 rtl:mr-3"
                           sidebar-toggle-item
                         >
-                          Customers
+                          عملاء
                         </span>
                       </a>
                     </li>
@@ -149,7 +149,7 @@ const Sidebar = ({ role }) => {
 
               {role?.indexOf("media-center-manager") > -1 ||
               role?.indexOf("admin") > -1 ? (
-                <Collapse.Panel header="MediaCenter " key="4">
+                <Collapse.Panel header="المركز الاعلامي " key="4">
                   <ul className="space-y-1">
                     <li>
                       <a
@@ -160,7 +160,7 @@ const Sidebar = ({ role }) => {
                           className="ml-3 rtl:ml-0 rtl:mr-3"
                           sidebar-toggle-item
                         >
-                          Media Center
+                          المركز الاعلامي
                         </span>
                       </a>
                     </li>
