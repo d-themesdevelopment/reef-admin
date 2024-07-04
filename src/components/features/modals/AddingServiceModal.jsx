@@ -8,7 +8,7 @@ import {
   Upload,
   message,
 } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Loading from "../Loading";
 import ReactMarkdown from "react-markdown";
 import { toast } from "react-toastify";
@@ -27,6 +27,7 @@ const AddingServiceModal = ({
   // const { openStackedit, onFileChange } = useStackEdit(setValue);
   const [fileList, setFileList] = useState([]);
   const [mediaUrl, setMediaUrl] = useState(null);
+  const formRef = useRef(null);
 
   const normFile = (e) => {
     console.log("Upload event:", e);
@@ -68,6 +69,11 @@ const AddingServiceModal = ({
       reader.readAsDataURL(fileList[0]);
     }
   }, [fileList]);
+
+  const onReset = () => {
+    formRef.current.resetFields();
+    setMediaUrl(null);
+  };
 
   const onfinish = async (values) => {
     setLoading(true);
@@ -136,7 +142,7 @@ const AddingServiceModal = ({
 
         setTimeout(() => {
           setLoading(false);
-          form.resetFields();
+          onReset();
           setOpenCustomerModal(false);
         }, 1500);
 
@@ -155,6 +161,7 @@ const AddingServiceModal = ({
       console.error(error);
       setTimeout(() => {
         setLoading(false);
+        onReset();
         setOpenCustomerModal(false);
       }, 1500);
 
@@ -176,6 +183,7 @@ const AddingServiceModal = ({
       <h3 className="text-2xl font-semibold mb-6">اضافة خدمة جديدة</h3>
 
       <Form
+        ref={formRef}
         name="basic"
         layout="vertical"
         autoComplete="off"

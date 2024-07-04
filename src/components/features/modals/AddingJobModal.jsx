@@ -9,7 +9,7 @@ import {
   Upload,
   message,
 } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Loading from "../Loading";
 import ReactMarkdown from "react-markdown";
 import { toast } from "react-toastify";
@@ -26,32 +26,17 @@ const AddingJobModal = ({
   setLoading,
 }) => {
   const [form] = Form.useForm();
+  const formRef = useRef(null);
   const [textAreaValue, setTextAreaValue] = useState("");
   // const { openStackedit, onFileChange } = useStackEdit(setValue);
   const [fileList, setFileList] = useState([]);
   const [mediaUrl, setMediaUrl] = useState(null);
 
-  const normFile = (e) => {
-    console.log("Upload event:", e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e?.fileList;
+  const onReset = () => {
+    formRef.current.resetFields();
+    setMediaUrl(null);
   };
 
-  const props = {
-    onRemove: (file) => {
-      const index = fileList.indexOf(file);
-      const newFileList = fileList.slice();
-      newFileList.splice(index, 1);
-      setFileList(newFileList);
-    },
-    beforeUpload: (file) => {
-      setFileList([...fileList, file]);
-      return false;
-    },
-    fileList,
-  };
 
   useEffect(() => {
     if (fileList.length > 0) {
@@ -181,7 +166,7 @@ const AddingJobModal = ({
 
       setTimeout(() => {
         setLoading(false);
-        form.resetFields();
+        onReset();
         setOpenCustomerModal(false);
       }, 1500);
 
@@ -199,6 +184,7 @@ const AddingJobModal = ({
       console.error(error);
       setTimeout(() => {
         setLoading(false);
+        onReset();
         setOpenCustomerModal(false);
       }, 1500);
 
@@ -220,6 +206,7 @@ const AddingJobModal = ({
       <h3 className="text-2xl font-semibold mb-6">Post New Job</h3>
 
       <Form
+        ref={formRef}
         name="basic"
         layout="vertical"
         autoComplete="off"

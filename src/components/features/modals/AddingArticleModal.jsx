@@ -8,7 +8,7 @@ import {
     Upload,
     message,
   } from "antd";
-  import { useEffect, useState } from "react";
+  import { useEffect, useRef, useState } from "react";
   import { toast } from "react-toastify";
   // import { useStackEdit } from "use-stackedit";
   
@@ -25,7 +25,13 @@ import {
     // const { openStackedit, onFileChange } = useStackEdit(setValue);
     const [fileList, setFileList] = useState([]);
     const [mediaUrl, setMediaUrl] = useState(null);
-  
+    const formRef = useRef(null);
+
+    const onReset = () => {
+      formRef.current.resetFields();
+      setMediaUrl(null);
+    };
+
     const normFile = (e) => {
       console.log("Upload event:", e);
       if (Array.isArray(e)) {
@@ -126,7 +132,7 @@ import {
   
           setTimeout(() => {
             setLoading(false);
-            form.resetFields();
+            onReset();
             setOpenCustomerModal(false);
           }, 1500);
   
@@ -145,6 +151,7 @@ import {
         console.error(error);
         setTimeout(() => {
           setLoading(false);
+          onReset();
           setOpenCustomerModal(false);
         }, 1500);
   
@@ -167,8 +174,8 @@ import {
       <>
         <h3 className="text-2xl font-semibold mb-6">Create New Articles</h3>
   
-
         <Form
+          ref={formRef}
           name="basic"
           layout="vertical"
           autoComplete="off"

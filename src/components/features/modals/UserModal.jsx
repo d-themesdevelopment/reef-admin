@@ -1,5 +1,5 @@
 import { Button, Form, Input, Radio, Select, Switch } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import Loading from "../Loading";
 
@@ -12,6 +12,13 @@ const UserModal = ({
   setLoading,
   getUsers
 }) => {
+  const [form] = Form.useForm();
+  const formRef = useRef(null);
+
+  const onReset = () => {
+    formRef.current.resetFields();
+  };
+
   const onfinish = async (values) => {
     setLoading(true);
     const registerationEndpoint = `${apiUrl}/api/auth/local/register`;
@@ -68,6 +75,7 @@ const UserModal = ({
 
       setTimeout(() => {
         setLoading(false);
+        onReset();
         setOpenAddUserModal(false);
       }, 1500);
 
@@ -183,6 +191,7 @@ const UserModal = ({
     <div>
       <h3 className="text-2xl font-semibold mb-6">إضافة موظف</h3>
       <Form
+        ref={formRef}
         name="basic"
         layout="vertical"
         autoComplete="off"
