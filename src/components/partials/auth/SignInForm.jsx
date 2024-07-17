@@ -168,6 +168,7 @@ const SignInForm = ({ apiUrl, apiToken }) => {
   }, [isOpen]);
 
   const handleVerification = async () => {
+    form.resetFields();
     setLoading(true);
  
     if (verificationCode === verifiedCode) {
@@ -339,7 +340,7 @@ const SignInForm = ({ apiUrl, apiToken }) => {
       <Modal
         centered
         open={isOpen}
-        onCancel={() => {setIsOpen(false); setVerificationCode(""); form.resetFields();}}
+        onCancel={() => {setVerificationCode(""); form.resetFields(); setIsOpen(false); }}
         footer={null}
         width={400}
       >
