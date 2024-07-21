@@ -90,6 +90,37 @@ const ServiceRequestTable = ({
     fileList,
   };
 
+  // Exporting all services requests 
+  const handleExport = async () => {
+    try {
+      const response = await fetch(`${strapiUrl}/api/service-order/export-csv`, {
+        headers: {
+          Authorization: `Bearer ${strapiToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error?.message || 'Failed to export CSV');
+      }
+
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = 'service-orders.csv';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(downloadUrl);
+
+      message.success('CSV exported successfully');
+    } catch (error) {
+      console.error('Error exporting CSV:', error);
+      message.error(error.message || 'Failed to export CSV. Please try again.');
+    }
+  };
+
   const handleUpdateService = (singleService) => {
     // handleUpload();
     // const asyncFuc = async () => {
@@ -247,6 +278,13 @@ const ServiceRequestTable = ({
             />
           </div>
           <div className="items-center sm:flex"></div>
+        </div>
+
+        {/* exporting csv button /api/service-order/export-csv */}
+        <div className="items-center sm:flex">
+            <Button onClick={handleExport} type="primary">
+              Export to CSV
+            </Button>
         </div>
 
         <div className="flex flex-col mt-6">
